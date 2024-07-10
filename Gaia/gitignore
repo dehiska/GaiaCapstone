@@ -8,5 +8,8 @@ app/__pycache__/
 **app/__pycache__/
 
 openAIClient/*
+**openAIClient/*
+
+Rasa/*
 
 venv/Lib/*
