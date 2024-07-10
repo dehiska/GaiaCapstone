@@ -1,0 +1,4 @@
+[[tool.poetry.source]]
+name = "rasa-pro"
+url = "https://europe-west3-python.pkg.dev/rasa-releases/rasa-pro-python/simple"
+priority = "supplemental"
