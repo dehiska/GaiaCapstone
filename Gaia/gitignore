@@ -21,3 +21,5 @@ Rasa/.Rasa*
 *Rasa/tests/*
 
 venv/Lib/*
+
+venv/**
