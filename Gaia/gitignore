@@ -27,3 +27,20 @@ venv/**
 Gaia/openAIClient/openapi-generator
 
 Capstone/GaiaCapstone/venv
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore virtual environment directory
+venv/
+
+# Ignore environment variable files
+.env
+
+
+# Ignore log files
+*.log
+
+# Ignore any other files or directories you want to ignore
