@@ -23,3 +23,5 @@ Rasa/.Rasa*
 venv/Lib/*
 
 venv/**
+
+Gaia/openAIClient/openapi-generator
