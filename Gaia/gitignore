@@ -25,3 +25,5 @@ venv/Lib/*
 venv/**
 
 Gaia/openAIClient/openapi-generator
+
+Capstone/GaiaCapstone/venv
