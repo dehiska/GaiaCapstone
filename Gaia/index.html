@@ -16,12 +16,22 @@
       <form action="">
         <h1>Login</h1>
         <div class="input-box">
-          <input type="text" placeholder="Username" required />
+          <input
+            type="text"
+            id="username_user"
+            placeholder="Username"
+            required
+          />
           <i class="bx bxs-user"></i>
         </div>
 
         <div class="input-box">
-          <input type="password" placeholder="Password" required />
+          <input
+            type="password"
+            id="password_user"
+            placeholder="Password"
+            required
+          />
           <i class="bx bxs-lock-alt"></i>
         </div>
 
@@ -30,12 +40,50 @@
           <a href="#">Forgot Password?</a>
         </div>
 
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" onclick="login()" class="btn">Login</button>
 
         <div class="register-link">
           <p>Don't have an account? <a href="regForm.html">Register</a></p>
         </div>
       </form>
+      <p id="text_show">Suggestion Text</p>
     </div>
+    <script>
+      function login() {
+        let username2 = document.getElementById("username_user").value;
+        let password2 = document.getElementById("password_user").value;
+        let text_show2 = document.getElementById("text_show").value;
+
+        let web_user = "Gaia";
+        let web_pass = "capStone";
+
+        if (username2 == web_user && password2 == web_pass) {
+          window.location = "homepage.html";
+        } else if (username2 == "" && password2 == "") {
+          alert("Please enter a Username and Password.");
+        } else if (username2 == web_user && password2 !== web_pass) {
+          document.getElementById("username_user").style.border =
+            "2px solid green";
+          document.getElementById("password_user").style.border =
+            "2px solid red";
+
+          text_show2.innerHTML =
+            "Username is correct, but Password is incorrect.";
+        } else if (username2 !== web_user && password2 == web_pass) {
+          document.getElementById("username_user").style.border =
+            "2px solid red";
+          document.getElementById("password_user").style.border =
+            "2px solid green";
+
+          text_show2.innerHTML =
+            "Password is correct, but Username is incorrect.";
+        } else {
+          document.getElementById("username_user").style.border =
+            "2px solid red";
+          document.getElementById("password_user").style.border =
+            "2px solid green";
+        }
+      }
+    </script>
   </body>
 </html>
