@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Events
+{% endblock %}
+
+{% block content %}
+
+
+<div class="overflow-auto align-self-stretch text-white bg-dark" style="height: 100vh; width: 100%;">
+    <div class="container mt-3">
+        <div class="btn-group" role="group" aria-label="Event Toggle">
+            <button id="postedEventsBtn" type="button" class="btn btn-primary active">Posted Events</button>
+            <button id="rsvpedEventsBtn" type="button" class="btn btn-secondary">RSVPed Events</button>
+        </div>
+    </div>
+    <ul id="eventList" class="list-group list-group-flush borderless">
+        {% for event in events %}
+        <li class="list-group-item border-bottom-0 bg-dark">
+            <div class="card m-1 w-75 ms-1">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <p class="card-text">{{ event.description }}</p>
+                    <span class="badge text-bg-primary rounded-pill">{{ event.eventTime.strftime('%B %d, %Y') }}</span>
+                    <span class="badge text-bg-success rounded-pill">{{ event.eventTime.strftime('%I:%M %p') }}</span>
+                    {% if event.flairone %}
+                    <span class="badge text-bg-primary rounded-pill">{{ event.flairone.name }}</span>
+                    {% endif %}
+                    <p>{{ event.location }}</p>
+                    <a href="/eventview/{{ event.eventID }}" class="btn btn-primary stretched-link">Show More</a>
+                </div>
+            </div>
+        </li>
+        {% else %}
+        <li class="list-group-item border-bottom-0 bg-dark">
+            <div class="card m-1 w-75 ms-1">
+                <div class="card-body text-center">
+                    <h5 class="card-title">No events found</h5>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

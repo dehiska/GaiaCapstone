@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+  
+{% block title %}Home{% endblock %}
+
+
+
+{% block content %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $("#searchInput").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#eventList li").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+</script>
+
+<div class="d-flex flex-column flex-grow-1 bg-dark" style="height: 100vh;" >
+
+  <div class="d-flex align-items-center my-1 w-50">
+    <div class="input-group input-group-sm mx-1">
+        <input id="searchInput" type="text" placeholder="Search.." class="form-control">
+    </div>
+    <form action="/home" method="get" class="input-group input-group-sm mx-1 w-75">
+      <select id="flairFilter" name="flair_filter" class="form-select" onchange="this.form.submit()">
+          <option value="All">All Flairs</option>
+          {% for flair in flairs %}
+          <option value="{{ flair.name }}" {% if request.args.get('flair_filter') == flair.name %}selected{% endif %}>
+              {{ flair.name }}
+          </option>
+          {% endfor %}
+      </select>
+  </form>
+</div>
+
+
+  <div class="overflow-auto align-self-stretch text-white bg-dark" style="height: 100vh;">
+
+    <ul id=eventList class="list-group list-group-flush borderless">
+      {% for events in events %}
+      <li class="list-group-item border-bottom-0 bg-dark">
+        <div class="card m-1 w-75 ms-1">
+          <div class="card-body">
+            <h5 class="card-title">{{events.title}}</h5>
+            <p class="card-text">{{events.description}}</p>
+            <span class="badge text-bg-primary rounded-pill">{{ events.eventTime.strftime('%B %d, %Y') }}</span>
+            <span class="badge text-bg-success rounded-pill">{{ events.eventTime.strftime('%I:%M %p') }}</span>
+            <!-- Showcase flair if it exists -->
+            {% if events.flairone is not none %}
+            <span class="badge text-bg-primary rounded-pill">{{ events.flairone }}</span>
+            {% endif %}
+            <p>{{events.location}}</p>
+            <a href="/eventview/{{events.eventID}}" class="btn btn-primary stretched-link">Show More</a>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  <div>
+</div>
+
+<script>
+  $(document).ready(function() {
+      // Function to filter events based on search input
+      function filterEvents() {
+          var searchText = $('#searchInput').val().toLowerCase();
+  
+          $("#eventList li").filter(function() {
+              var eventText = $(this).text().toLowerCase();
+              var textMatch = eventText.indexOf(searchText) > -1;
+              $(this).toggle(textMatch); 
+              // console.log("Searching for: " + searchText + " - Found in: " + eventText + " - Match: " + textMatch);   // Debugging
+          });
+      }
+  
+      // Event handler for search input
+      $("#searchInput").on("keyup", filterEvents);
+  });
+  </script>
+{% endblock %}
+
+
+
