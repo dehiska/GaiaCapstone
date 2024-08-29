@@ -95,6 +95,7 @@ admin.add_view(AdminModelView(User, db.session))
 admin.add_view(AdminModelView(Event, db.session))   
 
 
+
 # REGISTER
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -246,3 +247,6 @@ def create_event():
         print("Form not submitted via POST")  # Debug statement
 
     return render_template('createEvent.html', form=form, flair=form.flair.choices)
+
+if __name__ == '__main__':
+    app.run(debug=True)
