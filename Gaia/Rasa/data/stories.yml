@@ -28,3 +28,13 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+
+
+- story: calculate emissions for an activity
+  steps:
+    - intent: calculate_emissions
+    - action: utter_ask_activity
+    - slot_was_set:
+        - activity: <activity_name>
+    - action: action_calculate_emissions
