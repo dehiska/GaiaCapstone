@@ -89,3 +89,12 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: calculate_emissions
+  examples: |
+    - I want to calculate emissions for [Bus](activity) for a distance of [50](distance) [km](distance_unit)
+    - How much CO2 does [Cable and subscription programming](activity) produce?
+    - Calculate the emissions for [Motorcycle](activity) traveling [100](distance) [miles](distance_unit)
+    - What are the emissions for [Advertising agencies](activity) spending [1000](money) [USD](money_unit)?
+    
+
