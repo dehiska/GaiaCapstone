@@ -8,12 +8,15 @@ from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'changeforprod'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///owlettedb.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Gaiadb.sqlite3'
 
 from models import db, User, Event, Flair, RSVP
 
+
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -36,7 +39,7 @@ def testdb():
 # SPLASH PAGE
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('homepage.html')
 
 
 
@@ -116,7 +119,7 @@ def register():
         # Redirect to a success page or render a success template
         return redirect(url_for('login'))
 
-    return render_template('register.html', form=rform)
+    return render_template('regForm.html', form=rform)
 
 
 # HOME PAGE
