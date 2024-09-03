@@ -39,7 +39,7 @@ def testdb():
 # SPLASH PAGE
 @app.route('/')
 def index():
-    return render_template('homepage.html')
+    return render_template('index.html')
 
 
 
@@ -107,11 +107,12 @@ def register():
     if  request.method == 'POST' and rform.validate_on_submit():
         # Create a User object
         user = User(
-            email=rform.email.data,
+            fullName=rform.fullName.data,
             username=rform.username.data,
-            firstname=rform.firstname.data,
-            lastname=rform.lastname.data,
+            email=rform.email.data,
+            phone=rform.phone.data,
             password=rform.password.data,
+            confirmPassword=rform.password.data
         )
         # Save the user to the database
         db.session.add(user)
