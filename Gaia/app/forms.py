@@ -13,12 +13,12 @@ class loginForm(FlaskForm):
 
 class registerForm(FlaskForm):
     # Assuming userID is the id of the user creating the event, it's not a form field
-    email = StringField(label='Email', validators=[DataRequired(), Length(max=80)])
+    fullName = StringField(label='First Name', validators=[DataRequired(), Length(max=80)])
     username = StringField(label='Username', validators=[DataRequired(), Length(max=80)])
+    email = StringField(label='Email', validators=[DataRequired(), Length(max=80)])
+    phone = IntegerField(label='Email', validators=[DataRequired(), Length(max=10)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
-    #confirm_password = PasswordField('Confirm Password')
-    firstname = StringField(label='First Name', validators=[DataRequired(), Length(max=80)])
-    lastname = StringField(label='Last Name', validators=[DataRequired(), Length(max=80)])
+    confirmPassword = PasswordField('Password', validators=[DataRequired(), Length(min=8)])
     submit = SubmitField(label='Register')
 
 
