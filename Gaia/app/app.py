@@ -60,8 +60,8 @@ def login():
 
         if user and user.password == form.password.data and user.email == form.email.data:
             session['userID'] = user.userid
-            session['firstName'] = user.firstname
-            current_app.logger.info(user.firstname)  # Add this line for debugging
+            session['fullName'] = user.fullName
+            current_app.logger.info(user.fullName)  # Add this line for debugging
 
             if user.ismod:
                 login_user(user, remember=True)
@@ -111,9 +111,7 @@ def register():
             fullName=rform.fullName.data,
             username=rform.username.data,
             email=rform.email.data,
-            phone=rform.phone.data,
             password=rform.password.data,
-            confirmPassword=rform.password.data
         )
         # Save the user to the database
         db.session.add(user)

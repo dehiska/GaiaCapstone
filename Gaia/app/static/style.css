@@ -1,3 +1,82 @@
+/* .wrap {
+  width: 850px; /* Increased width */
+/*  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(50px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #08a54c;
+  border-radius: 10px;
+  padding: 40px 35px 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrap h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.input-field {
+  position: relative;
+  width: 48%;
+  height: 50px;
+  margin: 13px 0;
+}
+
+.form-control {
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  font-size: 16px;
+  color: #08a54c;
+  border-radius: 6px;
+  padding: 15px 15px 15px 40px;
+}
+
+.form-control::placeholder {
+  color: #08a54c;
+}
+
+.input-field i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: #08a54c;
+}
+
+.btn {
+  width: 100%;
+  height: 50px;
+  background: rgba(50, 168, 107, 0.8);
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: rgba(50, 168, 107, 1);
+} 
+*/
 @import url("https//fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
 * {
@@ -168,7 +247,13 @@ body {
 .input-box .input-field input::placeholder {
   color: #08a54c;
 }
-
+.input-box .input-field i, .input-box .password-field i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
 .input-box .input-field i {
   position: absolute;
   left: 15px;
@@ -191,7 +276,7 @@ body {
 .wrap .btn {
   width: 100%;
   height: 45px;
-  background: rgba(50, 168, 107);
+  background: #fff;
   border: none;
   outline: none;
   border-radius: 6px;
@@ -243,6 +328,128 @@ body {
 .navbar a.active {
   color: #12968f;
 }
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url(Gaia.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Form Wrapper */
+.wrap {
+  width: 500px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(50px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #08a54c;
+  border-radius: 10px;
+  padding: 40px 35px 55px;
+}
+
+.wrap h1 {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Input Box Wrapper */
+.wrap .input-box {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.input-box .input-field {
+  position: relative;
+  width: 48%; /* Keep width for general input fields */
+  height: 50px;
+  margin: 13px 0;
+}
+
+
+.input-box .email-field .input-field input, .input-box .email-field input {
+  position: relative;
+  width: 10%; /* Smaller width for the password field */
+  height: 50px;
+  margin: 13px 0;
+  align-self: flex-end; /* Ensures the field stays aligned on the right */
+}
+/* Specific Rule for Password Field */
+.input-box .password-field {
+  position: relative;
+  width: 10%; /* Smaller width for the password field */
+  height: 50px;
+  margin: 13px 0;
+  align-self: flex-end; /* Ensures the field stays aligned on the right */
+}
+
+/* Common Styles for Input Fields */
+.input-box .input-field input, .input-box .password-field input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: none;
+  font-size: 16px;
+  color: #08a54c;
+  border-radius: 6px;
+  padding: 15px 15px 15px 40px;
+}
+
+.input-box .input-field input::placeholder, .input-box .password-field input::placeholder {
+  color: #08a54c;
+}
+
+/* Icon Positioning */
+.input-box .input-field i, .input-box .password-field i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+}
+
+/* Submit Button */
+.wrap .btn {
+  width: 100%;
+  height: 45px;
+  background: rgba(50, 168, 107, 0.8);
+  border: none;
+  outline: none;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.wrap .btn:hover {
+  background: rgba(50, 168, 107, 1);
+}
+
+/* Error Styling */
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 
 .home {
   height: 100vh;

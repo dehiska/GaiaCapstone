@@ -45,7 +45,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(40),
                       unique=True,
                       nullable=False)
-    phone = db.Column(db.String(15))
     password = db.Column(db.String(200),
                          unique=False,
                          nullable=False)
