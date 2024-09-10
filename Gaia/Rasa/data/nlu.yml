@@ -1,21 +1,6 @@
 version: "3.1"
 
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
 
 - intent: goodbye
   examples: |
@@ -29,6 +14,11 @@ nlu:
     - see you around
     - bye bye
     - see you later
+    - see you
+    - later
+    - done
+    - finished
+    - I’m done here
 
 - intent: affirm
   examples: |
@@ -96,5 +86,11 @@ nlu:
     - How much CO2 does [Cable and subscription programming](activity) produce?
     - Calculate the emissions for [Motorcycle](activity) traveling [100](distance) [miles](distance_unit)
     - What are the emissions for [Advertising agencies](activity) spending [1000](money) [USD](money_unit)?
-    
+    - I want to calculate emissions
+    - Help me calculate emissions
+    - Calculate emissions for me
+    - Can you calculate my emissions?
+    - What are the emissions for this?
+    - I'd like to know the emissions
+
 
