@@ -5,30 +5,36 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 
-# This is a simple example for a custom action which utters "Hello World!"
-
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SessionStarted, ActionExecuted, SlotSet, UserUtteranceReverted, EventType
 from rasa_sdk.types import DomainDict
 import requests
 import os
 
 
-#
-class ActionHelloWorld(Action):
-#
+class ActionSessionStart(Action):
     def name(self) -> Text:
-        return "action_hello_world"
-#
-    def run(self, dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-        dispatcher.utter_message(text="Hello World!")
-#
-        return []
+        return "action_session_start"
+
+    async def run(self, dispatcher: CollectingDispatcher,
+                  tracker: Tracker,
+                  domain: Dict[Text, Any]) -> List[EventType]:
+        # Start a session
+        events = [SessionStarted()]
+        
+        # Greet the user when the session starts
+        dispatcher.utter_message(text="Hello! How can I help you today? Here are a few things I can do:\n1. Calculate emissions")
+        
+        # Ask user to choose an option
+        dispatcher.utter_message(text="Please type 'Calculate emissions' to get started.")
+        
+        events.append(ActionExecuted("action_listen"))
+        return events
+
+
 #npm install @openapitools/openapi-generator-cli -g
 #pip install requests
 
@@ -69,6 +75,9 @@ class ActionCalculateEmissions(Action):
         # Get the activity slot
         activity = tracker.get_slot("activity")
 
+        if activity is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify an activity from our list?")
+            return []
         # Retrieve the relevant endpoint configuration for the activity
         endpoint = endpoints.get(activity)
         
@@ -99,5 +108,33 @@ class ActionCalculateEmissions(Action):
         else:
             emission_value = emissions_result.get("co2e", "N/A")
             dispatcher.utter_message(text=f"The estimated emissions for {activity} are {emission_value} kg CO2e.")
+
+        return []
+    
+
+class ActionHandleMissingValues(Action):
+    def name(self) -> Text:
+        return "action_handle_missing_values"
+
+    async def run(
+        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
+    ) -> List[EventType]:
+        missing_info = []
+
+        # Check for missing entities
+        if tracker.get_slot("money") is None or tracker.get_slot("money_unit") is None:
+            missing_info.append("money")
+        if tracker.get_slot("distance") is None or tracker.get_slot("distance_unit") is None:
+            missing_info.append("distance")
+        if tracker.get_slot("activity") is None:
+            missing_info.append("activity")
+
+        # Prompt user for missing information
+        if "money" in missing_info:
+            dispatcher.utter_message(text="Please provide the amount and the unit of money.")
+        if "distance" in missing_info:
+            dispatcher.utter_message(text="Please provide the distance and the unit of distance.")
+        if "activity" in missing_info:
+            dispatcher.utter_message(text="Here are the available activities: ...")  # List activities
 
         return []
