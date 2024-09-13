@@ -37,17 +37,7 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_ask_activity:
-  - text: "Which activity would you like to choose?"
 
-  utter_emissions_result:
-    - text: "The estimated emissions for {activity} are {emissions} kg CO2."
-    
-  utter_ask_money:
-    - text: "Please provide the amount and the unit of money."
-
-  utter_ask_distance:
-    - text: "Please provide the distance and the unit of distance."
 #__________________________
 
 slots:
@@ -87,7 +77,6 @@ slots:
         entity: distance_unit
 
 actions:
-  - action_session_start
   - action_calculate_emissions
   - action_list_activities
   - action_handle_missing_values
