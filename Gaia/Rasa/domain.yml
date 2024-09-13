@@ -4,6 +4,7 @@ intents:
   - goodbye
   - affirm
   - deny
+  - greet
   - mood_great
   - mood_unhappy
   - bot_challenge

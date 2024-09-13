@@ -4,11 +4,15 @@ stories:
 
 - story: happy path
   steps:
+  - intent: greet
+#  - action: utter_greet
   - intent: mood_great
   - action: utter_happy
 
 - story: sad path 1
   steps:
+  - intent: greet
+#  - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
@@ -17,24 +21,10 @@ stories:
 
 - story: sad path 2
   steps:
+  - intent: greet
+#  - action: utter_greet
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
-
-
-
-- story: complete emissions calculation
-  steps:
-    - intent: calculate_emissions
-    - action: action_handle_missing_values
-    - slot_was_set:
-        - activity: <activity_name>
-        - money: <amount>
-        - money_unit: <unit>
-        - distance: <value>
-        - distance_unit: <unit>
-    - action: action_calculate_emissions
-
-
