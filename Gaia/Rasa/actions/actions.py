@@ -14,7 +14,7 @@ from rasa_sdk.types import DomainDict
 import requests
 import os
 
-
+'''
 class ActionSessionStart(Action):
     def name(self) -> Text:
         return "action_session_start"
@@ -33,7 +33,7 @@ class ActionSessionStart(Action):
         
         events.append(ActionExecuted("action_listen"))
         return events
-
+'''
 
 #npm install @openapitools/openapi-generator-cli -g
 #pip install requests
@@ -58,7 +58,27 @@ class ActionSessionStart(Action):
     #return emissions
 
 
+distance_unit_mapping = {
+    "mi": "mi",
+    "miles": "mi",
+    "km": "km",
+    "kilometers": "km",
+    "m": "m",
+    "meters": "m",
+    "ft": "ft",
+    "feet": "ft",
+    "nmi": "nmi",
+    "nautical miles": "nmi"
+}
 
+money_unit_mapping = {
+    "USD": "USD",
+    "usd": "USD",
+    "dollars": "USD",
+    "EUR": "EUR",
+    "eur": "EUR",
+    "euros": "EUR",
+}
 
 #import from snippets
 from snippets import estimate_emissions, endpoints
@@ -71,35 +91,75 @@ class ActionCalculateEmissions(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-        
+
         # Get the activity slot
         activity = tracker.get_slot("activity")
+        available_activities = "\n".join([f"{i+1}. {act}" for i, act in enumerate(endpoints.keys())])
 
         if activity is None:
             dispatcher.utter_message(text="I didn't catch that. Could you specify an activity from our list?")
+            dispatcher.utter_message(
+                text=f"Here are the available activities:\n{available_activities}"
+            )
             return []
+
         # Retrieve the relevant endpoint configuration for the activity
         endpoint = endpoints.get(activity)
-        
+
         if not endpoint:
-            dispatcher.utter_message(text=f"Sorry, I don't have data for the activity '{activity}'.")
+            # Create a numbered list of available activities
+            dispatcher.utter_message(
+                text=f"Sorry, I don't have data for the activity '{activity}'. Here are the available activities:\n{available_activities}"
+            )
             return []
-        
+
         # Prepare parameters based on the slots and the required parameters for the activity
         parameters = {}
+        missing_params = []
+
+        # Validation and mapping for parameters
+        valid_distance_units = set(distance_unit_mapping.values())
+        valid_money_units = set(money_unit_mapping.values())
+
         for param_name, param_type in endpoint["parameters"].items():
             slot_value = tracker.get_slot(param_name)
-            if slot_value is not None:
-                # Ensure parameters are correctly formatted based on expected types
+
+            if slot_value is None:
+                missing_params.append(param_name)
+            else:
                 if param_type == "number":
                     try:
                         slot_value = float(slot_value)
                     except ValueError:
                         dispatcher.utter_message(text=f"Invalid value for {param_name}. Please provide a valid number.")
                         return []
+                elif param_name == "distance_unit":
+                    standardized_unit = distance_unit_mapping.get(slot_value.lower())
+                    if standardized_unit not in valid_distance_units:
+                        dispatcher.utter_message(text=f"Invalid distance unit '{slot_value}'. Please use one of the following: {', '.join(valid_distance_units)}.")
+                        return []
+                    parameters[param_name] = standardized_unit
+                elif param_name == "money_unit":
+                    standardized_unit = money_unit_mapping.get(slot_value.lower())
+                    if standardized_unit not in valid_money_units:
+                        dispatcher.utter_message(text=f"Invalid money unit '{slot_value}'. Please use one of the following: {', '.join(valid_money_units)}.")
+                        return []
+                    parameters[param_name] = standardized_unit
+
                 parameters[param_name] = slot_value
-        
-        # Call the estimate_emissions function
+
+        # If there are missing parameters, prompt the user for them and stop the action
+        if missing_params:
+            for param in missing_params:
+                if param in ["money", "money_unit"]:
+                    dispatcher.utter_message(text="Please provide the amount and the unit of money.")
+                elif param in ["distance", "distance_unit"]:
+                    dispatcher.utter_message(text="Please provide the distance and the unit of distance.")
+                else:
+                    dispatcher.utter_message(text=f"Missing parameter: {param}. Please provide it.")
+            return []
+
+        # Call the estimate_emissions function if all required parameters are present
         emissions_result = estimate_emissions(endpoint["activity_id"], parameters)
 
         # Dispatch the result to the user
@@ -108,33 +168,5 @@ class ActionCalculateEmissions(Action):
         else:
             emission_value = emissions_result.get("co2e", "N/A")
             dispatcher.utter_message(text=f"The estimated emissions for {activity} are {emission_value} kg CO2e.")
-
-        return []
-    
-
-class ActionHandleMissingValues(Action):
-    def name(self) -> Text:
-        return "action_handle_missing_values"
-
-    async def run(
-        self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]
-    ) -> List[EventType]:
-        missing_info = []
-
-        # Check for missing entities
-        if tracker.get_slot("money") is None or tracker.get_slot("money_unit") is None:
-            missing_info.append("money")
-        if tracker.get_slot("distance") is None or tracker.get_slot("distance_unit") is None:
-            missing_info.append("distance")
-        if tracker.get_slot("activity") is None:
-            missing_info.append("activity")
-
-        # Prompt user for missing information
-        if "money" in missing_info:
-            dispatcher.utter_message(text="Please provide the amount and the unit of money.")
-        if "distance" in missing_info:
-            dispatcher.utter_message(text="Please provide the distance and the unit of distance.")
-        if "activity" in missing_info:
-            dispatcher.utter_message(text="Here are the available activities: ...")  # List activities
 
         return []
