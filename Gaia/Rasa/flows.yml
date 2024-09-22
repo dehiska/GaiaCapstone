@@ -1,5 +1,5 @@
 flows: 
-    say_hello:
+  say_hello:
     description: "Greet user"
     steps:
     - action: "Greet user's name"

@@ -18,14 +18,14 @@ responses:
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
 
-  utter_cheer_up:
-    - text: "Here is something to cheer you up!"
+  #utter_cheer_up:
+  #  - text: "Here is something to cheer you up!"
 
-  utter_did_that_help:
-    - text: "Did that help you?"
+  #utter_did_that_help:             Add back later, but mood great will refrence this
+  #  - text: "Did that help you?"
 
-  utter_happy:
-    - text: "Yay!"
+  #utter_happy:
+  #  - text: "Yay!"
 
 slots:
   activity:
