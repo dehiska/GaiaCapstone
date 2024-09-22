@@ -1,0 +1,24 @@
+flows: 
+    say_hello:
+    description: "Greet user"
+    steps:
+    - action: "Greet user's name"
+    - link: "lifestyle_quiz"
+
+  lifestyle_quiz:
+    description: "This flow lets users take a quiz that gives a rough estimate on how much carbon they emmit"
+    steps:
+    - collect: How much meat do you buy per week in US dollars
+    - collect: How many people live in your house/apartment
+    - collect: What type of house heating do you use
+    - collect: Do you have solar panels on your house
+    - collect: How much dairy and/or eggs do you buy per week in US dollars
+    - collect: How many short haul flights do you take per year (1-3 hours long)
+    - collect: How many medium haul flights do you take per year (3-6) hours
+    - collect: How many long haul flights do you take per year (6+) hours
+    - collect: On average how many miles do you drive by carbon
+    - collect: type of car
+
+
+  
+  

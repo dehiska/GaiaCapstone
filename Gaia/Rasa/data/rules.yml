@@ -1,7 +1,11 @@
 version: "3.1"
  
 rules:
- 
+- rule: Greet user on conversation start
+  steps:
+    - intent: greet #changed it from session_start
+    - action: utter_greet
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -11,3 +15,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Say "Hello!" everytime the session beings
+  steps:
+  - intent: greet
+  - action: utter_greet
