@@ -206,6 +206,13 @@ endpoints = {
         "parameters" : {"weight": "number", "weight_unit": "text"}
     },
     # Consumer Goods and Services
+    #Denis Added this before lifestyle survey
+    "Meat consumption": {
+        "activity_id": "consumer_goods-type_meat_and_offal",
+        "parameters": {"money": "number", "money_unit": "text"}
+    },
+
+
     "Tobacco manufacturing": {
         "activity_id": "consumer_goods-type_tobacco_products",
         "parameters": {"money":"number", "money_unit":"text"}

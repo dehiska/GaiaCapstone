@@ -9,7 +9,9 @@ from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'changeforprod'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Gaia.sqlite3'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Gaia.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rasa_database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 from models import db, User
 #db = SQLAlchemy(app)
@@ -126,6 +128,7 @@ def register():
 #@app.route('/home')
 #@login_required
 #def home():
+
 #    flair_filter = request.args.get('flair_filter', 'All')
 
     # Fetch flairs for the dropdown

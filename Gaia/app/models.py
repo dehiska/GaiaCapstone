@@ -2,6 +2,7 @@
 from datetime import datetime
 from flask_login import UserMixin
 import pytz
+import json
 from sqlalchemy import UniqueConstraint
 
 from flask_sqlalchemy import SQLAlchemy
@@ -53,19 +54,6 @@ class User(db.Model, UserMixin):
     ismod = db.Column(db.Boolean,
                            default=False)
     
-    # #Attributes for the user's profile
-    # madeProfileAlready = db.Column(db.Boolean,
-    #                                default=False)
-    # pronouns = db.Column(db.String(40))
-    # aboutMe = db.Column(db.String(500),
-    #                      primary_key=False, unique=False, nullable=False)
-    # myMajor = db.Column(db.String(40),
-    #                      nullable=False)
-    # academicYear = db.Column(db.String(40),
-    #                           nullable=False)
-    # socialMediaLink = db.Column(db.String(255),
-    #                              nullable=True)
-    
     def get_id(self):
             return (self.userid)
         
@@ -77,6 +65,55 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
+
+class EcoScore(db.Model, UserMixin):
+        """Model for eco-score"""
+        __tablename__ = 'eco-score'
+        ecoScoreid = db.Column(db.Integer,
+                        primary_key=True)
+        userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+        ecoScore = db.Column(db.Integer(),
+                                nullable=True,
+                                unique=False)
+        email = db.Column(db.String(40),
+                        unique=True,
+                        nullable=False)
+        survey_responses = db.Column(db.Text)  # Store responses as a JSON string
+        recommendations = db.Column(db.Text)  # Store recommendations as a JSON string
+
+
+
+def set_responses(self, responses_dict):
+        self.survey_responses = json.dumps(responses_dict)
+
+
+def get_responses(self):
+        return json.loads(self.survey_responses)
+
+
+def set_recommendations(self, rec_dict):
+        self.recommendations = json.dumps(rec_dict)
+
+
+def get_recommendations(self):
+         json.loads(self.recommendations)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
