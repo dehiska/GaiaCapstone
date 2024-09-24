@@ -4,41 +4,28 @@ intents:
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
+  - greet
   - bot_challenge
   - calculate_emissions
-  #- give environmental recommendations
-  #- give positive news about the environment
-  #- take lifestyle emissions quiz
 
 responses:
-
-
-#  buttons:
-#    -title: "/give environmental recommendations"
-#    payload: "/tell some good news"
-#    -title: "take lifestyle emissions quiz"
-#    payload: '/'
-
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
-  utter_did_that_help:
-  - text: "Did that help you?"
-
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_greet:
+    - text: "Hello! How can I assist you today?"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Bye! Have a great day."
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
 
+  #utter_cheer_up:
+  #  - text: "Here is something to cheer you up!"
 
-#__________________________
+  #utter_did_that_help:             Add back later, but mood great will refrence this
+  #  - text: "Did that help you?"
+
+  #utter_happy:
+  #  - text: "Yay!"
 
 slots:
   activity:
@@ -80,7 +67,6 @@ actions:
   - action_calculate_emissions
   - action_list_activities
   - action_handle_missing_values
-  
 
 entities:
   - activity

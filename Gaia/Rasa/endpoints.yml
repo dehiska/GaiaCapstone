@@ -40,3 +40,9 @@ action_endpoint:
 #  username: username
 #  password: password
 #  queue: queue
+
+tracker_store:
+  type: SQL
+  dialect: "sqlite"
+  db: "rasa_database.db"
+  url: ""

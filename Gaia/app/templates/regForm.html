@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.5" />
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="wrap">
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <h1>Registration</h1>
+        
+        <div class="input-box">
+          <div class="input-field"> 
+            <i class="bx bxs-user"></i>
+            <!--{{ form.fullName.label(class="form-label") }}-->
+            {{ form.fullName(class_="form-control", placeholder="Full Name") }}
+            {% for error in form.fullName.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
+          <div class="input-field">
+            <i class="bx bxs-user"></i>
+            <!--{{ form.username.label(class="form-label") }}-->
+            {{ form.username(class_="form-control", placeholder="Username") }}
+            {% for error in form.username.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+    
+        <div class="input-box">
+          <div class="input-field">
+            <i class="bx bx-user"></i>
+            <!--{{ form.email.label(class="form-label") }}-->
+            {{ form.email(class_="form-control", placeholder="Email") }}
+            {% for error in form.email.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
+        </div>
+    
+        <div class="input-box">
+          <div class="input-field">
+            <i class="bx bxs-user"></i>
+            <!--{{ form.password.label(class="form-label") }}-->
+            {{ form.password(class_="form-control", placeholder="Password") }}
+            {% for error in form.password.errors %}
+              <div class="error">{{ error }}</div>
+            {% endfor %}
+          </div>
+          
+        </div>
+        
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+  </body>
+</html>

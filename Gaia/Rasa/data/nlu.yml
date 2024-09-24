@@ -1,7 +1,13 @@
 version: "3.1"
-
+ 
 nlu:
-
+ 
+- intent: greet
+  examples: |
+    - Hello 
+    - Hi
+    - Good morning 
+    - Good afternoon
 - intent: goodbye
   examples: |
     - cu
@@ -19,7 +25,7 @@ nlu:
     - done
     - finished
     - I’m done here
-
+ 
 - intent: affirm
   examples: |
     - yes
@@ -28,7 +34,7 @@ nlu:
     - of course
     - that sounds good
     - correct
-
+ 
 - intent: deny
   examples: |
     - no
@@ -38,7 +44,7 @@ nlu:
     - don't like that
     - no way
     - not really
-
+ 
 - intent: mood_great
   examples: |
     - perfect
@@ -55,7 +61,7 @@ nlu:
     - so so perfect
     - so good
     - so perfect
-
+ 
 - intent: mood_unhappy
   examples: |
     - my day was horrible
@@ -72,14 +78,14 @@ nlu:
     - extremly sad
     - so saad
     - so sad
-
+ 
 - intent: bot_challenge
   examples: |
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
-
+ 
 - intent: calculate_emissions
   examples: |
     - I want to calculate emissions for [Bus](activity) traveling [100](distance) [km](distance_unit)
@@ -92,7 +98,7 @@ nlu:
     - What are the emissions for [Dog and cat food](activity) production of [1500](money) [USD](money_unit)?
     - Calculate emissions for [Transit rail](activity) traveling [75](distance) [km](distance_unit)
     - Can you calculate emissions for [Flavored drink concentrates](activity) costing [4000](money) [USD](money_unit)?
-    - How much CO2 does [Intercity rail (National average)](activity) emit for a distance of [200](distance) [miles](distance_unit)?
+    - How much CO2 does [Intercity rail National average](activity) emit for a distance of [200](distance) [miles](distance_unit)?
     - What are the emissions for [Residential mental health and substance abuse facilities](activity) spending [10000](money) [USD](money_unit)?
     - Calculate emissions for [School bus](activity) traveling [10](distance) [km](distance_unit)
     - I'd like to know the emissions for [Assisted living for the elderly](activity) for [800](money) [USD](money_unit)
@@ -118,5 +124,5 @@ nlu:
     - Can you calculate my emissions?
     - What are the emissions for this?
     - I'd like to know the emissions
-
-
+ 
+ 
