@@ -1,0 +1,52 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-activity",
+      "2": "I-activity",
+      "3": "L-activity",
+      "4": "U-activity",
+      "5": "B-distance",
+      "6": "I-distance",
+      "7": "L-distance",
+      "8": "U-distance",
+      "9": "B-distance_unit",
+      "10": "I-distance_unit",
+      "11": "L-distance_unit",
+      "12": "U-distance_unit",
+      "13": "B-money",
+      "14": "I-money",
+      "15": "L-money",
+      "16": "U-money",
+      "17": "B-money_unit",
+      "18": "I-money_unit",
+      "19": "L-money_unit",
+      "20": "U-money_unit",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-activity": 1,
+      "I-activity": 2,
+      "L-activity": 3,
+      "U-activity": 4,
+      "B-distance": 5,
+      "I-distance": 6,
+      "L-distance": 7,
+      "U-distance": 8,
+      "B-distance_unit": 9,
+      "I-distance_unit": 10,
+      "L-distance_unit": 11,
+      "U-distance_unit": 12,
+      "B-money": 13,
+      "I-money": 14,
+      "L-money": 15,
+      "U-money": 16,
+      "B-money_unit": 17,
+      "I-money_unit": 18,
+      "L-money_unit": 19,
+      "U-money_unit": 20,
+      "O": 0
+    },
+    "num_tags": 21
+  }
+]
