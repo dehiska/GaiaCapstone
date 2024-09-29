@@ -131,8 +131,6 @@ class ActionCalculateEmissions(Action):
         return []
 
 
-
-
 """" John's code before Denis touched it to try to fix the hallucinations
 # This files contains your custom actions which can be used to run
 # custom Python code.
