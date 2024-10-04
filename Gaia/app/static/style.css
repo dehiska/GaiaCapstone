@@ -86,12 +86,12 @@
   font-family: "Poppins", sans-serif;
 }
 
-body {
+.log {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url(Gaia.jpg) no-repeat;
+  background: url(Gaia1.jpg) no-repeat;
   background-size: cover;
   background-position: center;
 }
@@ -715,4 +715,12 @@ body {
 
 .logout-btn:hover {
   background-color: #c0392b; /* Darker shade on hover */
+}
+
+.rw-conversation-container .rw-header {
+  background-color: #08a54c;
+}
+
+.rw-conversation-container .rw-messages-container .rw-message .rw-client {
+  background-color: #08a54c;
 }

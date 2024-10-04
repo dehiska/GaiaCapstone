@@ -41,8 +41,8 @@ action_endpoint:
 #  password: password
 #  queue: queue
 
-tracker_store:
-  type: SQL
-  dialect: "sqlite"
-  db: "rasa_database.db"
-  url: ""
+# tracker_store:
+#   type: SQL
+#   dialect: "sqlite"
+#   db: "gaia.db"
+#   url: "sqlite:///gaia.db"
