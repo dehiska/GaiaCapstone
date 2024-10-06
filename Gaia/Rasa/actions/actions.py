@@ -59,7 +59,7 @@ money_unit_mapping = {
     "euros": "EUR",
 }
 
-class ActionCalculateEmissions(Action):
+class Action_Calculate_Emissions(Action):
 
     def name(self) -> str:
         return "action_calculate_emissions"
