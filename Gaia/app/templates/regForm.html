@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5" />
     <title>Registration Form</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../../../Gaia/style.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   </head>
-  <body>
+  <body class="log">
     <div class="wrap">
       <form method="POST">
         {{ form.hidden_tag() }}
@@ -40,9 +40,6 @@
               <div class="error">{{ error }}</div>
             {% endfor %}
           </div>
-        </div>
-    
-        <div class="input-box">
           <div class="input-field">
             <i class="bx bx-user"></i>
             {{ form.email(class_="form-control", placeholder="Email") }}

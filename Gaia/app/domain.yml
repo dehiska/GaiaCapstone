@@ -1,0 +1,80 @@
+version: "3.1"
+
+intents:
+  - goodbye
+  - affirm
+  - deny
+  - greet
+  - bot_challenge
+  - calculate_emissions
+
+responses:
+  utter_greet:
+    - text: "Hello! How can I assist you today?"
+
+  utter_goodbye:
+    - text: "Bye! Have a great day."
+
+  utter_iamabot:
+    - text: "I am a bot, powered by Rasa."
+
+  #utter_cheer_up:
+  #  - text: "Here is something to cheer you up!"
+
+  #utter_did_that_help:             Add back later, but mood great will refrence this
+  #  - text: "Did that help you?"
+
+  #utter_happy:
+  #  - text: "Yay!"
+
+slots:
+  activity:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: activity
+
+  money:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: money
+
+  money_unit:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: money_unit
+
+  distance:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: distance
+
+  distance_unit:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: distance_unit
+
+actions:
+  - action_calculate_emissions
+  - action_list_activities
+  - action_handle_missing_values
+
+entities:
+  - activity
+  - money
+  - money_unit
+  - distance
+  - distance_unit
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

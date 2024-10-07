@@ -1,4 +1,4 @@
-@import url("https//fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
 * {
   margin: 0;
@@ -12,7 +12,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: url(Gaia.jpg) no-repeat;
+  background: url(Gaia4.jpg) no-repeat;
   background-size: cover;
   background-position: center;
 }
@@ -206,7 +206,7 @@ body {
 
 .bodyHomePage {
   justify-content: left;
-  background: url("Gaia2.jpg") no-repeat;
+  background: url("Gaia4.jpg") no-repeat;
   background-size: cover;
 }
 
@@ -487,4 +487,14 @@ body {
 .form .inputBox_Bdate {
   display: flex;
   column-gap: 15px;
+}
+
+/* CHATBOT STYLES */
+
+.rw-conversation-container .rw-header {
+  background-color: #08a54c;
+}
+
+.rw-conversation-container .rw-messages-container .rw-message .rw-client {
+  background-color: #08a54c;
 }
