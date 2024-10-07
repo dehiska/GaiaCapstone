@@ -131,6 +131,44 @@ class Action_Calculate_Emissions(Action):
         return []
 
 
+import openai
+import os
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+
+# Load the API key from environment variables
+openai.api_key = os.getenv("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")
+
+class ActionOpenAICall(Action):
+    def name(self) -> str:
+        return "action_openai_call"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        # Get the user message from the last bot interaction
+        user_message = tracker.latest_message.get('text')
+        
+        # Use OpenAI API to generate a response
+        try:
+            response = openai.Completion.create(
+                engine="text-davinci-003",  # Choose a model
+                prompt=user_message,  # Send the user message as a prompt
+                max_tokens=150,       # Limit the length of the response
+                n=1,                  # Generate a single response
+                stop=None,
+                temperature=0.7        # Control creativity level
+            )
+            
+            # Extract the response text
+            openai_response = response.choices[0].text.strip()
+
+            # Send the response back to the user via Rasa
+            dispatcher.utter_message(text=openai_response)
+
+        except Exception as e:
+            dispatcher.utter_message(text=f"Error: {str(e)}")
+
+        return []
+
 """" John's code before Denis touched it to try to fix the hallucinations
 # This files contains your custom actions which can be used to run
 # custom Python code.
