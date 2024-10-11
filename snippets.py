@@ -184,6 +184,7 @@ endpoints = {
     },
 }
 
+# Function to get user input for the activity to estimate emissions
 def get_endpoint_choice():
     print("Available activities:")
     for key in endpoints:
@@ -198,6 +199,7 @@ def get_endpoint_choice():
         print("Invalid choice. Please try again.")
         return get_endpoint_choice()
 
+# Function to get input for each parameter of the selected activity
 def get_parameter_value(param_name, param_type):
     if param_type == "number":
         while True:
@@ -207,13 +209,14 @@ def get_parameter_value(param_name, param_type):
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
     else:
-        return input(f"Enter the value for {param_name.replace('_', ' ')}: ")
-    
+        return input(f"Enter the value for {param_name.replace('_', ' ')} (e.g., 'USD' for money unit, 'km' for distance unit): ")
 
+
+# Function to estimate emissions based on the selected activity
 def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
 
     if api_key is None:
-        api_key = os.getenv('')
+        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
     
     if not api_key:
         raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
@@ -227,7 +230,7 @@ def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
         parameters[param_name] = get_parameter_value(param_name, param_type)
 
     url = "https://api.climatiq.io/estimate"
-
+    
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -236,7 +239,7 @@ def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
     data = {
         "emission_factor": {
             "activity_id": activity_id,
-            "data_version": "^0"
+            "data_version": "^0"  # Use the most recent version
         },
         "parameters": parameters
     }
@@ -246,9 +249,63 @@ def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
     if response.status_code == 200:
         return response.json()
     else:
-        return {"error": response.status_code, "message": response.text}
+        print(f"Error {response.status_code}: {response.text}")
+        return None
+
+#test all endpoints automatically
+def test_all_endpoints(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
+    if api_key is None:
+        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
+
+    if not api_key:
+        raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
+    
+    url = "https://api.climatiq.io/estimate"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    for activity_name, endpoint in endpoints.items():
+        print(f"\nTesting endpoint: {activity_name}")
+        activity_id = endpoint["activity_id"]
+        parameters = {}
+
+        # Set default test values for parameters, including distance_unit when required
+        for param_name, param_type in endpoint["parameters"].items():
+            if param_type == "number":
+                if param_name == "distance":
+                    parameters[param_name] = 100  # distance value
+                else:
+                    parameters[param_name] = 5000  # test value for money
+            else:
+                if param_name == "distance_unit":
+                    parameters[param_name] = "km"  #distance unit
+                else:
+                    parameters[param_name] = "usd"  #test text value
+
+        data = {
+            "emission_factor": {
+                "activity_id": activity_id,
+                "data_version": "^0"
+            },
+            "parameters": parameters
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            print(f"Success: {response.json()}")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+
 
 # Example usage
 if __name__ == "__main__":
-    result = estimate_emissions()
-    print(result)
+    # Uncomment the following to manually test a single endpoint with user input
+    # result = estimate_emissions()
+    # print(result)
+
+    # Uncomment the following to test all endpoints automatically
+    test_all_endpoints()
