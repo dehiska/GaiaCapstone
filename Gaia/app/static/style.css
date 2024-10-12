@@ -347,6 +347,57 @@ body {
   background-position: center;
 }
 
+/* HOMEPAGE LOGOUT BUTTON */
+
+.home-content .btn-box {
+  display: flex;
+  justify-content: center !important;
+  width: 100px !important;
+  height: 50px;
+}
+
+.btn-box {
+  position: absolute;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 100%;
+  top: 10px;
+  right: 20px;
+  background: #08a54c;
+  border: 2px solid #08a54c;
+  border-radius: 30px;
+  font-size: 19px;
+  color: #081b29;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+  z-index: 1;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.btn-box:hover {
+  color: #08a54c;
+}
+
+.btn-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #081b29;
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.btn-box:hover::before {
+  width: 100%;
+}
+
 /* Form Wrapper */
 .wrap {
   width: 500px;
