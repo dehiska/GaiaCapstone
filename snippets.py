@@ -134,9 +134,9 @@ endpoints = {
         "activity_id": "passenger_vehicle-vehicle_type_motorcycle-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Light trucks": {
+    "Light trucks": { # works
         "activity_id": "fuel-type_motor_gasoline-fuel_use_gasoline_light_duty_trucks",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+        "parameters": {"volume": "number", "volume_unit": "text"}
     },
     "Air transport": { # works
         "activity_id": "transport_services-type_air_transport_services",
