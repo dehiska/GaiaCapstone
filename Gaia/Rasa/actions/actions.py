@@ -7,7 +7,7 @@ from rasa_sdk.types import DomainDict
 import requests
 import os
 from snippets import endpoints, estimate_emissions
-
+from lifestyleSurvey import ActionCalculateCarbonFootprint
 
 
 distance_unit_mapping = {
@@ -129,6 +129,16 @@ class Action_Calculate_Emissions(Action):
             dispatcher.utter_message(text=f"The estimated emissions for {activity} are {emission_value} kg CO2e.")
 
         return []
+
+
+class ActionCallCalculateCarbonFootprint(Action):
+    def name(self) -> str:
+        return "action_call_calculate_carbon_footprint"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # Call the ActionCalculateCarbonFootprint class from lifestyleSurvey.py
+        carbon_footprint_calculator = ActionCalculateCarbonFootprint()
+        return carbon_footprint_calculator.run(dispatcher, tracker, domain)
 
 
 import openai

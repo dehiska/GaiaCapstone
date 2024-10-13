@@ -1,6 +1,7 @@
 version: "3.1"
 
 stories:
+
 # - story: happy path
 #   steps:
 #   - intent: greet
@@ -32,5 +33,16 @@ stories:
   steps:
     - intent: calculate_emissions
     - action: action_calculate_emissions
+    - action: utter_emission_result      #added this, maybe this is why it won't give a response 10/6
 
 
+
+- story: carbon footprint survey
+  steps:  
+  - intent: fill out carbon footprint survey
+  - action: action_carbon_
+
+- story: openai_query_story
+  steps:
+    - intent: query_openai
+    - action: action_query_openai

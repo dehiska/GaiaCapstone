@@ -416,8 +416,10 @@ def get_parameter_value(param_name, param_type):
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
     else:
-        return input(f"Enter the value for {param_name.replace('_', ' ')}: ")
-    
+        unit = input(f"Enter the value for {param_name.replace('_', ' ')}: ")
+        if "distance" in param_name:  # Check if it's a distance parameter
+            unit = normalize_distance_units(unit)
+        return unit
 
 def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
 
@@ -457,7 +459,26 @@ def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J
     else:
         return {"error": response.status_code, "message": response.text}
 
+def normalize_distance_units(unit: str) -> str:
+    # Normalize units to expected Climatiq format
+    if unit.lower() in ["mile", "miles"]:
+        return "mi"
+    elif unit.lower() in ["kilometer", "kilometers", "km"]:
+        return "km"
+    elif unit.lower() in ["meter", "meters", "m"]:
+        return "m"
+    # Add more conversions if needed
+    else:
+        return unit  # Return as is if no conversion is needed
+
+
+def main():
+    activity_id = str(input('Activity id:'))
+    parameters = get_parameter_value(str(input("parameters")))
+    result = estimate_emissions(activity_id, parameters)
+    print(result)
+
+    
 # Example usage
 if __name__ == "__main__":
-    result = estimate_emissions()
-    print(result)
+    main()

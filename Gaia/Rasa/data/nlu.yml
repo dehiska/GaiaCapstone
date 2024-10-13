@@ -2,6 +2,14 @@ version: "3.1"
  
 nlu:
  
+
+- intent: ask_openai
+  examples: |
+    - Can you tell me about AI?
+    - What do you know about natural language processing?
+    - How does machine learning work?
+
+
 - intent: greet
   examples: |
     - Hello 
