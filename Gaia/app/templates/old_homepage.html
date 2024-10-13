@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+<<<<<<< HEAD
+    <link rel="stylesheet" href="../../../Gaia/style.css" />
+
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+=======
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+>>>>>>> 2fafd2c16c7ec226aa2d7f3705fe8a696bf297d8
+  </head>
+  <body class="bodyHomePage">
+    <header class="header">
+      <a href="#" class="logo">GAIA</a>
+
+      <nav class="navbar">
+        <a href="#" class="active">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <section class="home">
+      <div class="home-content">
+        <h1>Carbon Footprint Calculator</h1>
+        <h3>Building A Sustainable Future</h3>
+        <p>
+          Some information about the calculator goes here. Some information
+          about the calculator goes here. Some information about the calculator
+          goes here. Some information about the calculator goes here. Some
+          information about the calculator goes here. Some information about the
+          calculator goes here. Some information about the calculator goes here.
+          Some information about the calculator goes here.
+        </p>
+        <div class="btn-box">
+          <a href="info.html">Calculate</a>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="logout-container">
+          <form method="POST" action="{{ url_for('logout') }}">
+              <button type="submit" class="btn logout-btn">Logout</button>
+          </form>
+        </div>
+      </div>
+      <div class="home-sci">
+        <a href="#"><i class="bx bxl-facebook"></i></a>
+        <a href="#"><i class="bx bxl-twitter"></i></a>
+        <a href="#"><i class="bx bxl-linkedin"></i></a>
+      </div>
+    </section>
+  </body>
+</html>

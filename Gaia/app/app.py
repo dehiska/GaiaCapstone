@@ -25,8 +25,10 @@ def index():
     form = loginForm()  # Initialize your login form
 
     # Check if the user is already authenticated
-    if current_user.is_authenticated:
-        return redirect(url_for('homepage'))  # Redirect to homepage if logged in
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('homepage'))  # Redirect to homepage if logged in
+    # I DISABLED THE AUTO-LOGIN AUTHENTICATION METHOD FOR TESTING PURPOSES.
+    # USER MUST SIGN IN EVERYTIME.
 
     if request.method == 'POST':
         email = request.form.get('email')
@@ -80,8 +82,9 @@ def homepage():
 @app.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    print("Logging out user...")  # Debug statement
+    # print("Logging out user...")  # Debug statement
     logout_user()
+    session.clear()
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
 
