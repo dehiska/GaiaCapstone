@@ -3,216 +3,7 @@ import os
 
 # Define the different endpoints with their respective parameters
 endpoints = {
-    #Building Materials
-    "Construction and instutuional building construction" :{
-        "activity_id": "construction-type_commercial_and_institutional_building_construction",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    "Electrical contractors and wiring installation" :{
-        "activity_id": "construction-type_electrical_contractors_and_other_wiring_installation_contractors",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Construction flooring contractors" :{
-        "activity_id": "construction-type_flooring_contractors",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    
-    "Construction framing contractors" :{
-        "activity_id": "construction-type_framing_contractors",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-
-    
-    "Highway/street and bridge construction" :{
-        "activity_id": "construction-type_highway_street_and_bridge_construction",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Multifamily residential Buildings" :{
-        "activity_id": "construction-multifamily_residential_structures",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Construction framing contractors" :{
-        "activity_id": "construction-type_framing_contractors",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "Nonresidential property managers" :{
-        "activity_id": "construction-type_framing_contractors",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Offices of real estate agents and brokers" :{
-        "activity_id": "real_estate-type_offices_o_real_estate_agents_and_brokers",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    #Education
-    
-    "Colleges and universities" :{
-        "activity_id": "education-type_cp;;eges_universities_junior_colleges_professionsal_schools",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Elementary and secondary schools" :{
-        "activity_id": "education-type_elementary_secondary_schools",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-
-    #Equipment
-    "Small Electrical Appliances" :{
-        "activity_id": "electrical_equipment-type_small_electrical_appliances",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    #
-    #DIFFERENT UNIT TYPE
-    #
-    "Phones" :{
-        "activity_id": "electronics-type_mobile_phone",
-        "parameters" : {"number": "number", }
-    },
-
-    "Air conditioning and warm air heating" :{
-        "activity_id": "machinery-type_air_conditioning_refrigeration_warm_air_heating_equipment",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "Air conditioning and warm air heating" :{
-        "activity_id": "machinery-type_air_conditioning_refrigeration_warm_air_heating_equipment",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "Computers" :{
-        "activity_id": "electronics-type_computers",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Air conditioning and warm air heating" :{
-        "activity_id": "machinery-type_air_conditioning_refrigeration_warm_air_heating_equipment",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "External hard drives and solid state drives" :{
-        "activity_id": "electronics-type_external_hard_drives_cds_other_storage_media",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Air conditioning and warm air heating" :{
-        "activity_id": "machinery-type_air_conditioning_refrigeration_warm_air_heating_equipment",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Data processing and hosting" :{
-        "activity_id": "communication_services-type_data_processing_hosting",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Air conditioning and warm air heating" :{
-        "activity_id": "machinery-type_air_conditioning_refrigeration_warm_air_heating_equipment",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    #Insurance and Financial Services
-    "Portofilio management" :{
-        "activity_id": "finanical_services-type_portofilio_management",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Securities and commodity exchanges" :{
-        "activity_id": "financial_services-type_securities_commodities_brokerage_exchanges",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Commercial banking" :{
-        "activity_id": "fiancial_srevices-type_commerical_banking",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Credit card issuing" :{
-        "activity_id": "financial_services-type_credit_card_issuing",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "Trustfund and custody activities" :{
-        "activity_id": "financial_services-type_trust_fiduciary_and_custody_activities",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    
-    "International trade financing" :{
-        "activity_id": "financial_services-type_international_trade_financing",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    #
-    #USES WEIGHT
-    #
-    #Building Materials
-    "Fertilizer containing NPK" :{
-        "activity_id": "chemical-type_fertilisers_containing_npk",
-        "parameters" : {"weight": "number", "weight_unit": "text"}
-    },
-    
-    "Cement" :{
-        "activity_id": "building_materials-type_cement",
-        "parameters" : {"weight": "number", "weight_unit": "text"}
-    },
-
-    
-    "Explosives manufacturing" :{
-        "activity_id": "chemicals-type_explosives",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "Plastics" :{
-        "activity_id": "chemicals-type_plastics",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-
-    #Accommodations
-    "Hotel Stay" :{
-        "activity_id": "accommodation-type_hotel_stay",
-        "parameters" : {"number": "number"}
-    },
-
-    
-    "Average Restaurant Meal" :{
-        "activity_id": "consumer_goods-type_restaurant_meals",
-        "parameters" : {"money": "number", "money_unit": "text"}
-    },
-    
-    "Drinking Water" :{
-        "activity_id": "water_supply-type_drinking_water",
-        "parameters" : {"weight": "number", "weight_unit": "text"}
-    },
     # Consumer Goods and Services
-    #Denis Added this before lifestyle survey
-    "Meat consumption": {
-        "activity_id": "consumer_goods-type_meat_and_offal",
-        "parameters": {"money": "number", "money_unit": "text"}
-    },
-
-
     "Tobacco manufacturing": {
         "activity_id": "consumer_goods-type_tobacco_products",
         "parameters": {"money":"number", "money_unit":"text"}
@@ -393,6 +184,7 @@ endpoints = {
     },
 }
 
+# Function to get user input for the activity to estimate emissions
 def get_endpoint_choice():
     print("Available activities:")
     for key in endpoints:
@@ -407,6 +199,7 @@ def get_endpoint_choice():
         print("Invalid choice. Please try again.")
         return get_endpoint_choice()
 
+# Function to get input for each parameter of the selected activity
 def get_parameter_value(param_name, param_type):
     if param_type == "number":
         while True:
@@ -416,15 +209,14 @@ def get_parameter_value(param_name, param_type):
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
     else:
-        unit = input(f"Enter the value for {param_name.replace('_', ' ')}: ")
-        if "distance" in param_name:  # Check if it's a distance parameter
-            unit = normalize_distance_units(unit)
-        return unit
+        return input(f"Enter the value for {param_name.replace('_', ' ')} (e.g., 'USD' for money unit, 'km' for distance unit): ")
 
-def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
+
+# Function to estimate emissions based on the selected activity
+def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
 
     if api_key is None:
-        api_key = os.getenv('')
+        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
     
     if not api_key:
         raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
@@ -438,7 +230,7 @@ def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J
         parameters[param_name] = get_parameter_value(param_name, param_type)
 
     url = "https://api.climatiq.io/estimate"
-
+    
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
@@ -447,7 +239,7 @@ def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J
     data = {
         "emission_factor": {
             "activity_id": activity_id,
-            "data_version": "^0"
+            "data_version": "^0"  # Use the most recent version
         },
         "parameters": parameters
     }
@@ -457,28 +249,63 @@ def estimate_emissions(activity_id:str, parameters: dict, api_key="AS1VZA7S2747J
     if response.status_code == 200:
         return response.json()
     else:
-        return {"error": response.status_code, "message": response.text}
+        print(f"Error {response.status_code}: {response.text}")
+        return None
 
-def normalize_distance_units(unit: str) -> str:
-    # Normalize units to expected Climatiq format
-    if unit.lower() in ["mile", "miles"]:
-        return "mi"
-    elif unit.lower() in ["kilometer", "kilometers", "km"]:
-        return "km"
-    elif unit.lower() in ["meter", "meters", "m"]:
-        return "m"
-    # Add more conversions if needed
-    else:
-        return unit  # Return as is if no conversion is needed
+#test all endpoints automatically
+def test_all_endpoints(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
+    if api_key is None:
+        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
 
-
-def main():
-    activity_id = str(input('Activity id:'))
-    parameters = get_parameter_value(str(input("parameters")))
-    result = estimate_emissions(activity_id, parameters)
-    print(result)
-
+    if not api_key:
+        raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
     
+    url = "https://api.climatiq.io/estimate"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+
+    for activity_name, endpoint in endpoints.items():
+        print(f"\nTesting endpoint: {activity_name}")
+        activity_id = endpoint["activity_id"]
+        parameters = {}
+
+        # Set default test values for parameters, including distance_unit when required
+        for param_name, param_type in endpoint["parameters"].items():
+            if param_type == "number":
+                if param_name == "distance":
+                    parameters[param_name] = 100  # distance value
+                else:
+                    parameters[param_name] = 5000  # test value for money
+            else:
+                if param_name == "distance_unit":
+                    parameters[param_name] = "km"  #distance unit
+                else:
+                    parameters[param_name] = "usd"  #test text value
+
+        data = {
+            "emission_factor": {
+                "activity_id": activity_id,
+                "data_version": "^0"
+            },
+            "parameters": parameters
+        }
+
+        response = requests.post(url, headers=headers, json=data)
+
+        if response.status_code == 200:
+            print(f"Success: {response.json()}")
+        else:
+            print(f"Error {response.status_code}: {response.text}")
+
+
 # Example usage
 if __name__ == "__main__":
-    main()
+    # Uncomment the following to manually test a single endpoint with user input
+    # result = estimate_emissions()
+    # print(result)
+
+    # Uncomment the following to test all endpoints automatically
+    test_all_endpoints()
