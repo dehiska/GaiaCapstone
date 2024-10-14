@@ -37,10 +37,10 @@ stories:
 
 
 
-- story: carbon footprint survey
+- story: lifestyle survey path
   steps:  
-  - intent: fill out carbon footprint survey
-  - action: action_carbon_
+  - intent: lifestyle_survey
+  - action: action_lifestyle_survey
 
 - story: openai_query_story
   steps:

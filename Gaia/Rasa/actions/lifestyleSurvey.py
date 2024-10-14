@@ -6,7 +6,7 @@ from rasa_sdk.events import SessionStarted, ActionExecuted, SlotSet, UserUtteran
 from rasa_sdk.types import DomainDict
 import requests
 import os
-from snippets import endpoints, estimate_emissions
+from Gaia.Rasa.actions.snippets import endpoints, estimate_emissions
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -30,9 +30,9 @@ EMISSION_FACTORS = {
     "vegan": 0.56,                # per year
 }
 
-class ActionCalculateCarbonFootprint(Action):
+class ActionLifestyleSurvey(Action):
     def name(self) -> str:
-        return "action_calculate_carbon_footprint"
+        return "action_lifestyle_survey"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         # Get slot values from the conversation

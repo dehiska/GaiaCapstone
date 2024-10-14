@@ -2,7 +2,19 @@ version: "3.1"
  
 nlu:
  
-
+- intent: lifestyle_survey
+  examples: |
+    - I want to take the lifestyle survey
+    - Can you start the lifestyle survey?
+    - I'd like to begin the lifestyle survey
+    - Start the lifestyle survey, please
+    - Begin lifestyle survey
+    - lifestyle survey
+    - Lifestyle Survey
+    - Lifestyle survey
+    - I'd like to do the lifestyle survey
+    - Please initiate the lifestyle survey
+    - Can you guide me through the lifestyle survey?
 - intent: ask_openai
   examples: |
     - Can you tell me about AI?

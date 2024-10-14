@@ -1,6 +1,6 @@
 import requests
 import os
-
+ 
 # Define the different endpoints with their respective parameters
 endpoints = {
     # Consumer Goods and Services
@@ -40,7 +40,7 @@ endpoints = {
         "activity_id": "consumer_goods-type_flavored_drink_concentrates",
         "parameters": {"money":"number", "money_unit":"text"}
     },
-
+ 
     # Health and Social Care
     "Residential mental health and substance abuse facilities": {
         "activity_id": "health_care-type_residential_mental_retardation_mental_health_substance_abuse_other_facilities",
@@ -78,7 +78,7 @@ endpoints = {
         "activity_id": "health_care-type_outpatient_healthcare",
         "parameters": {"money":"number", "money_unit":"text"}
     },
-
+ 
     # Organizational Activities
     "Civic and social organizations": {
         "activity_id": "organizational_activities-type_civic_social_professional_similar_organizations",
@@ -124,7 +124,7 @@ endpoints = {
         "activity_id": "professional_services-type_advertising_agencies",
         "parameters": {"money":"number", "money_unit":"text"}
     },
-
+ 
     # Transport  (distance unit may be km)
     "Bus": {
         "activity_id": "passenger_vehicle-vehicle_type_bus-fuel_source_na-distance_na-engine_size_na",
@@ -134,23 +134,23 @@ endpoints = {
         "activity_id": "passenger_vehicle-vehicle_type_motorcycle-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Light trucks": {
+    "Light trucks": { # works
         "activity_id": "fuel-type_motor_gasoline-fuel_use_gasoline_light_duty_trucks",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+        "parameters": {"volume": "number", "volume_unit": "text"}
     },
-    "Air transport": { #this may not work. may need to be more specific
-        "activity_id": "transport-type_air_transport",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+    "Air transport": { # works
+        "activity_id": "transport_services-type_air_transport_services",
+        "parameters": {"money": "number", "money_unit": "text"}
     },
-    "Commuter rail": {
+    "Commuter rail": { # works
         "activity_id": "passenger_train-route_type_commuter_rail-fuel_source_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Intercity rail (National average)": {
+    "Intercity rail (National average)": { # works
         "activity_id": "passenger_train-route_type_intercity-fuel_source_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Passenger car": {
+    "Passenger car": { # works
         "activity_id": "passenger_vehicle-vehicle_type_car-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
@@ -180,26 +180,24 @@ endpoints = {
     },
     "School bus": {
         "activity_id": "passenger_vehicle-vehicle_type_school_and_employee_bus_transportation-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+        "parameters": {"money": "number", "money_unit": "text"}
     },
 }
-
-# Function to get user input for the activity to estimate emissions
+ 
 def get_endpoint_choice():
     print("Available activities:")
     for key in endpoints:
         print(key)
-
+ 
     choice = input("Enter the name of the activity you want to estimate emissions for: ")
     endpoint = endpoints.get(choice)
-
+ 
     if endpoint:
         return endpoint
     else:
         print("Invalid choice. Please try again.")
         return get_endpoint_choice()
-
-# Function to get input for each parameter of the selected activity
+ 
 def get_parameter_value(param_name, param_type):
     if param_type == "number":
         while True:
@@ -209,103 +207,48 @@ def get_parameter_value(param_name, param_type):
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
     else:
-        return input(f"Enter the value for {param_name.replace('_', ' ')} (e.g., 'USD' for money unit, 'km' for distance unit): ")
-
-
-# Function to estimate emissions based on the selected activity
+        return input(f"Enter the value for {param_name.replace('_', ' ')}: ")
+   
+ 
 def estimate_emissions(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
-
+ 
     if api_key is None:
-        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
-    
+        api_key = os.getenv('')
+   
     if not api_key:
         raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
-
+ 
     # Get user input for endpoint and its parameters
     endpoint = get_endpoint_choice()
     activity_id = endpoint["activity_id"]
     parameters = {}
-
+ 
     for param_name, param_type in endpoint["parameters"].items():
         parameters[param_name] = get_parameter_value(param_name, param_type)
-
+ 
     url = "https://api.climatiq.io/estimate"
-    
+ 
     headers = {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
-
+ 
     data = {
         "emission_factor": {
             "activity_id": activity_id,
-            "data_version": "^0"  # Use the most recent version
+            "data_version": "^0"
         },
         "parameters": parameters
     }
-
+ 
     response = requests.post(url, headers=headers, json=data)
-
+ 
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Error {response.status_code}: {response.text}")
-        return None
-
-#test all endpoints automatically
-def test_all_endpoints(api_key="AS1VZA7S2747J2G2F8EGB3CKSZV7"):
-    if api_key is None:
-        api_key = os.getenv('CLIMATIQ_API_KEY')  # Get API key from environment variables
-
-    if not api_key:
-        raise ValueError("API key is required. Please set the CLIMATIQ_API_KEY environment variable or pass the API key as a parameter.")
-    
-    url = "https://api.climatiq.io/estimate"
-
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-
-    for activity_name, endpoint in endpoints.items():
-        print(f"\nTesting endpoint: {activity_name}")
-        activity_id = endpoint["activity_id"]
-        parameters = {}
-
-        # Set default test values for parameters, including distance_unit when required
-        for param_name, param_type in endpoint["parameters"].items():
-            if param_type == "number":
-                if param_name == "distance":
-                    parameters[param_name] = 100  # distance value
-                else:
-                    parameters[param_name] = 5000  # test value for money
-            else:
-                if param_name == "distance_unit":
-                    parameters[param_name] = "km"  #distance unit
-                else:
-                    parameters[param_name] = "usd"  #test text value
-
-        data = {
-            "emission_factor": {
-                "activity_id": activity_id,
-                "data_version": "^0"
-            },
-            "parameters": parameters
-        }
-
-        response = requests.post(url, headers=headers, json=data)
-
-        if response.status_code == 200:
-            print(f"Success: {response.json()}")
-        else:
-            print(f"Error {response.status_code}: {response.text}")
-
-
+        return {"error": response.status_code, "message": response.text}
+ 
 # Example usage
 if __name__ == "__main__":
-    # Uncomment the following to manually test a single endpoint with user input
-    # result = estimate_emissions()
-    # print(result)
-
-    # Uncomment the following to test all endpoints automatically
-    test_all_endpoints()
+    result = estimate_emissions()
+    print(result)
