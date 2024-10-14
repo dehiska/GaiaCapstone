@@ -7,6 +7,11 @@ intents:
   - greet
   - bot_challenge
   - calculate_emissions
+  - lifestyle_survey    # Denis added this 10/3
+  - ask_openai
+  - query_openai
+  - mood_unhappy
+  - mood_great
 
 responses:
   utter_greet:
@@ -17,6 +22,10 @@ responses:
 
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
+
+  utter_emission_result:
+    - text: "Your emissions are calculated as [100](result) tons of CO2."
+#Added this 10/6 for rasa to give a result for emissions calculation
 
   #utter_cheer_up:
   #  - text: "Here is something to cheer you up!"
@@ -65,8 +74,12 @@ slots:
 
 actions:
   - action_calculate_emissions
+  - action_lifestyle_survey
   - action_list_activities
   - action_handle_missing_values
+  - utter_emission_result
+  - action_query_openai
+  - action_openai_call
 
 entities:
   - activity
