@@ -25,10 +25,8 @@ def index():
     form = loginForm()  # Initialize your login form
 
     # Check if the user is already authenticated
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('homepage'))  # Redirect to homepage if logged in
-    # I DISABLED THE AUTO-LOGIN AUTHENTICATION METHOD FOR TESTING PURPOSES.
-    # USER MUST SIGN IN EVERYTIME.
+    if current_user.is_authenticated:
+        return redirect(url_for('homepage'))  # Redirect to homepage if logged in
 
     if request.method == 'POST':
         email = request.form.get('email')

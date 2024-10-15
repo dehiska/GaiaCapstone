@@ -134,23 +134,23 @@ endpoints = {
         "activity_id": "passenger_vehicle-vehicle_type_motorcycle-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Light trucks": {
+    "Light trucks": { # works
         "activity_id": "fuel-type_motor_gasoline-fuel_use_gasoline_light_duty_trucks",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+        "parameters": {"volume": "number", "volume_unit": "text"}
     },
-    "Air transport": { #this may not work. may need to be more specific
-        "activity_id": "transport-type_air_transport",
-        "parameters": {"distance": "number", "distance_unit": "text"}
+    "Air transport": { # works
+        "activity_id": "transport_services-type_air_transport_services",
+        "parameters": {"money": "number", "money_unit": "text"}
     },
-    "Commuter rail": {
+    "Commuter rail": { # works
         "activity_id": "passenger_train-route_type_commuter_rail-fuel_source_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Intercity rail (National average)": {
+    "Intercity rail (National average)": { # works
         "activity_id": "passenger_train-route_type_intercity-fuel_source_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
-    "Passenger car": {
+    "Passenger car": { # works
         "activity_id": "passenger_vehicle-vehicle_type_car-fuel_source_na-engine_size_na-vehicle_age_na-vehicle_weight_na",
         "parameters": {"distance": "number", "distance_unit": "text"}
     },
