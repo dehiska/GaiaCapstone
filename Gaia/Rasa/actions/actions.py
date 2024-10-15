@@ -1,5 +1,4 @@
 from typing import Any, Text, Dict, List
-
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SessionStarted, ActionExecuted, SlotSet, UserUtteranceReverted, EventType
@@ -9,7 +8,7 @@ import os
 from snippets import endpoints, estimate_emissions
 
 
-
+# Mappings for units
 distance_unit_mapping = {
     "mi": "mi",
     "miles": "mi",
@@ -18,24 +17,16 @@ distance_unit_mapping = {
     "km": "km",
     "kilometers": "km",
     "kilometer": "km",
-    "kilmeter": "km",
-    "klometer": "km",
-    "kilomter": "km",
-    "kilometr": "km",
     "meter": "m",
-    "metrs" : "m",
-    "mters" : "m",
-    "m": "m",
     "meters": "m",
     "ft": "ft",
-    "foot":"ft",
-    "fet":"ft",
+    "foot": "ft",
+    "fet": "ft",
     "feet": "ft",
     "nmi": "nmi",
-    "natical miles": "nmi",
     "nautical mile": "nmi",
-    "nm" : "nmi",
-    "nauticl" : "nmi",
+    "nm": "nmi",
+    "nauticl": "nmi",
     "nautical miles": "nmi"
 }
 
@@ -43,85 +34,82 @@ money_unit_mapping = {
     "USD": "USD",
     "us dollar": "USD",
     "dollar": "USD",
-    "CAD" : "CAD",
+    "CAD": "CAD",
     "Canadian dollars": "CAD",
-    "canadian dollars" : "CAD",
-    "Australian Dollars" : "AUD",
-    "Australian dollar" : "AUD",
-    "USD": "usd",
-    "EUR": "eur",
-    "USD": "$",
-    "EUR": "€",
+    "Australian Dollars": "AUD",
+    "Australian dollar": "AUD",
     "usd": "USD",
     "dollars": "USD",
     "EUR": "EUR",
-    "eur": "EUR",
     "euros": "EUR",
 }
+
+# Emission factors for various activities
+EMISSION_FACTORS = {
+    "coal": 0.001,
+    "petroleum": 0.00096,
+    "natural_gas": 0.0004,
+    "hydropower": 0.000019,
+    "nuclear": 0.00000318,
+    "car_gasoline": 0.0089,
+    "car_diesel": 0.01018,
+    "intercity_rail": 0.00014,
+    "commuter_rail": 0.00017,
+    "bus": 0.00006,
+    "air_travel": 0.0002,
+    "meat_diet": 1.3,
+    "average_omnivore": 1.0,
+    "vegetarian": 0.66,
+    "vegan": 0.56,
+}
+
 
 class ActionCalculateEmissions(Action):
 
     def name(self) -> str:
         return "action_calculate_emissions"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
 
-        # Get the activity slot
         activity = tracker.get_slot("activity")
-        available_activities = "\n".join([f"{i+1}. {act}" for i, act in enumerate(endpoints.keys())])
+        available_activities = "\n".join([f"{i + 1}. {act}" for i, act in enumerate(endpoints.keys())])
 
         if activity is None:
             dispatcher.utter_message(text="I didn't catch that. Could you specify an activity from our list?")
-            dispatcher.utter_message(
-                text=f"Here are the available activities:\n{available_activities}"
-            )
+            dispatcher.utter_message(text=f"Here are the available activities:\n{available_activities}")
             return []
 
-        # Retrieve the relevant endpoint configuration for the activity
         endpoint = endpoints.get(activity)
-
         if not endpoint:
             dispatcher.utter_message(
-                text=f"Sorry, I don't have data for the activity '{activity}'. Here are the available activities:\n{available_activities}"
-            )
+                text=f"Sorry, I don't have data for the activity '{activity}'. Here are the available activities:\n{available_activities}")
             return []
 
-        # Prepare parameters based on the slots and the required parameters for the activity
         parameters = {}
-        missing_params = []
-
-        # Validation and mapping for parameters
         valid_distance_units = set(distance_unit_mapping.values())
 
-        # Get slots for distance and distance_unit
         distance = tracker.get_slot("distance")
         distance_unit = tracker.get_slot("distance_unit")
 
-        # First check if distance is missing, if so, prompt for it
         if distance is None:
             dispatcher.utter_message(text="Please provide the distance.")
             return []
 
-        # After distance is provided, check if distance_unit is missing
         if distance_unit is None:
             dispatcher.utter_message(text="Please provide the unit of distance (e.g., miles, kilometers).")
             return []
 
-        # Ensure the unit is valid
         standardized_unit = distance_unit_mapping.get(distance_unit.lower())
         if standardized_unit not in valid_distance_units:
-            dispatcher.utter_message(text=f"Invalid distance unit '{distance_unit}'. Please use one of the following: {', '.join(valid_distance_units)}.")
+            dispatcher.utter_message(
+                text=f"Invalid distance unit '{distance_unit}'. Please use one of the following: {', '.join(valid_distance_units)}.")
             return []
 
         parameters["distance"] = distance
         parameters["distance_unit"] = standardized_unit
 
-        # Call the estimate_emissions function if all required parameters are present
         emissions_result = estimate_emissions(activity_id=endpoint["activity_id"], parameters=parameters)
 
-        # Dispatch the result to the user
         if 'error' in emissions_result:
             dispatcher.utter_message(text=f"Error: {emissions_result['message']}")
         else:
@@ -131,206 +119,133 @@ class ActionCalculateEmissions(Action):
         return []
 
 
-"""" John's code before Denis touched it to try to fix the hallucinations
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-from typing import Any, Text, Dict, List
-
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SessionStarted, ActionExecuted, SlotSet, UserUtteranceReverted, EventType
-from rasa_sdk.types import DomainDict
-import requests
-import os
-
-'''
-class ActionSessionStart(Action):
-    def name(self) -> Text:
-        return "action_session_start"
-
-    async def run(self, dispatcher: CollectingDispatcher,
-                  tracker: Tracker,
-                  domain: Dict[Text, Any]) -> List[EventType]:
-        # Start a session
-        events = [SessionStarted()]
-        
-        # Greet the user when the session starts
-        dispatcher.utter_message(text="Hello! How can I help you today? Here are a few things I can do:\n1. Calculate emissions")
-        
-        # Ask user to choose an option
-        dispatcher.utter_message(text="Please type 'Calculate emissions' to get started.")
-        
-        events.append(ActionExecuted("action_listen"))
-        return events
-'''
-
-#npm install @openapitools/openapi-generator-cli -g
-#pip install requests
-
-#import requests
-#CARBON_INTERFACE_API_KEY = 'CzQS7w8a6WBAGToUjk5Q'
-
-#def get_car_emissions(miles):
-#   url = "https://www.carboninterface.com/api/v1/estimates"
-#    headers = {
-#        'Authorization': f'Bearer {CARBON_INTERFACE_API_KEY}',
- #       'Content-Type': 'application/json'
-  #  }
-   # data = {
-    #    "type": "vehicle",
-     #   "distance_unit": "mi",
-      #  "distance_value": miles,
-       # "vehicle_model_id": "2b7bbf40-79ec-4567-9c6b-9f0e745d7e2d"  # average gasoline car
-   # }
-    #response = requests.post(url, headers=headers, json=data)
-    #emissions = response.json()['data']['attributes']['carbon_kg']
-    #return emissions
-
-
-distance_unit_mapping = {
-    "mi": "mi",
-    "miles": "mi",
-    "mile": "mi",
-    "km": "km",
-    "km": "km",
-    "kilometers": "km",
-    "kilometer": "km",
-    "kilmeter": "km",
-    "klometer": "km",
-    "kilomter": "km",
-    "kilometr": "km",
-    "meter": "m",
-    "metrs" : "m",
-    "mters" : "m",
-    "m": "m",
-    "meters": "m",
-    "ft": "ft",
-    "foot":"ft",
-    "fet":"ft",
-    "feet": "ft",
-    "nmi": "nmi",
-    "natical miles": "nmi",
-    "nautical mile": "nmi",
-    "nm" : "nmi",
-    "nauticl" : "nmi",
-    "nautical miles": "nmi"
-}
-
-money_unit_mapping = {
-    "USD": "USD",
-    "us dollar": "USD",
-    "dollar": "USD",
-    "CAD" : "CAD",
-    "Canadian dollars": "CAD",
-    "canadian dollars" : "CAD",
-    "Australian Dollars" : "AUD",
-    "Australian dollar" : "AUD",
-    "USD": "usd",
-    "EUR": "eur",
-    "USD": "$",
-    "EUR": "€",
-    "usd": "USD",
-    "dollars": "USD",
-    "EUR": "EUR",
-    "eur": "EUR",
-    "euros": "EUR",
-}
-
-#import from snippets
-endpointsfrom snippets import estimate_emissions, 
-
-class ActionCalculateEmissions(Action):
-
+class ActionLifestyleSurvey(Action):
     def name(self) -> str:
-        return "action_calculate_emissions"
+        return "action_lifestyle_survey"
 
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        electricity_kwh = (tracker.get_slot("electricity_kwh"))
 
-        # Get the activity slot
-        activity = tracker.get_slot("activity")
-        available_activities = "\n".join([f"{i+1}. {act}" for i, act in enumerate(endpoints.keys())])
+        if electricity_kwh is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify how much electricity?")
+            return []
 
-        if activity is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify an activity from our list?")
-            dispatcher.utter_message(
-                text=f"Here are the available activities:\n{available_activities}"
+        energy_source = tracker.get_slot("energy_source")
+
+        if energy_source is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify an energy source?")
+            return []
+
+        car_fuel_type = tracker.get_slot("car_fuel_type")
+        if car_fuel_type is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your car fuel type?")
+            return []
+
+        car_miles = (tracker.get_slot("car_miles"))
+        if car_miles is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your car car miles?")
+            return []
+
+        gallons = (tracker.get_slot(f"{car_fuel_type}_gallons"))
+        if gallons is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your gallons?")
+            return []
+
+        short_flights = (tracker.get_slot("short_flights"))
+        if short_flights is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your short flights?")
+            return []
+
+        long_flights = (tracker.get_slot("long_flights"))
+        if long_flights is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your long flights?")
+            return []
+
+        diet = tracker.get_slot("diet")
+        if diet is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your diet?")
+            return []
+
+        recycles = tracker.get_slot("recycles")
+        if recycles is None:
+            dispatcher.utter_message(text="I didn't catch that. Could you specify your recycles?")
+            return []
+
+        total_emissions = self.calculate_carbon_footprint(electricity_kwh, energy_source, car_fuel_type, car_miles,
+                                                          gallons, short_flights, long_flights, diet, recycles)
+
+        dispatcher.utter_message(
+            text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
+        return []
+
+    def calculate_carbon_footprint(self, electricity_kwh, energy_source, car_fuel_type, car_miles, gallons,
+                                   short_flights, long_flights, diet, recycles):
+        electricity_emissions = electricity_kwh * 12 * EMISSION_FACTORS[energy_source]
+        car_emissions = gallons * EMISSION_FACTORS[f"car_{car_fuel_type}"]
+        flight_emissions = (short_flights * 500 * EMISSION_FACTORS["air_travel"]) + (
+                    long_flights * 2500 * EMISSION_FACTORS["air_travel"])
+        diet_emissions = EMISSION_FACTORS[diet]
+        waste_emissions = 0.2 if recycles == "no" else 0.16
+
+        total_emissions = electricity_emissions + car_emissions + flight_emissions + diet_emissions + waste_emissions
+        return total_emissions
+
+
+class ActionOpenAICall(Action):
+    def name(self) -> str:
+        return "action_openai_call"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        user_message = tracker.latest_message.get('text')
+
+        try:
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=user_message,
+                max_tokens=150,
+                n=1,
+                stop=None,
+                temperature=0.7
             )
-            return []
 
-        # Retrieve the relevant endpoint configuration for the activity
-        endpoint = endpoints.get(activity)
+            openai_response = response.choices[0].text.strip()
+            dispatcher.utter_message(text=openai_response)
 
-        if not endpoint:
-            # Create a numbered list of available activities
-            dispatcher.utter_message(
-                text=f"Sorry, I don't have data for the activity '{activity}'. Here are the available activities:\n{available_activities}"
-            )
-            return []
-
-        # Prepare parameters based on the slots and the required parameters for the activity
-        parameters = {}
-        missing_params = []
-
-        # Validation and mapping for parameters
-        valid_distance_units = set(distance_unit_mapping.values())
-        valid_money_units = set(money_unit_mapping.values())
-
-        for param_name, param_type in endpoint["parameters"].items():
-            slot_value = tracker.get_slot(param_name)
-
-            if slot_value is None:
-                missing_params.append(param_name)
-            else:
-                if param_type == "number":
-                    try:
-                        slot_value = float(slot_value)
-                    except ValueError:
-                        dispatcher.utter_message(text=f"Invalid value for {param_name}. Please provide a valid number.")
-                        return []
-                elif param_name == "distance_unit":
-                    standardized_unit = distance_unit_mapping.get(slot_value.lower())
-                    if standardized_unit not in valid_distance_units:
-                        dispatcher.utter_message(text=f"Invalid distance unit '{slot_value}'. Please use one of the following: {', '.join(valid_distance_units)}.")
-                        return []
-                    parameters[param_name] = standardized_unit
-                elif param_name == "money_unit":
-                    standardized_unit = money_unit_mapping.get(slot_value.lower())
-                    if standardized_unit not in valid_money_units:
-                        dispatcher.utter_message(text=f"Invalid money unit '{slot_value}'. Please use one of the following: {', '.join(valid_money_units)}.")
-                        return []
-                    parameters[param_name] = standardized_unit
-
-                parameters[param_name] = slot_value
-
-        # If there are missing parameters, prompt the user for them and stop the action
-        if missing_params:
-            for param in missing_params:
-                if param in ["money", "money_unit"]:
-                    dispatcher.utter_message(text="Please provide the amount and the unit of money.")
-                elif param in ["distance", "distance_unit"]:
-                    dispatcher.utter_message(text="Please provide the distance and the unit of distance.")
-                else:
-                    dispatcher.utter_message(text=f"Missing parameter: {param}. Please provide it.")
-            return []
-
-        # Call the estimate_emissions function if all required parameters are present
-        emissions_result = estimate_emissions(endpoint["activity_id"], parameters)
-
-        # Dispatch the result to the user
-        if 'error' in emissions_result:
-            dispatcher.utter_message(text=f"Error: {emissions_result['message']}")
-        else:
-            emission_value = emissions_result.get("co2e", "N/A")
-            dispatcher.utter_message(text=f"The estimated emissions for {activity} are {emission_value} kg CO2e.")
+        except Exception as e:
+            dispatcher.utter_message(text=f"Error: {str(e)}")
 
         return []
 
 
-"""
+# Helper Class: LifestyleSurveyAction
+class LifestyleSurveyAction:
+    def __init__(self):
+        self.questions = {1: "How much meat do you eat per week?", 2: ""}  # Dictionary to store questions
+        self.responses = {}
+        self.estimate_action = ActionCalculateEmissions()
+        self.eco_score = 0
+
+    def create_survey(self, activity_id):
+        required_params = self.estimate_action.run(activity_id)
+        for param in required_params:
+            question = f"What is the {param.replace('_', ' ')}?"
+            self.questions[param] = question
+
+    def ask_questions(self):
+        for param, question in self.questions.items():
+            answer = input(question)
+            self.responses[param] = answer
+            self.estimate_action.set_parameter(param, answer)
+
+    def calculate_emissions(self, activity_id):
+        emissions_result = self.estimate_action.estimate_emissions(activity_id, self.estimate_action.parameters)
+        emission_value = emissions_result.get("emissions", 0)
+        self.eco_score += float(emission_value)
+
+    def complete_survey(self, activity_ids):
+        for activity_id in activity_ids:
+            self.create_survey(activity_id)
+            self.ask_questions()
+            self.calculate_emissions(activity_id)
+
+        print(f"Your total CO2 emissions (eco-score) is: {self.eco_score} kg CO2e")

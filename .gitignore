@@ -1,0 +1,22 @@
+# Ignore Rasa cache and temporary files
+.rasa/cache/
+Gaia/Rasa/.rasa/cache/
+
+# Ignore Python compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore model and database files
+Gaia/Rasa/models/
+Gaia/Rasa/rasa_database.db
+Gaia/app/gaia.db
+Gaia/app/rasa_database.db
+
+# Ignore environment files
+venv/
+Gaia/Rasa/anaconda3/
+start_rasa_and_flask.sh
+
+# Ignore other temporary files
+Gaia/Rasa/y/
+Gaia/app/key.txt
