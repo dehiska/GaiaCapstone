@@ -54,7 +54,7 @@ class LifestyleSurvey:
         self.questions = {
             "electricity_kwh": "How many kWh of electricity do you use per week?",
             "energy_source": "What is your main energy source (coal, petroleum, natural gas, hydropower, nuclear)?",
-            "car_fuel_type": "What fuel does your car use (gasoline, diesel, gas)?",
+            "car_fuel_type": "What fuel does your car use (gasoline (gas) or diesel)?",
             "car_miles": "How many miles or kilometers do you drive per week?",
             "gallons": "How many gallons or liters of fuel does your car consume weekly?",
             "short_flights": "How many short flights (under 3 hours) do you take per year?",
@@ -120,13 +120,13 @@ class LifestyleSurvey:
         # Weekly electricity use in kWh
         self.responses["electricity_kwh"] = self.ask_numeric_question(self.questions["electricity_kwh"]) * 4  # Convert to monthly
 
-        # Energy source with error handling
+        # Energy source with limited options
         self.responses["energy_source"] = self.ask_question_with_validation(
             self.questions["energy_source"],
-            valid_responses=EMISSION_FACTORS.keys()
+            valid_responses=["coal", "petroleum", "natural gas", "hydropower", "nuclear"]
         )
 
-        # Car fuel type with "gas" added as an option
+        # Car fuel type with "gas" added as an option and simplified options display
         self.responses["car_fuel_type"] = self.ask_question_with_validation(
             self.questions["car_fuel_type"],
             valid_responses=["gasoline", "diesel", "gas"]
@@ -149,10 +149,10 @@ class LifestyleSurvey:
         self.responses["short_flights"] = int(self.ask_numeric_question(self.questions["short_flights"]))
         self.responses["long_flights"] = int(self.ask_numeric_question(self.questions["long_flights"]))
 
-        # Diet with error handling
+        # Diet with correct error handling
         self.responses["diet"] = self.ask_question_with_validation(
             self.questions["diet"],
-            valid_responses=EMISSION_FACTORS.keys()
+            valid_responses=["meat diet", "average omnivore", "vegetarian", "vegan"]
         )
 
         # Recycling with error handling

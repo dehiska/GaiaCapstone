@@ -15,11 +15,82 @@ nlu:
     - I'd like to do the lifestyle survey
     - Please initiate the lifestyle survey
     - Can you guide me through the lifestyle survey?
+    
+  
+- intent: provide_electricity_kwh
+  examples: |
+    - I use [100](electricity_kwh) kWh of electricity per week
+    - My electricity consumption is [50](electricity_kwh) kWh
+    - I consume [200](electricity_kwh) kWh weekly
+    - Around [150](electricity_kwh) kWh
+
+  # Intent for energy_source
+- intent: provide_energy_source
+  examples: |
+    - My main energy source is [natural gas](energy_source)
+    - I use [coal](energy_source) for my energy
+    - My home runs on [hydropower](energy_source)
+    - I get my energy from [petroleum](energy_source)
+    - It's [nuclear](energy_source)
+  
+  # Intent for car_fuel_type
+- intent: provide_car_fuel_type
+  examples: |
+    - My car uses [gasoline](car_fuel_type)
+    - I drive a [diesel](car_fuel_type) car
+    - My vehicle runs on [gasoline](car_fuel_type)
+    - [gas](car_fuel_type) is the fuel type
+  
+  # Intent for car_miles
+- intent: provide_car_miles
+  examples: |
+    - I drive [200](car_miles) miles per week
+    - I drive about [300](car_miles) kilometers per week
+    - I travel [150](car_miles) miles weekly
+    - [50](car_miles) miles is my weekly driving distance
+  
+  # Intent for fuel consumption
+- intent: provide_fuel_consumption
+  examples: |
+    - My car consumes [10](fuel_consumption) gallons weekly
+    - I use [20](fuel_consumption) liters of fuel every week
+    - It consumes [15](fuel_consumption) gallons of fuel
+  
+  # Intent for short_flights
+- intent: provide_short_flights
+  examples: |
+    - I take [3](short_flights) short flights every year
+    - I fly about [2](short_flights) short flights annually
+    - Around [1](short_flights) short flight per year
+  
+  # Intent for long_flights
+- intent: provide_long_flights
+  examples: |
+    - I take [1](long_flights) long flight each year
+    - I fly [2](long_flights) long flights yearly
+    - I usually have [3](long_flights) long flights annually
+  
+  # Intent for diet
+- intent: provide_diet
+  examples: |
+    - I follow a [vegetarian](diet) diet
+    - I am on a [vegan](diet) diet
+    - I have a [meat diet](diet)
+    - My diet is [average omnivore](diet)
+  
+  # Intent for recycling
+- intent: provide_recycles
+  examples: |
+    - Yes, I recycle
+    - No, I don't recycle
+    - I recycle [yes](recycles)
+    - I do not recycle [no](recycles)
 - intent: ask_openai
   examples: |
     - Can you tell me about AI?
     - What do you know about natural language processing?
     - How does machine learning work?
+
 
 
 - intent: greet

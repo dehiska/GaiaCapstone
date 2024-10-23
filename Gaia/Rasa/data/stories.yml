@@ -37,7 +37,7 @@ stories:
 
 
 
-- story: lifestyle survey path
+- story: start_lifestyle survey
   steps:  
   - intent: lifestyle_survey
   - action: action_lifestyle_survey

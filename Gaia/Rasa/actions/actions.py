@@ -26,7 +26,7 @@ distance_unit_mapping = {
     "nmi": "nmi",
     "nautical mile": "nmi",
     "nm": "nmi",
-    "nauticl": "nmi",
+    "nautical": "nmi",
     "nautical miles": "nmi"
 }
 
@@ -125,13 +125,14 @@ class ActionLifestyleSurvey(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         electricity_kwh = (tracker.get_slot("electricity_kwh"))
+        
+
 
         if electricity_kwh is None:
             dispatcher.utter_message(text="I didn't catch that. Could you specify how much electricity?")
             return []
 
         energy_source = tracker.get_slot("energy_source")
-
         if energy_source is None:
             dispatcher.utter_message(text="I didn't catch that. Could you specify an energy source?")
             return []
@@ -146,10 +147,11 @@ class ActionLifestyleSurvey(Action):
             dispatcher.utter_message(text="I didn't catch that. Could you specify your car car miles?")
             return []
 
-        gallons = (tracker.get_slot(f"{car_fuel_type}_gallons"))
+        gallons = tracker.get_slot("fuel_consumption")  # Correct slot name
         if gallons is None:
             dispatcher.utter_message(text="I didn't catch that. Could you specify your gallons?")
-            return []
+        return []
+
 
         short_flights = (tracker.get_slot("short_flights"))
         if short_flights is None:
