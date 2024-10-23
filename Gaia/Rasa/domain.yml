@@ -7,11 +7,21 @@ intents:
   - greet
   - bot_challenge
   - calculate_emissions
-  - lifestyle_survey    # Denis added this 10/3
-  - ask_openai
-  - query_openai
+  - ask_lifestyle_survey
   - mood_unhappy
   - mood_great
+  - provide_electricity 
+  - provide_energy_source 
+  - provide_car_fuel_type
+  - provide_car_miles
+  - provide_car_fuel_useage
+  - provide_flights_short
+  - provide_flights_long
+  - provide_diet
+  - provide_recycling 
+#  - ask_openai
+#  - query_openai
+
 
 responses:
   utter_greet:
@@ -25,16 +35,6 @@ responses:
 
   utter_emission_result:
     - text: "Your emissions are calculated as [100](result) tons of CO2."
-#Added this 10/6 for rasa to give a result for emissions calculation
-
-  #utter_cheer_up:
-  #  - text: "Here is something to cheer you up!"
-
-  #utter_did_that_help:             Add back later, but mood great will refrence this
-  #  - text: "Did that help you?"
-
-  #utter_happy:
-  #  - text: "Yay!"
 
 slots:
   activity:
@@ -72,14 +72,78 @@ slots:
       - type: from_entity
         entity: distance_unit
 
+  electricity_kwh:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: electricity_kwh
+        
+  energy_source:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: energy_source
+        
+  car_fuel_type:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: car_fuel_type
+        
+  car_miles:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: car_miles
+        
+  car_fuel_useage:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: car_fuel_useage
+        
+  short_flights:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: short_flights
+        
+  long_flights:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: long_flights
+        
+  diet:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: diet
+        
+  recycles:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: recycles
+
 actions:
   - action_calculate_emissions
   - action_lifestyle_survey
   - action_list_activities
   - action_handle_missing_values
   - utter_emission_result
-  - action_query_openai
-  - action_openai_call
+#  - action_query_openai
+#  - action_openai_call
+
 
 entities:
   - activity
@@ -87,6 +151,15 @@ entities:
   - money_unit
   - distance
   - distance_unit
+  - electricity_kwh
+  - energy_source
+  - car_fuel_type
+  - car_miles
+  - car_fuel_useage
+  - short_flights
+  - long_flights
+  - diet
+  - recycles
 
 session_config:
   session_expiration_time: 60

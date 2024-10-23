@@ -118,134 +118,115 @@ class ActionCalculateEmissions(Action):
 
         return []
 
-
+# Mappings for units
+distance_unit_mapping = {
+    "mi": "mi",
+    "miles": "mi",
+    "mile": "mi",
+    "km": "km",
+    "kilometers": "km",
+    "kilometer": "km"
+}
+ 
+fuel_unit_mapping = {
+    "gallons": "gallons",
+    "gallon": "gallons",
+    "liters": "liters",
+    "liter": "liters"
+}
+ 
+# Conversion factors
+LITERS_TO_GALLONS = 0.264172
+KM_TO_MILES = 0.621371
+ 
+# Emission factors
+EMISSION_FACTORS = {
+    "coal": 0.001,
+    "petroleum": 0.00096,
+    "natural gas": 0.0004,
+    "hydropower": 0.000019,
+    "nuclear": 0.00000318,
+    "car gasoline": 0.0089,
+    "car diesel": 0.01018,
+    "air travel": 0.0002,
+    "meat diet": 1.3,
+    "average omnivore": 1.0,
+    "vegetarian": 0.66,
+    "vegan": 0.56,
+}
+ 
 class ActionLifestyleSurvey(Action):
     def name(self) -> str:
         return "action_lifestyle_survey"
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-        electricity_kwh = (tracker.get_slot("electricity_kwh"))
-
-        if electricity_kwh is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify how much electricity?")
-            return []
-
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
+        responses = {}
+        # Retrieve slots and validate
+        electricity_kwh = tracker.get_slot("electricity_kwh")
         energy_source = tracker.get_slot("energy_source")
-
-        if energy_source is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify an energy source?")
-            return []
-
         car_fuel_type = tracker.get_slot("car_fuel_type")
-        if car_fuel_type is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your car fuel type?")
-            return []
-
-        car_miles = (tracker.get_slot("car_miles"))
-        if car_miles is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your car car miles?")
-            return []
-
-        gallons = (tracker.get_slot(f"{car_fuel_type}_gallons"))
-        if gallons is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your gallons?")
-            return []
-
-        short_flights = (tracker.get_slot("short_flights"))
-        if short_flights is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your short flights?")
-            return []
-
-        long_flights = (tracker.get_slot("long_flights"))
-        if long_flights is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your long flights?")
-            return []
-
+        car_miles = tracker.get_slot("car_miles")
+        fuel_consumption = tracker.get_slot("fuel_consumption")
+        short_flights = tracker.get_slot("short_flights")
+        long_flights = tracker.get_slot("long_flights")
         diet = tracker.get_slot("diet")
-        if diet is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your diet?")
-            return []
-
         recycles = tracker.get_slot("recycles")
-        if recycles is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify your recycles?")
+
+        # Error handling if slots are missing
+        if not electricity_kwh:
+            dispatcher.utter_message(text="Could you provide how many kWh of electricity you use per week?")
+            return []
+        if not energy_source:
+            dispatcher.utter_message(text="What is your main energy source (coal, petroleum, natural gas, hydropower, nuclear)?")
+            return []
+        if not car_fuel_type:
+            dispatcher.utter_message(text="What fuel does your car use (gasoline, gas, or diesel)?")
+            return []
+        if not car_miles:
+            dispatcher.utter_message(text="How many miles or kilometers do you drive per week?")
+            return []
+        if not fuel_consumption:
+            dispatcher.utter_message(text="How many gallons or liters of fuel does your car consume weekly?")
+            return []
+        if not short_flights:
+            dispatcher.utter_message(text="How many short flights (under 3 hours) do you take per year?")
+            return []
+        if not long_flights:
+            dispatcher.utter_message(text="How many long flights (over 3 hours) do you take per year?")
+            return []
+        if not diet:
+            dispatcher.utter_message(text="What is your diet type (meat diet, average omnivore, vegetarian, vegan)?")
+            return []
+        if not recycles:
+            dispatcher.utter_message(text="Do you recycle (yes or no)?")
             return []
 
-        total_emissions = self.calculate_carbon_footprint(electricity_kwh, energy_source, car_fuel_type, car_miles,
-                                                          gallons, short_flights, long_flights, diet, recycles)
+        # Convert responses for emissions calculation
+        responses["electricity_kwh"] = float(electricity_kwh) * 4  # Monthly kWh
+        responses["energy_source"] = energy_source
+        responses["car_fuel_type"] = car_fuel_type
+        responses["car_miles"] = float(car_miles) * 4  # Monthly car distance
+        responses["car_fuel_useage"] = float(fuel_consumption) * 4  # Monthly fuel consumption
+        responses["short_flights"] = int(short_flights)
+        responses["long_flights"] = int(long_flights)
+        responses["diet"] = diet
+        responses["recycles"] = recycles
 
-        dispatcher.utter_message(
-            text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
+        # Calculate emissions
+        total_emissions = self.calculate_carbon_footprint(responses)
+
+        # Provide the result to the user
+        dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
+
         return []
 
-    def calculate_carbon_footprint(self, electricity_kwh, energy_source, car_fuel_type, car_miles, gallons,
-                                   short_flights, long_flights, diet, recycles):
-        electricity_emissions = electricity_kwh * 12 * EMISSION_FACTORS[energy_source]
-        car_emissions = gallons * EMISSION_FACTORS[f"car_{car_fuel_type}"]
-        flight_emissions = (short_flights * 500 * EMISSION_FACTORS["air_travel"]) + (
-                    long_flights * 2500 * EMISSION_FACTORS["air_travel"])
-        diet_emissions = EMISSION_FACTORS[diet]
-        waste_emissions = 0.2 if recycles == "no" else 0.16
+    def calculate_carbon_footprint(self, responses):
+        electricity_emissions = responses["electricity_kwh"] * EMISSION_FACTORS.get(responses["energy_source"], 0)
+        car_emissions = responses["fuel_consumption"] * EMISSION_FACTORS.get(f"car_{responses['car_fuel_type']}", 0)
+        flight_emissions = (responses["short_flights"] * 500 * EMISSION_FACTORS["air_travel"]) + \
+                           (responses["long_flights"] * 2500 * EMISSION_FACTORS["air_travel"])
+        diet_emissions = EMISSION_FACTORS.get(responses["diet"], 1.0)
+        waste_emissions = 0.2 if responses["recycles"] == "no" else 0.16
 
         total_emissions = electricity_emissions + car_emissions + flight_emissions + diet_emissions + waste_emissions
         return total_emissions
-
-
-class ActionOpenAICall(Action):
-    def name(self) -> str:
-        return "action_openai_call"
-
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-        user_message = tracker.latest_message.get('text')
-
-        try:
-            response = openai.Completion.create(
-                engine="text-davinci-003",
-                prompt=user_message,
-                max_tokens=150,
-                n=1,
-                stop=None,
-                temperature=0.7
-            )
-
-            openai_response = response.choices[0].text.strip()
-            dispatcher.utter_message(text=openai_response)
-
-        except Exception as e:
-            dispatcher.utter_message(text=f"Error: {str(e)}")
-
-        return []
-
-
-# Helper Class: LifestyleSurveyAction
-class LifestyleSurveyAction:
-    def __init__(self):
-        self.questions = {1: "How much meat do you eat per week?", 2: ""}  # Dictionary to store questions
-        self.responses = {}
-        self.estimate_action = ActionCalculateEmissions()
-        self.eco_score = 0
-
-    def create_survey(self, activity_id):
-        required_params = self.estimate_action.run(activity_id)
-        for param in required_params:
-            question = f"What is the {param.replace('_', ' ')}?"
-            self.questions[param] = question
-
-    def ask_questions(self):
-        for param, question in self.questions.items():
-            answer = input(question)
-            self.responses[param] = answer
-            self.estimate_action.set_parameter(param, answer)
-
-    def calculate_emissions(self, activity_id):
-        emissions_result = self.estimate_action.estimate_emissions(activity_id, self.estimate_action.parameters)
-        emission_value = emissions_result.get("emissions", 0)
-        self.eco_score += float(emission_value)
-
-    def complete_survey(self, activity_ids):
-        for activity_id in activity_ids:
-            self.create_survey(activity_id)
-            self.ask_questions()
-            self.calculate_emissions(activity_id)
-
-        print(f"Your total CO2 emissions (eco-score) is: {self.eco_score} kg CO2e")

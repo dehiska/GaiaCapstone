@@ -19,11 +19,6 @@ rules:
     - action: utter_iamabot
 
 
-  - rule: Start lifestyle survey
-    steps:
-      - intent: lifestyle_survey
-      - action: action_lifestyle_survey
-
 #  - rule: Say "Hello!" everytime the session beings removing duplicate rule because it is confusing rasa
 #    steps:
 #    - intent: session_start
