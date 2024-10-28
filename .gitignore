@@ -20,3 +20,8 @@ start_rasa_and_flask.sh
 # Ignore other temporary files
 Gaia/Rasa/y/
 Gaia/app/key.txt
+
+.rasa/cache/cache.db
+actions/__pycache__/__init__.cpython-38.pyc
+actions/__pycache__/actions.cpython-38.pyc
+actions/__pycache__/snippets.cpython-38.pyc

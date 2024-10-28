@@ -37,12 +37,30 @@ stories:
 
 
 
-- story: start_lifestyle survey
-  steps:  
-  - intent: lifestyle_survey
-  - action: action_lifestyle_survey
-
-- story: openai_query_story
+- story: user starts a lifestyle survey
   steps:
-    - intent: query_openai
-    - action: action_query_openai
+    - intent: ask_lifestyle_survey
+    - action: action_lifestyle_survey  # Start the survey
+    - intent: provide_electricity
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_energy_source
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_car_fuel_type
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_car_miles
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_car_fuel_useage
+    - action: action_lifestyle_survey
+    - intent: provide_flights_short
+    - action: action_lifestyle_survey
+    - intent: provide_flights_long
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_diet
+    - action: action_lifestyle_survey  # Continue the survey
+    - intent: provide_recycling
+    - action: action_lifestyle_survey  # Finish the survey and calculate results
+
+#- story: openai_query_story
+#  steps:
+#    - intent: query_openai
+#    - action: action_query_openai
