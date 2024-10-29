@@ -6,7 +6,7 @@ from rasa_sdk.events import SessionStarted, ActionExecuted, SlotSet, UserUtteran
 from rasa_sdk.types import DomainDict
 import requests
 import os
-from snippets import endpoints, estimate_emissions
+from Gaia.Rasa.actions.snippets import endpoints, estimate_emissions
 
 
 """

@@ -13,8 +13,9 @@ intents:
   - provide_electricity 
   - provide_energy_source 
   - provide_car_fuel_type
+  - provide_car_fuel_unit
   - provide_car_miles
-  - provide_car_fuel_useage
+  - provide_car_fuel_usage
   - provide_flights_short
   - provide_flights_long
   - provide_diet
@@ -92,6 +93,13 @@ slots:
     mappings:
       - type: from_entity
         entity: car_fuel_type
+
+  car_fuel_unit:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+
         
   car_miles:
     type: float
@@ -100,12 +108,12 @@ slots:
       - type: from_entity
         entity: car_miles
         
-  car_fuel_useage:
+  car_fuel_usage:
     type: float
     influence_conversation: false
     mappings:
       - type: from_entity
-        entity: car_fuel_useage
+        entity: car_fuel_usage
         
   short_flights:
     type: float
@@ -155,7 +163,8 @@ entities:
   - energy_source
   - car_fuel_type
   - car_miles
-  - car_fuel_useage
+  - car_fuel_unit
+  - car_fuel_usage
   - short_flights
   - long_flights
   - diet
