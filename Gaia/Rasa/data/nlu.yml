@@ -1,5 +1,4 @@
 nlu:
-
 - intent: ask_lifestyle_survey
   examples: |
     - I want to take the lifestyle survey
@@ -115,8 +114,13 @@ nlu:
 - intent: provide_car_fuel_type
   examples: |
     - My car uses [gasoline](car_fuel_type)
+    - My car uses [gas](car_fuel_type)
     - I use [diesel](car_fuel_type)
+    - I use [gasonline](car_fuel_type)
+    - I use [gas](car_fuel_type)
     - [gasoline](car_fuel_type)
+    - [gas](car_fuel_type)
+    - [diesel](car_fuel_type)
 
 - intent: provide_car_miles
   examples: |
@@ -128,11 +132,30 @@ nlu:
     - me drive [63](car_miles) miles weekly
 
 
-- intent: provide_car_fuel_useage
+- intent: provide_car_fuel_unit
+  examples: |
+    - I use [gallons](car_fuel_unit)
+    - [gallons](car_fuel_unit)
+    - [liters](car_fuel_unit)
+    - I use [liters](car_fuel_unit)
+    - We measure in [gallons](car_fuel_unit)
+    - Mostly [liters](car_fuel_unit)
+    - I use [gallons](car_fuel_unit)
+
+- intent: provide_car_fuel_usage
   examples: | 
-    -  I use [100] gallons (car_fuel_useage) a week
-    - Probably about [40](car_fuel_useage) weekly
-    - [400](car_fuel_useage)
+    -  I use [100](car_fuel_usage) gallons a week
+    -  I use [100](car_fuel_usage) liters a week
+    - Probably about [40](car_fuel_usage) gallons weekly
+    - Probably about [40](car_fuel_usage) liters weekly
+    - About [40](car_fuel_usage) gallons weekly
+    - About [40](car_fuel_usage) liters weekly
+    - About [40](car_fuel_usage) gallons weekly.
+    - About [40](car_fuel_usage) liters weekly.
+    - My weekly usage is [50](car_fuel_usage) liters
+    - My weekly usage is [50](car_fuel_usage) gallons
+    - [20](car_fuel_usage) liters
+    - [20](car_fuel_usage) gallons
 
 - intent: provide_flights_short
   examples: |
