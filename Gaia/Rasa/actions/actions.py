@@ -153,7 +153,7 @@ class ActionLifestyleSurvey(Action):
         # Step 1: Check for electricity usage
         electricity_kwh = tracker.get_slot("electricity_kwh")
         if not electricity_kwh:
-            dispatcher.utter_message(text="Could you provide how many kWh of electricity you use per week?")
+            dispatcher.utter_message(text="Could you provide how many kWh of electricity you use per month?")
             return []
 
         # Step 2: Check for main energy source
