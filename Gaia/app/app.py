@@ -4,6 +4,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from user import User
 from forms import loginForm, registerForm
 from database import get_user_by_email, insert_user, get_user_by_id  # Ensure these functions exist
+import matplotlib.pyplot as plt
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'changeforprod'
@@ -76,6 +78,44 @@ def register():
 @app.route('/homepage')
 def homepage():
     return render_template('homepage.html')  # Make sure you have a homepage.html file
+
+@app.route('/recommendations')
+def recommendations():
+    chart_url = generate_electricity_usage_chart()
+    return render_template('recommendations.html', chart_url=chart_url)
+
+def generate_electricity_usage_chart():
+    # Get user-specific data (this is an example; adjust based on your actual data source)
+    user_data = [10, 15, 10, 20, 25]  # Replace this with actual user data
+
+    # Generate plot based on user data
+    plt.figure()
+    plt.plot(user_data)  # Plot user data
+    plt.title('Electricity Usage Over Time')
+    plt.xlabel('Time')
+    plt.ylabel('Usage (kWh)')
+
+    # Save the plot to the static folder with a unique name based on user ID
+    user_id = 123  # Replace with actual user ID or unique identifier
+    img_path = os.path.join('static', f'electricity_usage_chart_{user_id}.png')
+    plt.savefig(img_path)
+    plt.close()
+
+    return url_for('static', filename=f'electricity_usage_chart_{user_id}.png')
+
+
+@app.route('/electricity_usage', methods=['GET', 'POST'])
+def electricity_usage_data():
+    if request.method == 'POST':
+        user_data = request.form.getlist('usage_data', type=float)
+    else:
+        user_data = [10, 15, 10, 20, 25]  # Default or test data
+    # Generate and save plot as before
+
+    # Call the function to generate and save the plot image with the provided data
+    chart_url = generate_electricity_usage_chart()
+
+    return render_template('recommendations.html', chart_url=chart_url)
 
 @app.route('/logout', methods=['POST'])
 @login_required

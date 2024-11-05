@@ -775,3 +775,95 @@ body {
 .rw-conversation-container .rw-messages-container .rw-message .rw-client {
   background-color: #08a54c;
 }
+
+/* RECOMENDATIONS PAGE STYLE */
+
+.rec-body {
+  font-family: Arial, sans-serif;
+  background-color: #e0efff;
+  margin: 0;
+  padding: 0;
+}
+.rec-container {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  background-color: #d0e8ff;
+  border: 1px solid #a0c8ff;
+}
+.rec-header {
+  text-align: center;
+  background-color: #08a54c;
+  padding: 10px;
+  font-size: 1.5em;
+  color: #000;
+}
+
+.rec-back-button {
+  position: absolute;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 110px;
+  height: 8%;
+  top: 10px;
+  left: 20px;
+  background: #08a54c;
+  border: 2px solid #08a54c;
+  border-radius: 30px;
+  font-size: 19px;
+  color: #081b29;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1px;
+  z-index: 1;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.rec-back-button:hover {
+  color: #08a54c;
+}
+
+.rec-back-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #081b29;
+  z-index: -1;
+  transition: 0.5s;
+}
+
+.rec-back-button:hover::before {
+  width: 100%;
+}
+
+.rec-content {
+  display: flex;
+  padding: 20px;
+  background-color: #e0f5ff;
+}
+.rec-left-panel {
+  width: 40%;
+  padding: 10px;
+  text-align: center;
+  background-color: #c0e0ff;
+}
+.rec-left-panel h3 {
+  background-color: #08a54c;
+  padding: 5px;
+}
+.rec-right-panel {
+  width: 60%;
+  padding: 10px;
+}
+.rec-right-panel p {
+  margin: 10px 0;
+}
+.rec-right-panel a {
+  color: #0073e6;
+  text-decoration: none;
+}

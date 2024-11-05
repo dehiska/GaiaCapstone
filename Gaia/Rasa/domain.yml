@@ -20,6 +20,8 @@ intents:
   - provide_flights_long
   - provide_diet
   - provide_recycling 
+  - product_list
+  - buynow
 #  - ask_openai
 #  - query_openai
 
@@ -27,7 +29,10 @@ intents:
 responses:
   utter_greet:
     - text: "Hello! How can I assist you today?"
-
+################################################## TESTING
+  utter_buynow:
+    - text: "To order, please visit our website: https://nike.com"
+################################################## TESTING
   utter_goodbye:
     - text: "Bye! Have a great day."
 
@@ -149,6 +154,11 @@ actions:
   - action_list_activities
   - action_handle_missing_values
   - utter_emission_result
+######################################### TESTING
+  - actions_list # actions.py
+  - utter_buynow
+  - utter_greet
+######################################### TESTING
 #  - action_query_openai
 #  - action_openai_call
 

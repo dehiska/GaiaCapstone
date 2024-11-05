@@ -9,6 +9,18 @@ stories:
 #   - intent: mood_great
 #   - action: utter_happy
 
+################################################################################# TESTING
+# BUYER STORIES
+- story: the script
+  steps:
+  - intent: greet # hi, hello, hey...
+  - action: utter_greet # hey! How are you?
+  - intent: product_list # I want to buy new shoes, ...
+  - action: actions_list # actions.py ---> //
+  - intent: buynow # buy now, ...
+  - action: utter_buynow # To order, please visit our website: https://nike.com
+################################################################################## TESTING
+
 # - story: sad path 1
 #   steps:
 #   - intent: greet

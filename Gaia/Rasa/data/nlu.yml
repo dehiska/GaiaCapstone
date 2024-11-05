@@ -20,7 +20,25 @@ nlu:
     - Hi
     - Good morning 
     - Good afternoon
+#################################################### TESTING
+# USER ASK
+- intent: product_list
+  examples: |
+    - I want to buy new shoes
+    - I want to buy new Nike shoes
+    - buy new shoes
+    - buy Nike shoes
+    - bought Nike
+    - Do you have new Nike shoes?
 
+# BUY NOW
+- intent: buynow
+  examples: |
+    - Buy now
+    - Buy
+    - Buy it
+    - buuy noww
+###################################################### TESTING
 - intent: goodbye
   examples: |
     - cu

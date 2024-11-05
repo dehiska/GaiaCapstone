@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaia's Recommendations For You</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="rec-body">
+
+<a href="/homepage" class="rec-back-button">Backpage</a>
+
+<div class="rec-container">
+    <div class="rec-header">Gaia's Recommendations For You</div>
+    <div class="rec-content">
+        <div class="rec-left-panel">
+            <h3>Electricity Usage</h3>
+            <!-- Placeholder for graph -->
+            <img src="{{ chart_url }}" alt="Electricity Usage Chart" width="80%">
+        </div>
+        <div class="rec-right-panel">
+            <p>Energy audit, unplug the dishwasher…</p>
+            <p><a href= "https://www.osha.gov/electrical/solutions" target="_blank">https://www.osha.gov/electrical/solutions</a></p>
+            <p>Reference: https://www.osha.gov/electrical/solutions</p>
+        </div>
+        <div class="home-content">
+            <form action="/logout" method="POST">
+            <button type="submit" class="btn-box">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -57,7 +57,77 @@ EMISSION_FACTORS = {
     "vegetarian": 0.66,
     "vegan": 0.56,
 }
+############################################## TESTING
+class ActionCarousel(Action):
 
+    def name(self) -> Text:
+        return "actions_list"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]
+    ) -> List[Dict[Text, Any]]:
+        
+        new_carousel = {
+            "type": "template", 
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "Air Jordan 1 Low",
+                        "subtitle": "Price: $115",
+                        "image_url": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/53fa38ff-85be-4e83-82b0-2b3614667cb4/AIR+JORDAN+1+LOW.png",
+                        "buttons": [
+                            {
+                                "title": "Details", 
+                                "url": "https://www.nike.com/t/air-jordan-1-low-mens-shoes-0LXhbn/553558-042",
+                                "type": "web_url"
+                            },
+                            {
+                                "title": "Buy Now", 
+                                "type": "postback",
+                                "payload": "/buynow" # nly.yml
+                            },
+                            {
+                                "title": "Size", 
+                                "type": "postback",
+                                "payload": "/size" # nly.yml
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Air Jordan 1 Retro High OG 'Midnight Navy'",
+                        "subtitle": "Price: $180",
+                        "image_url": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9275d342-c34f-4d25-8641-17357e19d6f8/AIR+JORDAN+1+RETRO+HIGH+OG.png",
+                        "buttons": [
+                            {
+                                "title": "Details", 
+                                "url": "https://www.nike.com/t/air-jordan-1-retro-high-og-midnight-navy-mens-shoes-8xgDfd/DZ5485-401",
+                                "type": "web_url"
+                            },
+                            {
+                                "title": "Buy Now", 
+                                "type": "postback",
+                                "payload": "/buynow" # nly.yml
+                            },
+                            {
+                                "title": "Size", 
+                                "type": "postback",
+                                "payload": "/size" # nly.yml
+                            }
+                        ]
+                    }
+                ] # ELEMENTS
+            }
+        }
+
+        dispatcher.utter_message("Here are some of our Nike shoes!", attachment = new_carousel)
+
+        return []
+
+############################################## TESTING
 class ActionCalculateEmissions(Action):
 
     def name(self) -> str:
