@@ -98,7 +98,8 @@ slots:
     type: text
     influence_conversation: false
     mappings:
-      - type: from_text
+      - type: from_entity
+        entity: car_fuel_unit
 
         
   car_miles:
