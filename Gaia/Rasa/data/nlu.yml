@@ -1,274 +1,274 @@
 nlu:
-- regex: short_flights
-  examples: |
-  pattern: "- [0-9]+" 
+  - regex: short_flights
+    examples: |
+      - [0-9]+ 
+    
+  - intent: ask_lifestyle_survey
+    examples: |
+      - I want to take the lifestyle survey
+      - Can you start the lifestyle survey?
+      - I'd like to begin the lifestyle survey
+      - Start the lifestyle survey, please
+      - Begin lifestyle survey
+      - lifestyle survey
+
+  #- intent: ask_openai
+  #  examples: |
+  #    - Can you tell me about AI?
+  #    - What do you know about natural language processing?
+  #    - How does machine learning work?
+
+  - intent: greet
+    examples: |
+      - Hello 
+      - Hi
+      - Good morning 
+      - Good afternoon
+  #################################################### TESTING
+  # USER ASK
+  - intent: product_list
+    examples: |
+      - I want to buy new shoes
+      - I want to buy new Nike shoes
+      - buy new shoes
+      - buy Nike shoes
+      - bought Nike
+      - Do you have new Nike shoes?
+
+  # BUY NOW
+  - intent: buynow
+    examples: |
+      - Buy now
+      - Buy
+      - Buy it
+      - buuy noww
+  ###################################################### TESTING
+  - intent: goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+      - see you
+      - later
+      - done
+      - finished
+      - I’m done here
+
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
+
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
+
+  - intent: mood_great
+    examples: |
+      - perfect
+      - great
+      - amazing
+      - feeling like a king
+      - wonderful
+      - I am feeling very good
+      - I am great
+      - I am amazing
+      - I am going to save the world
+      - super stoked
+      - extremely good
+      - so so perfect
+      - so good
+      - so perfect
+
+  - intent: mood_unhappy
+    examples: |
+      - my day was horrible
+      - I am sad
+      - I don't feel very well
+      - I am disappointed
+      - super sad
+      - I'm so sad
+      - sad
+      - very sad
+      - unhappy
+      - not good
+      - not very good
+      - extremely sad
+      - so saad
+      - so sad
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+
+  - intent: provide_electricity
+    examples: |
+      - I use [300](electricity_kwh) kWh per month
+      - I use [300](electricity_kwh) kwh per month
+      - I use [300](electricity_kwh) kWh
+      - I use [300](electricity_kwh) kwh
+      - I use [300](electricity_kwh)
+      - [300](electricity_kwh) kWh
+      - [300](electricity_kwh) kwk
+      - [300](electricity_kwh)
+      - My electricity usage is [450](electricity_kwh) kWh
+      - I consume [200](electricity_kwh) kWh monthly
+
+  - intent: provide_energy_source
+    examples: |
+      - My main energy source is [coal](energy_source)
+      - I use [natural gas](energy_source)
+      - [natural gas](energy_source)
+      - [Petroleum](energy_source)
+      - mostly [natural gas](energy_source) 
+      - My electricity comes from [hydropower](energy_source)
+
+  - intent: provide_car_fuel_type
+    examples: |
+      - My car uses [gasoline](car_fuel_type)
+      - My car uses [gas](car_fuel_type)
+      - I use [diesel](car_fuel_type)
+      - I use [gasonline](car_fuel_type)
+      - I use [gas](car_fuel_type)
+      - [gasoline](car_fuel_type) gallons
+      - [gas](car_fuel_type) liters
+      - [gasoline](car_fuel_type) gallons
+      - [gas](car_fuel_type) liters
+      - [diesel](car_fuel_type)
+
+  - intent: provide_car_miles
+    examples: |
+      -  I drive roughly [4500](car_miles) miles a week
+      -  I drive roughly [4500](car_miles) mi a week
+      - I drive [100](car_miles) mi weekly
+      - [1000](car_miles) miles
+      - [103](car_miles) mi
+      - I drive [420](car_miles) mi
+      - me drive [63](car_miles) miles weekly.
+      -  I drive roughly [4500](car_miles) kilometers a week
+      -  I drive roughly [4500](car_miles) km a week
+      - I drive [100](car_miles) km weekly
+      - [1000](car_miles) kilometers
+      - [103](car_miles) km
+      - I drive [420](car_miles) km
+      - me drive [63](car_miles) kilometers weekly
+
+
+  - intent: provide_car_fuel_unit
+    examples: |
+      - I use [gallons](car_fuel_unit)
+      - [gallons](car_fuel_unit)
+      - [liters](car_fuel_unit)
+      - I use [liters](car_fuel_unit)
+      - We measure in [gallons](car_fuel_unit)
+      - Mostly [liters](car_fuel_unit)
+      - I use [gallons](car_fuel_unit)
+
+  - intent: provide_car_fuel_usage
+    examples: | 
+      -  I use [100](car_fuel_usage) gallons a week
+      -  I use [100](car_fuel_usage) liters a week
+      - Probably about [40](car_fuel_usage) gallons weekly
+      - Probably about [40](car_fuel_usage) liters weekly
+      - About [40](car_fuel_usage) gallons weekly
+      - About [40](car_fuel_usage) liters weekly
+      - About [40](car_fuel_usage) gallons weekly.
+      - About [40](car_fuel_usage) liters weekly.
+      - My weekly usage is [50](car_fuel_usage) liters
+      - My weekly usage is [50](car_fuel_usage) gallons
+      - [20](car_fuel_usage) liters
+      - [20](car_fuel_usage) gallons
+      - [20](car_fuel_usage)
+
+  - intent: provide_flights_short
+    examples: |
+      - I take [10](short_flights) short flights
+      - I fly [5](short_flights) 
+      - [5](short_flights)
+      - [1](short_flights)
+      - [2](short_flights)
+      - about [2](short_flights) a year
+      - maybe [2](short_flights) a year
+
+  - intent: provide_flights_long
+    examples: |
+      - [3](long_flights)
+      - I take [10](long_flights) long flights a year
+      - Probably like [3](long_flights) long flights
+      - Maybe about [2](long_flights) long flights a year
+
+  - intent: provide_diet
+    examples: |
+      - [meat diet](diet)
+      - I follow a [vegan](diet) diet
+      - My diet is [average omnivore](diet)
+      - I eat a [meat diet](diet)
+
+  - intent: provide_recycling
+    examples: |
+      - [Yes]
+      - [No]
+      - [yes]
+      - [no]
+      - [Yes](recycles), I recycle
+      - [No](recycles), I don't recycle
+
+  - intent: calculate_emissions
+    examples: |
+      - I want to calculate emissions for [Bus](activity) traveling [100](distance) [km](distance_unit)
+      - What are the emissions for [Tobacco manufacturing](activity) with [500](money) [USD](money_unit) in sales?
+      - How much CO2 does [Cable and subscription programming](activity) produce for [2000](money) [USD](money_unit)?
+      - Calculate the emissions for [Motorcycle](activity) traveling [50](distance) [miles](distance_unit)
+      - How much emissions does [Breweries](activity) generate for [300](money) [EUR](money_unit)?
+      - Can you calculate emissions for [Amusement arcades](activity) with [700](money) [GBP](money_unit)?
+      - I want to calculate emissions for [Passenger car](activity) over a distance of [120](distance) [km](distance_unit)
+      - What are the emissions for [Dog and cat food](activity) production of [1500](money) [USD](money_unit)?
+      - Calculate emissions for [Transit rail](activity) traveling [75](distance) [km](distance_unit)
+      - Can you calculate emissions for [Flavored drink concentrates](activity) costing [4000](money) [USD](money_unit)?
+      - How much CO2 does [Intercity rail National average](activity) emit for a distance of [200](distance) [miles](distance_unit)?
+      - What are the emissions for [Residential mental health and substance abuse facilities](activity) spending [10000](money) [USD](money_unit)?
+      - Calculate emissions for [School bus](activity) traveling [10](distance) [km](distance_unit)
+      - I'd like to know the emissions for [Assisted living for the elderly](activity) for [800](money) [USD](money_unit)
+      - How much CO2 does [Nursing and community care](activity) emit for [2000](money) [USD](money_unit)?
+      - What are the emissions for [Guided missiles and space vehicles](activity) over [5000](distance) [km](distance_unit)?
+      - Can you calculate emissions for [Breakfast cereals](activity) with a budget of [3500](money) [USD](money_unit)?
+      - I want to calculate emissions for [Petroleum and petrol products](activity) worth [5000](money) [USD](money_unit)
+      - How much CO2 does [Commuter rail](activity) emit for [100](distance) [km](distance_unit)?
+      - Can you calculate emissions for [Limousine and other chartering](activity) traveling [80](distance) [miles](distance_unit)?
+      - How much CO2 does [Advertising agencies](activity) produce for a spend of [12000](money) [USD](money_unit)?
+      - Calculate the emissions for [Human rights organizations](activity) with [2000](money) [USD](money).
+      - How much CO2 does [Environmental consulting services](activity) emit for [1500](money) [USD](money_unit)?
+      - I want to know the emissions for [Snack Foods](activity) with a budget of [2500](money) [USD](money_unit)?
+      - Can you calculate emissions for [Motor homes](activity) over a distance of [150](distance) [km](distance_unit)?
+      - How much emissions are generated by [General Medical and Surgical Hospitals](activity) with [10000](money) [USD](money_unit)?
+      - I want to calculate emissions for [Bus](activity) for a distance of [50](distance) [km](distance_unit)?
+      - How much CO2 does [Cable and subscription programming](activity) produce?
+      - Calculate the emissions for [Motorcycle](activity) traveling [100](distance) [miles](distance_unit)?
+      - What are the emissions for [Advertising agencies](activity) spending [1000](money) [USD](money_unit)?
+      - I want to calculate emissions
+      - Help me calculate emissions
+      - Calculate emissions for me
+      - Can you calculate my emissions?
+      - What are the emissions for this?
+      - I'd like to know the emissions
   
-- intent: ask_lifestyle_survey
-  examples: |
-    - I want to take the lifestyle survey
-    - Can you start the lifestyle survey?
-    - I'd like to begin the lifestyle survey
-    - Start the lifestyle survey, please
-    - Begin lifestyle survey
-    - lifestyle survey
-
-#- intent: ask_openai
-#  examples: |
-#    - Can you tell me about AI?
-#    - What do you know about natural language processing?
-#    - How does machine learning work?
-
-- intent: greet
-  examples: |
-    - Hello 
-    - Hi
-    - Good morning 
-    - Good afternoon
-#################################################### TESTING
-# USER ASK
-- intent: product_list
-  examples: |
-    - I want to buy new shoes
-    - I want to buy new Nike shoes
-    - buy new shoes
-    - buy Nike shoes
-    - bought Nike
-    - Do you have new Nike shoes?
-
-# BUY NOW
-- intent: buynow
-  examples: |
-    - Buy now
-    - Buy
-    - Buy it
-    - buuy noww
-###################################################### TESTING
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
-    - see you
-    - later
-    - done
-    - finished
-    - I’m done here
-
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
-
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremely sad
-    - so saad
-    - so sad
-
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
-
-- intent: provide_electricity
-  examples: |
-    - I use [300](electricity_kwh) kWh per month
-    - I use [300](electricity_kwh) kwh per month
-    - I use [300](electricity_kwh) kWh
-    - I use [300](electricity_kwh) kwh
-    - I use [300](electricity_kwh)
-    - [300](electricity_kwh) kWh
-    - [300](electricity_kwh) kwk
-    - [300](electricity_kwh)
-    - My electricity usage is [450](electricity_kwh) kWh
-    - I consume [200](electricity_kwh) kWh monthly
-
-- intent: provide_energy_source
-  examples: |
-    - My main energy source is [coal](energy_source)
-    - I use [natural gas](energy_source)
-    - [natural gas](energy_source)
-    - [Petroleum](energy_source)
-    - mostly [natural gas](energy_source) 
-    - My electricity comes from [hydropower](energy_source)
-
-- intent: provide_car_fuel_type
-  examples: |
-    - My car uses [gasoline](car_fuel_type)
-    - My car uses [gas](car_fuel_type)
-    - I use [diesel](car_fuel_type)
-    - I use [gasonline](car_fuel_type)
-    - I use [gas](car_fuel_type)
-    - [gasoline](car_fuel_type) gallons
-    - [gas](car_fuel_type) liters
-    - [gasoline](car_fuel_type) gallons
-    - [gas](car_fuel_type) liters
-    - [diesel](car_fuel_type)
-
-- intent: provide_car_miles
-  examples: |
-    -  I drive roughly [4500](car_miles) miles a week
-    -  I drive roughly [4500](car_miles) mi a week
-    - I drive [100](car_miles) mi weekly
-    - [1000](car_miles) miles
-    - [103](car_miles) mi
-    - I drive [420](car_miles) mi
-    - me drive [63](car_miles) miles weekly.
-    -  I drive roughly [4500](car_miles) kilometers a week
-    -  I drive roughly [4500](car_miles) km a week
-    - I drive [100](car_miles) km weekly
-    - [1000](car_miles) kilometers
-    - [103](car_miles) km
-    - I drive [420](car_miles) km
-    - me drive [63](car_miles) kilometers weekly
-
-
-- intent: provide_car_fuel_unit
-  examples: |
-    - I use [gallons](car_fuel_unit)
-    - [gallons](car_fuel_unit)
-    - [liters](car_fuel_unit)
-    - I use [liters](car_fuel_unit)
-    - We measure in [gallons](car_fuel_unit)
-    - Mostly [liters](car_fuel_unit)
-    - I use [gallons](car_fuel_unit)
-
-- intent: provide_car_fuel_usage
-  examples: | 
-    -  I use [100](car_fuel_usage) gallons a week
-    -  I use [100](car_fuel_usage) liters a week
-    - Probably about [40](car_fuel_usage) gallons weekly
-    - Probably about [40](car_fuel_usage) liters weekly
-    - About [40](car_fuel_usage) gallons weekly
-    - About [40](car_fuel_usage) liters weekly
-    - About [40](car_fuel_usage) gallons weekly.
-    - About [40](car_fuel_usage) liters weekly.
-    - My weekly usage is [50](car_fuel_usage) liters
-    - My weekly usage is [50](car_fuel_usage) gallons
-    - [20](car_fuel_usage) liters
-    - [20](car_fuel_usage) gallons
-    - [20](car_fuel_usage)
-
-- intent: provide_flights_short
-  examples: |
-    - I take [10](short_flights) short flights
-    - I fly [5](short_flights) 
-    - [5](short_flights)
-    - [1](short_flights)
-    - [2](short_flights)
-    - about [2](short_flights) a year
-    - maybe [2](short_flights) a year
-
-- intent: provide_flights_long
-  examples: |
-    - [3](long_flights)
-    - I take [10](long_flights) long flights a year
-    - Probably like [3](long_flights) long flights
-    - Maybe about [2](long_flights) long flights a year
-
-- intent: provide_diet
-  examples: |
-    - [meat diet](diet)
-    - I follow a [vegan](diet) diet
-    - My diet is [average omnivore](diet)
-    - I eat a [meat diet](diet)
-
-- intent: provide_recycling
-  examples: |
-    - [Yes]
-    - [No]
-    - [yes]
-    - [no]
-    - [Yes](recycles), I recycle
-    - [No](recycles), I don't recycle
-
-- intent: calculate_emissions
-  examples: |
-    - I want to calculate emissions for [Bus](activity) traveling [100](distance) [km](distance_unit)
-    - What are the emissions for [Tobacco manufacturing](activity) with [500](money) [USD](money_unit) in sales?
-    - How much CO2 does [Cable and subscription programming](activity) produce for [2000](money) [USD](money_unit)?
-    - Calculate the emissions for [Motorcycle](activity) traveling [50](distance) [miles](distance_unit)
-    - How much emissions does [Breweries](activity) generate for [300](money) [EUR](money_unit)?
-    - Can you calculate emissions for [Amusement arcades](activity) with [700](money) [GBP](money_unit)?
-    - I want to calculate emissions for [Passenger car](activity) over a distance of [120](distance) [km](distance_unit)
-    - What are the emissions for [Dog and cat food](activity) production of [1500](money) [USD](money_unit)?
-    - Calculate emissions for [Transit rail](activity) traveling [75](distance) [km](distance_unit)
-    - Can you calculate emissions for [Flavored drink concentrates](activity) costing [4000](money) [USD](money_unit)?
-    - How much CO2 does [Intercity rail National average](activity) emit for a distance of [200](distance) [miles](distance_unit)?
-    - What are the emissions for [Residential mental health and substance abuse facilities](activity) spending [10000](money) [USD](money_unit)?
-    - Calculate emissions for [School bus](activity) traveling [10](distance) [km](distance_unit)
-    - I'd like to know the emissions for [Assisted living for the elderly](activity) for [800](money) [USD](money_unit)
-    - How much CO2 does [Nursing and community care](activity) emit for [2000](money) [USD](money_unit)?
-    - What are the emissions for [Guided missiles and space vehicles](activity) over [5000](distance) [km](distance_unit)?
-    - Can you calculate emissions for [Breakfast cereals](activity) with a budget of [3500](money) [USD](money_unit)?
-    - I want to calculate emissions for [Petroleum and petrol products](activity) worth [5000](money) [USD](money_unit)
-    - How much CO2 does [Commuter rail](activity) emit for [100](distance) [km](distance_unit)?
-    - Can you calculate emissions for [Limousine and other chartering](activity) traveling [80](distance) [miles](distance_unit)?
-    - How much CO2 does [Advertising agencies](activity) produce for a spend of [12000](money) [USD](money_unit)?
-    - Calculate the emissions for [Human rights organizations](activity) with [2000](money) [USD](money).
-    - How much CO2 does [Environmental consulting services](activity) emit for [1500](money) [USD](money_unit)?
-    - I want to know the emissions for [Snack Foods](activity) with a budget of [2500](money) [USD](money_unit)?
-    - Can you calculate emissions for [Motor homes](activity) over a distance of [150](distance) [km](distance_unit)?
-    - How much emissions are generated by [General Medical and Surgical Hospitals](activity) with [10000](money) [USD](money_unit)?
-    - I want to calculate emissions for [Bus](activity) for a distance of [50](distance) [km](distance_unit)?
-    - How much CO2 does [Cable and subscription programming](activity) produce?
-    - Calculate the emissions for [Motorcycle](activity) traveling [100](distance) [miles](distance_unit)?
-    - What are the emissions for [Advertising agencies](activity) spending [1000](money) [USD](money_unit)?
-    - I want to calculate emissions
-    - Help me calculate emissions
-    - Calculate emissions for me
-    - Can you calculate my emissions?
-    - What are the emissions for this?
-    - I'd like to know the emissions
- 
