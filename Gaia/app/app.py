@@ -86,5 +86,25 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
 
+
+#Accepting incoming data from lifestyle Survey
+@app.route('/submit_survey', methods=['POST'])
+def submit_survey():
+    data = request.get_json()
+
+    if data:
+        # Store the survey data in session
+        session['survey_data'] = data
+
+        # Generate recommendations based on the survey data
+        recommendations = Recommendations(data).generate_recommendations()
+
+        # Save recommendations to session for later use in templates
+        session['recommendations'] = recommendations
+
+        # Return a success message
+        return jsonify({"message": "Survey data received successfully.", "recommendations": recommendations}), 200
+    else:
+        return jsonify({"error": "No data received"}), 400
 if __name__ == '__main__':
     app.run(debug=True)
