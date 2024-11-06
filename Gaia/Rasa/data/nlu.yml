@@ -1,4 +1,8 @@
 nlu:
+- regex: short_flights
+  examples: |
+  - [0-9]+ 
+  
 - intent: ask_lifestyle_survey
   examples: |
     - I want to take the lifestyle survey
@@ -120,6 +124,13 @@ nlu:
 - intent: provide_electricity
   examples: |
     - I use [300](electricity_kwh) kWh per month
+    - I use [300](electricity_kwh) kwh per month
+    - I use [300](electricity_kwh) kWh
+    - I use [300](electricity_kwh) kwh
+    - I use [300](electricity_kwh)
+    - [300](electricity_kwh) kWh
+    - [300](electricity_kwh) kwk
+    - [300](electricity_kwh)
     - My electricity usage is [450](electricity_kwh) kWh
     - I consume [200](electricity_kwh) kWh monthly
 
@@ -127,6 +138,9 @@ nlu:
   examples: |
     - My main energy source is [coal](energy_source)
     - I use [natural gas](energy_source)
+    - [natural gas](energy_source)
+    - [Petroleum](energy_source)
+    - mostly [natural gas](energy_source) 
     - My electricity comes from [hydropower](energy_source)
 
 - intent: provide_car_fuel_type
@@ -136,18 +150,28 @@ nlu:
     - I use [diesel](car_fuel_type)
     - I use [gasonline](car_fuel_type)
     - I use [gas](car_fuel_type)
-    - [gasoline](car_fuel_type)
-    - [gas](car_fuel_type)
+    - [gasoline](car_fuel_type) gallons
+    - [gas](car_fuel_type) liters
+    - [gasoline](car_fuel_type) gallons
+    - [gas](car_fuel_type) liters
     - [diesel](car_fuel_type)
 
 - intent: provide_car_miles
   examples: |
     -  I drive roughly [4500](car_miles) miles a week
+    -  I drive roughly [4500](car_miles) mi a week
     - I drive [100](car_miles) mi weekly
     - [1000](car_miles) miles
     - [103](car_miles) mi
     - I drive [420](car_miles) mi
-    - me drive [63](car_miles) miles weekly
+    - me drive [63](car_miles) miles weekly.
+    -  I drive roughly [4500](car_miles) kilometers a week
+    -  I drive roughly [4500](car_miles) km a week
+    - I drive [100](car_miles) km weekly
+    - [1000](car_miles) kilometers
+    - [103](car_miles) km
+    - I drive [420](car_miles) km
+    - me drive [63](car_miles) kilometers weekly
 
 
 - intent: provide_car_fuel_unit
@@ -174,27 +198,38 @@ nlu:
     - My weekly usage is [50](car_fuel_usage) gallons
     - [20](car_fuel_usage) liters
     - [20](car_fuel_usage) gallons
+    - [20](car_fuel_usage)
 
 - intent: provide_flights_short
   examples: |
     - I take [10](short_flights) short flights
     - I fly [5](short_flights) 
+    - [5](short_flights)
+    - [1](short_flights)
+    - [2](short_flights)
     - about [2](short_flights) a year
+    - maybe [2](short_flights) a year
 
 - intent: provide_flights_long
   examples: |
+    - [3](long_flights)
     - I take [10](long_flights) long flights a year
     - Probably like [3](long_flights) long flights
     - Maybe about [2](long_flights) long flights a year
 
 - intent: provide_diet
   examples: |
+    - [meat diet](diet)
     - I follow a [vegan](diet) diet
     - My diet is [average omnivore](diet)
     - I eat a [meat diet](diet)
 
 - intent: provide_recycling
   examples: |
+    - [Yes]
+    - [No]
+    - [yes]
+    - [no]
     - [Yes](recycles), I recycle
     - [No](recycles), I don't recycle
 
@@ -221,7 +256,7 @@ nlu:
     - How much CO2 does [Commuter rail](activity) emit for [100](distance) [km](distance_unit)?
     - Can you calculate emissions for [Limousine and other chartering](activity) traveling [80](distance) [miles](distance_unit)?
     - How much CO2 does [Advertising agencies](activity) produce for a spend of [12000](money) [USD](money_unit)?
-    - Calculate the emissions for [Human rights organizations](activity) with [2000](money) [USD](money) [in expenses
+    - Calculate the emissions for [Human rights organizations](activity) with [2000](money) [USD](money).
     - How much CO2 does [Environmental consulting services](activity) emit for [1500](money) [USD](money_unit)?
     - I want to know the emissions for [Snack Foods](activity) with a budget of [2500](money) [USD](money_unit)?
     - Can you calculate emissions for [Motor homes](activity) over a distance of [150](distance) [km](distance_unit)?

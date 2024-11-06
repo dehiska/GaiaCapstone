@@ -1,6 +1,5 @@
 import requests
 import os
- 
 # Define the different endpoints with their respective parameters
 endpoints = {
     # Consumer Goods and Services
