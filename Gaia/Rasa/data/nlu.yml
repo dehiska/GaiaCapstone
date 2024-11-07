@@ -1,66 +1,66 @@
 version: "3.0"
 nlu:
-- regex: short_flights
-  examples: |
-    - [0-9]+ 
-  
-- intent: ask_lifestyle_survey
-  examples: |
-    - I want to take the lifestyle survey
-    - Can you start the lifestyle survey?
-    - I'd like to begin the lifestyle survey
-    - Start the lifestyle survey, please
-    - Begin lifestyle survey
-    - lifestyle survey
+  - regex: short_flights
+    examples: |
+      - [0-9]+ 
+    
+  - intent: ask_lifestyle_survey
+    examples: |
+      - I want to take the lifestyle survey
+      - Can you start the lifestyle survey?
+      - I'd like to begin the lifestyle survey
+      - Start the lifestyle survey, please
+      - Begin lifestyle survey
+      - lifestyle survey
 
-  #- intent: ask_openai
-  #  examples: |
-  #    - Can you tell me about AI?
-  #    - What do you know about natural language processing?
-  #    - How does machine learning work?
+    #- intent: ask_openai
+    #  examples: |
+    #    - Can you tell me about AI?
+    #    - What do you know about natural language processing?
+    #    - How does machine learning work?
 
-- intent: greet
-  examples: |
-    - Hello 
-    - Hi
-    - Good morning 
-    - Good afternoon
+  - intent: greet
+    examples: |
+      - Hello 
+      - Hi
+      - Good morning 
+      - Good afternoon
 
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
-    - see you
-    - later
-    - done
-    - finished
-    - I’m done here
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+  - intent: goodbye
+    examples: |
+      - cu
+      - good by
+      - cee you later
+      - good night
+      - bye
+      - goodbye
+      - have a nice day
+      - see you around
+      - bye bye
+      - see you later
+      - see you
+      - later
+      - done
+      - finished
+      - I’m done here
+  - intent: affirm
+    examples: |
+      - yes
+      - y
+      - indeed
+      - of course
+      - that sounds good
+      - correct
 
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+  - intent: deny
+    examples: |
+      - no
+      - n
+      - never
+      - I don't think so
+      - don't like that
+      - no way
+      - not really
 
   - intent: mood_great
     examples: |
