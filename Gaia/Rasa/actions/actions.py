@@ -3,6 +3,8 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 from snippets import endpoints, estimate_emissions
+from rasa_sdk.events import FollowupAction
+import requests
 
 # Mappings for units
 distance_unit_mapping = {
@@ -302,6 +304,7 @@ class ActionLifestyleSurvey(Action):
         total_emissions = self.calculate_carbon_footprint(responses)
         dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
 
+        
         return []
 
     def calculate_carbon_footprint(self, responses):
@@ -315,4 +318,44 @@ class ActionLifestyleSurvey(Action):
 
         # Sum total emissions
         total_emissions = electricity_emissions + car_emissions + flight_emissions + diet_emissions + waste_emissions
+
+        survey_data = {
+        "electricity_emissions": electricity_emissions,
+        "car_emissions": car_emissions,
+        "flight_emissions": flight_emissions,
+        "diet_emissions": diet_emissions,
+        "waste_emissions": waste_emissions,
+        "total_emissions": total_emissions
+        }
+
+        # Send the survey data to the Flask endpoint
+        try:
+            response = requests.post("http://localhost:5000/submit_survey", json=survey_data)
+            if response.status_code == 200:
+                print("Survey data submitted successfully.")
+            else:
+                print("There was an error submitting your survey data.")
+        except requests.exceptions.RequestException as e:
+            print("Failed to connect to the server. Error: {e}")
+
         return total_emissions
+
+
+class ActionLifestyleSurveyCompletion(Action):
+    def name(self) -> str:
+        return "action_lifestyle_survey_completion"
+
+    def run(self, dispatcher, tracker, domain):
+        # Perform any final steps, such as storing data or confirming submission
+        dispatcher.utter_message(text="The lifestyle survey is now complete.")
+        
+        # Trigger the frontend to redirect to recommendations
+        return [FollowupAction("action_redirect_to_recommendations")]
+
+class ActionRedirectToRecommendations(Action):
+    def name(self) -> str:
+        return "action_redirect_to_recommendations"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(json_message={"redirect": True})  # Send custom message to frontend
+        return []
