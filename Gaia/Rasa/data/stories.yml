@@ -19,6 +19,11 @@ stories:
   - action: actions_list # actions.py ---> //
   - intent: buynow # buy now, ...
   - action: utter_buynow # To order, please visit our website: https://nike.com
+
+- story: redirect after survey
+  steps:
+    - intent: complete_survey
+    - action: action_redirect_to_recommendations
 ################################################################################## TESTING
 
 # - story: sad path 1

@@ -19,9 +19,15 @@
             <img src="{{ chart_url }}" alt="Electricity Usage Chart" width="80%">
         </div>
         <div class="rec-right-panel">
-            <p>Energy audit, unplug the dishwasher…</p>
+            <h3>Your Personalized Recommendations</h3>
+            <ul>
+                {% for recommendation in recommendations %}
+                <li>{{ recommendation }}</li>
+                {% endfor %}
+            </ul>
+            <!-- <p>Energy audit, unplug the dishwasher…</p>
             <p><a href= "https://www.osha.gov/electrical/solutions" target="_blank">https://www.osha.gov/electrical/solutions</a></p>
-            <p>Reference: https://www.osha.gov/electrical/solutions</p>
+            <p>Reference: https://www.osha.gov/electrical/solutions</p> -->
         </div>
         <div class="home-content">
             <form action="/logout" method="POST">

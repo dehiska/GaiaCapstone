@@ -33,4 +33,9 @@ stories:
     - intent: calculate_emissions
     - action: action_calculate_emissions
 
+- story: Submit survey data and display results
+  steps:
+    - intent: submit_survey
+    - action: action_set_survey_slots
+    - action: action_show_survey_data
 

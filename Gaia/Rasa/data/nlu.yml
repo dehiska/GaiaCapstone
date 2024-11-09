@@ -19,6 +19,12 @@ nlu:
     #    - What do you know about natural language processing?
     #    - How does machine learning work?
 
+  - intent: complete_survey
+    examples: |
+      - I have finished the survey
+      - The survey is done
+      - I completed the survey
+
   - intent: greet
     examples: |
       - Hello 

@@ -1,4 +1,7 @@
+from flask import request, url_for
 import matplotlib.pyplot as plt
+import os
+
 
 class Recommendations:
     def __init__(self, survey_data):
@@ -23,18 +26,23 @@ class Recommendations:
             self.graph_driving_distance()
 
         # Short flights recommendation
-        if self.survey_data["short_flights"] > 1:
+        short_flights = self.survey_data.get("short_flights", 0)
+        if short_flights > 1:
+        # if self.survey_data.get["short_flights"] > 0:
             recommendations.append("Try to limit short flights and consider alternative transportation like trains or buses.")
             self.graph_flight_usage()
 
         # Long flights recommendation
-        if self.survey_data["long_flights"] > 0:
+        long_flights = self.survey_data.get("long_flights", 0)
+        if long_flights > 1:
+        # if self.survey_data["long_flights"] > 0:
             recommendations.append(
                 "Long-haul flights emit significant CO₂. For example, a flight of 4,000 km (about 2,485 miles) can produce between 600 to 1,000 kg of CO₂ per passenger. "
                 "Consider alternatives or offsetting your carbon footprint when flying."
             )
 
         # Diet recommendation
+        self.survey_data["diet"] = request.form.get("diet", "average omnivore")
         if self.survey_data["diet"] == "average omnivore":
             recommendations.append(
                 "Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint. Beef production emits 20 times more greenhouse gases than chicken per gram of protein. "
@@ -42,7 +50,8 @@ class Recommendations:
             )
 
         # Recycling recommendation
-        if self.survey_data["recycles"] == "no":
+        self.survey_data["recycles"] = request.form.get("recycles", "no")
+        if self.survey_data.get("recycles", "no") == "no":
             recommendations.append(
                 "Recycling helps reduce waste and prevent plastic pollution. Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans. "
                 "Consider improving your recycling habits to help reduce plastic waste."
@@ -55,23 +64,26 @@ class Recommendations:
         avg_american = 900
         avg_global = 300  # Approximate global average for context
 
-        plt.figure()
+        # plt.figure()
         plt.bar(['Your Usage', 'Average American', 'Global Average'], [user_kwh, avg_american, avg_global])
         plt.title("Electricity Usage Comparison (kWh per month)")
         plt.xlabel("Comparison")
         plt.ylabel("kWh per month")
-        plt.show()
+        
+        chart_path = os.path.join('static', 'electricity_usage.png')
+        plt.savefig(chart_path)
+        plt.close()
+        return url_for('static', filename='electricity_usage.png')
 
     def graph_driving_distance(self):
         user_miles = self.survey_data.get("car_emissions", 0)
         avg_american = 217  # Average weekly miles for Americans
 
-        plt.figure()
+        # plt.figure()
         plt.bar(['Your Mileage', 'Average American'], [user_miles, avg_american])
         plt.title("Weekly Driving Distance Comparison")
         plt.xlabel("Comparison")
         plt.ylabel("Miles per week")
-        plt.show()
 
     def graph_flight_usage(self):
         user_short_flights = self.survey_data.get("short_flights", 0)
@@ -82,8 +94,6 @@ class Recommendations:
         plt.title("Annual Short Flights Comparison")
         plt.xlabel("Comparison")
         plt.ylabel("Number of Short Flights (under 3 hours)")
-        plt.show()
-
 # Usage example for Flask view
 # survey_data = session.get('survey_data')
 # recommendations = Recommendations(survey_data).generate_recommendations()

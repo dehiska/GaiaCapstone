@@ -1,7 +1,7 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
 from snippets import endpoints, estimate_emissions
 from rasa_sdk.events import FollowupAction
 import requests
@@ -128,6 +128,79 @@ class ActionCarousel(Action):
         dispatcher.utter_message("Here are some of our Nike shoes!", attachment = new_carousel)
 
         return []
+    
+############################################ 2ND TEST
+class ActionShowSurveyData(Action):
+
+    def name(self) -> Text:
+        return "action_show_survey_data"
+
+    def run(
+        self,
+        dispatcher: CollectingDispatcher,
+        tracker: "Tracker",
+        domain: Dict[Text, Any],
+    ) -> List[Dict[Text, Any]]:
+        
+        print("Slots:", tracker.slots) # debugging to verify data
+
+        # Example: Retrieve survey data from slots
+        survey_data = {
+            "Diet": tracker.get_slot("diet_emissions") or "Not provided",
+            "Recycles": tracker.get_slot("recycles_emissions") or "Not provided",
+            "Electricity Emissions": tracker.get_slot("electricity_emissions") or "0",
+            "Car Emissions": tracker.get_slot("car_emissions") or "0",
+            "Flight Emissions": tracker.get_slot("flight_emissions") or "0",
+            "Waste Emissions": tracker.get_slot("waste_emissions") or "0",
+            "Total Emissions": tracker.get_slot("total_emissions") or "0",
+        }
+
+        diet = tracker.get_slot("diet") or "Not provided"
+        recycles = tracker.get_slot("recycles") or "Not provided"
+
+        response = f"Survey Data:\n- Diet: {diet}\n- Recycles:{recycles}"
+        dispatcher.utter_message(response)
+
+        return[]
+
+        # Create carousel elements dynamically from survey data
+        carousel_elements = []
+        for key, value in survey_data.items():
+            carousel_elements.append({
+                "title": key,
+                "subtitle": f"Value: {value}",
+                "image_url": "https://via.placeholder.com/150",  # Placeholder image
+                "buttons": [
+                    {
+                        "title": "Learn More",
+                        "type": "postback",
+                        "payload": f"/info_{key.lower().replace(' ', '_')}"
+                    }
+                ]
+            })
+
+        # Construct the carousel payload
+        survey_carousel = {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": carousel_elements
+            }
+        }
+
+        # Send the carousel as a response
+        dispatcher.utter_message(
+            text="Here is your submitted survey data:",
+            attachment=survey_carousel
+        )
+
+        print("Submitted Survey Data", survey_data)
+
+        return [
+            SlotSet(slot, value)
+            for slot, value in survey_data.items()
+        ]
+
 
 ############################################## TESTING
 class ActionCalculateEmissions(Action):
@@ -352,10 +425,18 @@ class ActionLifestyleSurveyCompletion(Action):
         # Trigger the frontend to redirect to recommendations
         return [FollowupAction("action_redirect_to_recommendations")]
 
+# from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
+
 class ActionRedirectToRecommendations(Action):
     def name(self) -> str:
         return "action_redirect_to_recommendations"
 
-    def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message(json_message={"redirect": True})  # Send custom message to frontend
-        return []
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Send a custom JSON payload to trigger the redirect
+        dispatcher.utter_message(
+            json_message={
+                "type": "redirect",
+                "target_url": "/recommendations.html"
+            }
+        )
+        return [AllSlotsReset()]
