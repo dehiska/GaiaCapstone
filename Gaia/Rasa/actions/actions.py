@@ -59,7 +59,6 @@ EMISSION_FACTORS = {
     "vegetarian": 0.66,
     "vegan": 0.56,
 }
-
 class ActionCalculateEmissions(Action):
 
     def name(self) -> str:
@@ -145,6 +144,12 @@ class ActionCalculateEmissions(Action):
             dispatcher.utter_message(text=f"The estimated emissions for {activity} are {emission_value} kg CO2e.")
 
         return []
+    
+valid_recycles = ["yes", "no"]
+valid_short_flights = [str(i) for i in range(0, 101)]
+valid_long_flights = [str(i) for i in range(0, 101)]
+
+
 class ActionLifestyleSurvey(Action):
     def name(self) -> str:
         return "action_lifestyle_survey"
@@ -152,125 +157,180 @@ class ActionLifestyleSurvey(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
         responses = {}
 
-        # Step 1: Check for electricity usage
+        # Step 1: Validate electricity usage
         electricity_kwh = tracker.get_slot("electricity_kwh")
-        if not electricity_kwh:
-            dispatcher.utter_message(text="Could you provide how many kWh of electricity you use per month?")
+        if electricity_kwh:
+            try:
+                # Attempt to convert the input directly to an integer
+                electricity_kwh = int(electricity_kwh)
+                responses["electricity_kwh"] = electricity_kwh
+            except ValueError:
+                try:
+                    # If not an integer, attempt to convert to a float
+                    electricity_kwh = float(electricity_kwh)
+                    responses["electricity_kwh"] = electricity_kwh
+                except ValueError:
+                    # If conversion to both integer and float fails, prompt for a valid input
+                    dispatcher.utter_message(text="Please provide a valid number for electricity usage in kWh.")
+                    return []
+        else:
+            dispatcher.utter_message(text="Can you provide how many kWh of electricity you use per month?")
             return []
 
-        # Step 2: Check for main energy source
+        # Step 2: Validate energy source
         energy_source = tracker.get_slot("energy_source")
         if not energy_source:
             dispatcher.utter_message(text="What is your main energy source (coal, petroleum, natural gas, hydropower, nuclear)?")
             return []
+        responses["energy_source"] = energy_source
 
-        # Step 3: Check for car fuel type
-        car_fuel_type = tracker.get_slot("car_fuel_type")
-        if not car_fuel_type:
-            dispatcher.utter_message(text="What fuel does your car use (gasoline, gas, or diesel)?")
+
+        
+        # Step 3: Validate recycling
+        recycles = tracker.get_slot("recycles")
+        if recycles:
+            try:
+                # Check if input is valid (either "yes" or "no")
+                if (str(recycles).strip().lower() in ["yes", "no"]):
+                    responses["recycles"] = recycles.lower() == "yes"
+                else:
+                    raise ValueError("Invalid answer.")
+            except ValueError:
+                dispatcher.utter_message(text="Do you recycle (yes or no)?")
+                return []
+        else:
+            dispatcher.utter_message(text="Do you recycle (yes or no)?")
             return []
 
-        # Step 4: Check for fuel unit (gallons or liters)
-        car_fuel_unit = tracker.get_slot("car_fuel_unit")
-        if car_fuel_unit not in ["gallons", "liters"]:
-            dispatcher.utter_message(text="Do you measure your fuel in 'gallons' or 'liters'? Please specify either 'gallons' or 'liters'.")
-            return []
+        
 
-        # Step 5: Get the actual fuel consumption amount
-        fuel_consumption = tracker.get_slot("car_fuel_usage")
-        if not fuel_consumption:
-            dispatcher.utter_message(text=f"How many {car_fuel_unit} of fuel does your car consume weekly?")
-            return []
-
-        # Step 6: Check for driving distance
-        car_miles = tracker.get_slot("car_miles")
-        if not car_miles:
-            dispatcher.utter_message(text="How many miles or kilometers do you drive per week?")
-            return []
-
-        # Step 7: Check for short flights
+        ## Step 4: Validate short flights
         short_flights = tracker.get_slot("short_flights")
-        if not short_flights:
+        if short_flights:
+            try:
+                # Attempt to convert the input directly to an integer
+                short_flights = int(short_flights)
+                responses["short_flights"] = short_flights
+            except ValueError:
+                try:
+                    # If not an integer, attempt to convert to a float
+                    short_flights = float(short_flights)
+                    responses["short_flights"] = int(short_flights)  # Convert to int for flight counts
+                except ValueError:
+                    # If conversion to both integer and float fails, prompt for a valid response
+                    dispatcher.utter_message(text="Please provide a valid number of short flights.")
+                    return []
+        else:
+            # Prompt the user if no input is provided
             dispatcher.utter_message(text="How many short flights (under 3 hours) do you take per year?")
             return []
 
-        # Step 8: Check for long flights
+        # Step 5: Validate long flights
         long_flights = tracker.get_slot("long_flights")
-        if not long_flights:
+        if long_flights:
+            try:
+                # Attempt to convert the input directly to an integer
+                long_flights = int(long_flights)
+                responses["long_flights"] = long_flights
+            except ValueError:
+                try:
+                    # If not an integer, attempt to convert to a float
+                    long_flights = float(long_flights)
+                    responses["long_flights"] = int(long_flights)  # Convert to int for flight counts
+                except ValueError:
+                    # If conversion to both integer and float fails, prompt for a valid response
+                    dispatcher.utter_message(text="Please provide a valid number of long flights.")
+                    return []
+        else:
+            # Prompt the user if no input is provided
             dispatcher.utter_message(text="How many long flights (over 3 hours) do you take per year?")
             return []
 
-        # Step 9: Check for diet type
+        # Step 6: Validate diet type
         diet = tracker.get_slot("diet")
         if not diet:
             dispatcher.utter_message(text="What is your diet type (meat diet, average omnivore, vegetarian, vegan)?")
             return []
+        responses["diet"] = diet
 
-        # Step 10: Check for recycling habit
-        recycles = tracker.get_slot("recycles")
-        if not recycles:
-            dispatcher.utter_message(text="Do you recycle (yes or no)?")
+
+
+        # Step 7: Validate car fuel type
+        car_fuel_type = tracker.get_slot("car_fuel_type")
+        if not car_fuel_type:
+            dispatcher.utter_message(text="What fuel does your car use (gasoline (gas), or diesel)?")
+            return []
+        responses["car_fuel_type"] = car_fuel_type
+
+        # Step 8: Validate car fuel unit
+        car_fuel_unit = tracker.get_slot("car_fuel_unit")
+        if car_fuel_unit not in ["gallons", "liters"]:
+            dispatcher.utter_message(text="Do you measure your fuel in 'gallons' or 'liters'?")
+            return []
+        responses["car_fuel_unit"] = car_fuel_unit
+
+
+        # Step 9: Validate driving distance
+        car_miles = tracker.get_slot("car_miles")
+        if car_miles:
+            try:
+                car_miles = float(car_miles)  # Allow single number inputs
+                responses["car_miles"] = car_miles
+            except ValueError:
+                dispatcher.utter_message(text="Please provide a valid number of miles or kilometers.")
+                return []
+        else:
+            dispatcher.utter_message(text="How many miles or kilometers do you drive per week?")
             return []
 
-        # Store validated slot values in responses dictionary
-        responses = {
-            "electricity_kwh": float(electricity_kwh) * 4,  # Convert weekly to monthly
-            "energy_source": energy_source,
-            "car_fuel_type": car_fuel_type,
-            "car_fuel_unit": car_fuel_unit,
-            "car_fuel_usage": float(fuel_consumption) * 4,  # Convert weekly to monthly
-            "car_miles": float(car_miles) * 4,  # Convert weekly to monthly
-            "short_flights": int(short_flights),
-            "long_flights": int(long_flights),
-            "diet": diet,
-            "recycles": recycles
-        }
+        # Step 10: Get the actual fuel consumption amount
+        fuel_consumption = tracker.get_slot("car_fuel_usage")
+        if fuel_consumption:
+            try:
+                fuel_consumption = float(fuel_consumption)
+                responses["car_fuel_usage"] = fuel_consumption
+            except ValueError:
+                dispatcher.utter_message(text=f"Please provide a valid number for fuel consumption in {responses['car_fuel_unit']}.")
+                return []
+        else:
+            dispatcher.utter_message(text=f"How many {responses['car_fuel_unit']} of fuel does your car consume weekly?")
+            return []
 
-        # Convert liters to gallons if necessary for consistent emissions calculation
-        if car_fuel_unit == "liters":
-            responses["car_fuel_usage"] *= 0.264172  # Liters to gallons conversion factor
-
-        # Calculate emissions
+        # End of the run method in ActionLifestyleSurvey
+        dispatcher.utter_message(text="Thank you for completing the survey. Calculating your emissions...")
         total_emissions = self.calculate_carbon_footprint(responses)
         dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
 
-        
-        return []
+        # Trigger survey completion action
+        return [FollowupAction("action_lifestyle_survey_completion")]
+
 
     def calculate_carbon_footprint(self, responses):
         # Calculate emissions for each component
-        electricity_emissions = responses["electricity_kwh"] * EMISSION_FACTORS.get(responses["energy_source"], 0)
-        car_emissions = responses["car_fuel_usage"] * EMISSION_FACTORS.get(f"car_{responses['car_fuel_type']}", 0)
+        electricity_emissions = responses["electricity_kwh"]  *  EMISSION_FACTORS.get(responses["energy_source"], 0)  #multiply by 12 because we want the answer to be annual not monthly
+        car_emissions = responses["car_fuel_usage"] * EMISSION_FACTORS.get(f"car_{responses['car_fuel_type']}", 0)   #multiply by 54 because we want the answer to be annual not weekly
         flight_emissions = (responses["short_flights"] * 500 * EMISSION_FACTORS["air_travel"]) + \
                            (responses["long_flights"] * 2500 * EMISSION_FACTORS["air_travel"])
         diet_emissions = EMISSION_FACTORS.get(responses["diet"], 1.0)
-        waste_emissions = 0.2 if responses["recycles"] == "no" else 0.16
+        waste_emissions = 0.2 if not responses["recycles"] else 0.16
 
-        # Sum total emissions
-        total_emissions = electricity_emissions + car_emissions + flight_emissions + diet_emissions + waste_emissions
-
-        survey_data = {
-        "electricity_emissions": electricity_emissions,
-        "car_emissions": car_emissions,
-        "flight_emissions": flight_emissions,
-        "diet_emissions": diet_emissions,
-        "waste_emissions": waste_emissions,
-        "total_emissions": total_emissions
-        }
-
-        # Send the survey data to the Flask endpoint
-        try:
-            response = requests.post("http://localhost:5000/submit_survey", json=survey_data)
-            if response.status_code == 200:
-                print("Survey data submitted successfully.")
-            else:
-                print("There was an error submitting your survey data.")
-        except requests.exceptions.RequestException as e:
-            print("Failed to connect to the server. Error: {e}")
-
+        
+        # electricity_emissions = electricity_kwh * EMISSION_FACTORS.get(energy_source, 0)
+        # car_emissions = gallons * EMISSION_FACTORS.get(f"car {car_fuel_type}", 0)
+        # flight_emissions = (short_flights * 500 * EMISSION_FACTORS["air travel"]) + (long_flights * 2500 * EMISSION_FACTORS["air travel"])
+        # diet_emissions = EMISSION_FACTORS.get(diet, 1.0)
+        # waste_emissions = 0.2 if recycles == "no" else 0.16
+    
+        # # # Calculate emissions for each component
+        # electricity_emissions = responses["electricity_kwh"] * EMISSION_FACTORS.get(responses["energy_source"], 0)
+        # car_emissions = responses["car_fuel_usage"] * EMISSION_FACTORS.get(f"car_{responses['car_fuel_type']}", 0)
+        # flight_emissions = (responses["short_flights"] * 500 * EMISSION_FACTORS["air_travel"]) + \
+        #                    (responses["long_flights"] * 2500 * EMISSION_FACTORS["air_travel"])
+        # diet_emissions = EMISSION_FACTORS.get(responses["diet"], 1.0)
+        # waste_emissions = 0.2 if responses["recycles"] == "no" else 0.16
+        total_emissions = electricity_emissions + car_emissions + flight_emissions + diet_emissions + waste_emissions *12
         return total_emissions
-
-
+    
 class ActionLifestyleSurveyCompletion(Action):
     def name(self) -> str:
         return "action_lifestyle_survey_completion"

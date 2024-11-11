@@ -1,24 +1,23 @@
 version: "3.1"
- 
 rules:
-
-  - rule: Say `hello` when the user starts a conversation with intent `greet`
-    conversation_start: true
+  - rule: Greet
+    # This rule only applies to the start of a session.
+    conversation_start: True
     steps:
     - intent: greet
     - action: utter_greet
+    - action: utter_explain_capabilities
 
   - rule: Say goodbye anytime the user says goodbye
     steps:
     - intent: goodbye
     - action: utter_goodbye
- 
+  
   - rule: Say 'I am a bot' anytime the user challenges
     steps:
     - intent: bot_challenge
     - action: utter_iamabot
-
-
+    
 #  - rule: Say "Hello!" everytime the session beings removing duplicate rule because it is confusing rasa
 #    steps:
 #    - intent: session_start

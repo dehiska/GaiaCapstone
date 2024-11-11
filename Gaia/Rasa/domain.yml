@@ -37,6 +37,14 @@ responses:
   utter_emission_result:
     - text: "Your emissions are calculated as [100](result) tons of CO2."
 
+  utter_explain_capabilities:
+    - text: |
+        I can help you:
+        - Calculate the emissions of specific products, services, or activities.
+        - Fill out a lifestyle survey to assess your environmental impact.
+        How can I assist you today?
+
+  
 slots:
   activity:
     type: text
@@ -86,6 +94,7 @@ slots:
     mappings:
       - type: from_entity
         entity: energy_source
+        
         
   car_fuel_type:
     type: text
@@ -149,7 +158,9 @@ actions:
   - action_lifestyle_survey
   - action_list_activities
   - action_handle_missing_values
+  - action_handle_no_car
   - utter_emission_result
+  - utter_explain_capabilities
 #  - action_query_openai
 #  - action_openai_call
 
