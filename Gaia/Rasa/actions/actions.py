@@ -59,150 +59,6 @@ EMISSION_FACTORS = {
     "vegetarian": 0.66,
     "vegan": 0.56,
 }
-############################################## TESTING
-class ActionCarousel(Action):
-
-    def name(self) -> Text:
-        return "actions_list"
-
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any]
-    ) -> List[Dict[Text, Any]]:
-        
-        new_carousel = {
-            "type": "template", 
-            "payload": {
-                "template_type": "generic",
-                "elements": [
-                    {
-                        "title": "Air Jordan 1 Low",
-                        "subtitle": "Price: $115",
-                        "image_url": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/53fa38ff-85be-4e83-82b0-2b3614667cb4/AIR+JORDAN+1+LOW.png",
-                        "buttons": [
-                            {
-                                "title": "Details", 
-                                "url": "https://www.nike.com/t/air-jordan-1-low-mens-shoes-0LXhbn/553558-042",
-                                "type": "web_url"
-                            },
-                            {
-                                "title": "Buy Now", 
-                                "type": "postback",
-                                "payload": "/buynow" # nly.yml
-                            },
-                            {
-                                "title": "Size", 
-                                "type": "postback",
-                                "payload": "/size" # nly.yml
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Air Jordan 1 Retro High OG 'Midnight Navy'",
-                        "subtitle": "Price: $180",
-                        "image_url": "https://static.nike.com/a/images/t_PDP_1728_v1/f_auto,q_auto:eco,u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9275d342-c34f-4d25-8641-17357e19d6f8/AIR+JORDAN+1+RETRO+HIGH+OG.png",
-                        "buttons": [
-                            {
-                                "title": "Details", 
-                                "url": "https://www.nike.com/t/air-jordan-1-retro-high-og-midnight-navy-mens-shoes-8xgDfd/DZ5485-401",
-                                "type": "web_url"
-                            },
-                            {
-                                "title": "Buy Now", 
-                                "type": "postback",
-                                "payload": "/buynow" # nly.yml
-                            },
-                            {
-                                "title": "Size", 
-                                "type": "postback",
-                                "payload": "/size" # nly.yml
-                            }
-                        ]
-                    }
-                ] # ELEMENTS
-            }
-        }
-
-        dispatcher.utter_message("Here are some of our Nike shoes!", attachment = new_carousel)
-
-        return []
-    
-############################################ 2ND TEST
-class ActionShowSurveyData(Action):
-
-    def name(self) -> Text:
-        return "action_show_survey_data"
-
-    def run(
-        self,
-        dispatcher: CollectingDispatcher,
-        tracker: "Tracker",
-        domain: Dict[Text, Any],
-    ) -> List[Dict[Text, Any]]:
-        
-        print("Slots:", tracker.slots) # debugging to verify data
-
-        # Example: Retrieve survey data from slots
-        survey_data = {
-            "Diet": tracker.get_slot("diet_emissions") or "Not provided",
-            "Recycles": tracker.get_slot("recycles_emissions") or "Not provided",
-            "Electricity Emissions": tracker.get_slot("electricity_emissions") or "0",
-            "Car Emissions": tracker.get_slot("car_emissions") or "0",
-            "Flight Emissions": tracker.get_slot("flight_emissions") or "0",
-            "Waste Emissions": tracker.get_slot("waste_emissions") or "0",
-            "Total Emissions": tracker.get_slot("total_emissions") or "0",
-        }
-
-        diet = tracker.get_slot("diet") or "Not provided"
-        recycles = tracker.get_slot("recycles") or "Not provided"
-
-        response = f"Survey Data:\n- Diet: {diet}\n- Recycles:{recycles}"
-        dispatcher.utter_message(response)
-
-        return[]
-
-        # Create carousel elements dynamically from survey data
-        carousel_elements = []
-        for key, value in survey_data.items():
-            carousel_elements.append({
-                "title": key,
-                "subtitle": f"Value: {value}",
-                "image_url": "https://via.placeholder.com/150",  # Placeholder image
-                "buttons": [
-                    {
-                        "title": "Learn More",
-                        "type": "postback",
-                        "payload": f"/info_{key.lower().replace(' ', '_')}"
-                    }
-                ]
-            })
-
-        # Construct the carousel payload
-        survey_carousel = {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": carousel_elements
-            }
-        }
-
-        # Send the carousel as a response
-        dispatcher.utter_message(
-            text="Here is your submitted survey data:",
-            attachment=survey_carousel
-        )
-
-        print("Submitted Survey Data", survey_data)
-
-        return [
-            SlotSet(slot, value)
-            for slot, value in survey_data.items()
-        ]
-
-
-############################################## TESTING
 class ActionCalculateEmissions(Action):
 
     def name(self) -> str:
@@ -373,9 +229,29 @@ class ActionLifestyleSurvey(Action):
         if car_fuel_unit == "liters":
             responses["car_fuel_usage"] *= 0.264172  # Liters to gallons conversion factor
 
+        view_recommendations = {
+            "type": "template", 
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "View Recommendations",
+                        "image_url": "https://st2.depositphotos.com/1038076/6244/i/450/depositphotos_62448977-stock-photo-recommended.jpg",
+                        "buttons": [
+                            {
+                                "title": "Details", 
+                                "url": "/recommendations",
+                                "type": "web_url"
+                            },
+                        ]
+                    },
+                ]
+            }
+        }
+
         # Calculate emissions
         total_emissions = self.calculate_carbon_footprint(responses)
-        dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
+        dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.", attachment=view_recommendations)
 
         
         return []
@@ -424,19 +300,3 @@ class ActionLifestyleSurveyCompletion(Action):
         
         # Trigger the frontend to redirect to recommendations
         return [FollowupAction("action_redirect_to_recommendations")]
-
-# from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
-
-class ActionRedirectToRecommendations(Action):
-    def name(self) -> str:
-        return "action_redirect_to_recommendations"
-
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # Send a custom JSON payload to trigger the redirect
-        dispatcher.utter_message(
-            json_message={
-                "type": "redirect",
-                "target_url": "/recommendations.html"
-            }
-        )
-        return [AllSlotsReset()]

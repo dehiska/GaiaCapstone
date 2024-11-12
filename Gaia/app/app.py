@@ -96,20 +96,21 @@ def submit_survey():
     if data:
         # Store the survey data in session
         session['survey_data'] = data
-
+        app.logger.info(f"Received data: {data}")
         # Generate recommendations based on the survey data
         recommend = Recommendations(data)
         generate_recommendations = recommend.generate_recommendations()
 
         # Save recommendations to session for later use in templates
         session['recommendations'] = generate_recommendations
-        chart_url = recommend.graph_electricity_usage()
+        session['chart_url'] = recommend.graph_electricity_usage()
 
-        return render_template(
-            "recommendations.html",
-            recommendations = generate_recommendations, 
-            chart_url = chart_url
-        )
+        return jsonify({"redirect_url": url_for('recommendations')})
+
+        # return render_template(
+        #     "recommendations.html",
+        #     recommendations = generate_recommendations, 
+        #     chart_url = chart_url
     else:
         return jsonify({"error": "No data received"}), 400
 
