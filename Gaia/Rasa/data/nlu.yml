@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.1"
 nlu:
   - regex: short_flights
     examples: |
@@ -19,11 +19,26 @@ nlu:
     #    - What do you know about natural language processing?
     #    - How does machine learning work?
 
+#######################################################TESTING
   - intent: complete_survey
     examples: |
       - I have finished the survey
       - The survey is done
       - I completed the survey
+
+  - intent: recommendations
+    examples: |
+      - I want to see my recommendations
+      - Show me my results
+      - See my results
+      - View recommendations
+  
+  - intent: view_recommendations
+    examples: |
+      - I want to see my recommendations
+      - Show me my recommendations
+      - What should I do next?
+#############################################TESTING
 
   - intent: greet
     examples: |

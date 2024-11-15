@@ -23,6 +23,8 @@ intents:
   - product_list
   - buynow
   - complete_survey
+  - view_recommendations
+  - recommendations
 #  - ask_openai
 #  - query_openai
 
@@ -39,6 +41,14 @@ responses:
       custom:
         redirect: "/recommendations"
 
+  utter_redirect_to_recommendations:
+    - text: "Redirecting you to your recommendations..."
+
+  utter_survey_complete:
+    - text: "Thank you for completing the survey! Click below to view your recommendations."
+      buttons:
+        - title: "View recommendations."
+          payload: "/view_recommendations"
 ################################################## TESTING
   utter_goodbye:
     - text: "Bye! Have a great day."
@@ -48,6 +58,9 @@ responses:
 
   utter_emission_result:
     - text: "Your emissions are calculated as [100](result) tons of CO2."
+      buttons:
+        - title: "View recommendations."
+          payload: "/view_recommendations"
 
   utter_emission_results:
     - text: |
@@ -220,6 +233,8 @@ actions:
   - utter_buynow
   - utter_greet
   - action_redirect_to_recommendations
+  - action_view_recommendations
+  - action_recommendations_carousel
 ######################################### TESTING
 #  - action_query_openai
 #  - action_openai_call

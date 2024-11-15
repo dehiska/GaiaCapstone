@@ -224,6 +224,7 @@ class ActionLifestyleSurvey(Action):
             "diet": diet,
             "recycles": recycles
         }
+        print("Responses Dictionary:", responses)
 
         # Convert liters to gallons if necessary for consistent emissions calculation
         if car_fuel_unit == "liters":
@@ -270,6 +271,7 @@ class ActionLifestyleSurvey(Action):
 
         survey_data = {
         "electricity_emissions": electricity_emissions,
+        # "energy_source": responses['energy_source'],
         "car_emissions": car_emissions,
         "flight_emissions": flight_emissions,
         "diet_emissions": diet_emissions,
@@ -279,7 +281,7 @@ class ActionLifestyleSurvey(Action):
 
         # Send the survey data to the Flask endpoint
         try:
-            response = requests.post("http://localhost:5000/submit_survey", json=survey_data)
+            response = requests.post("http://localhost:5000/submit_survey", json=responses)
             if response.status_code == 200:
                 print("Survey data submitted successfully.")
             else:
