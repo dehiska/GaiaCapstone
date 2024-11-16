@@ -13,58 +13,92 @@
 <div class="rec-container">
     <div class="rec-header">Gaia's Recommendations For You</div>
     <div class="rec-content">
-        <!-- Electricity Usage Section -->
+
         <div class="rec-section">
-            <h3>Electricity Usage</h3>
-            <img src="{{ graphs['electricity_kwh'] }}" alt="Electricity Usage Chart">
+            <h3>Generated Recommendations</h3>
             <ul>
-                {% for rec in graph_recommendations['electricity_kwh'] %}
+                {% for rec in g_recommendations %}
                     <li>{{ rec }}</li>
                 {% endfor %}
             </ul>
         </div>
+
+        <!-- Electricity Usage Section -->
+        <div class="rec-section">
+            <h3>Electricity Usage</h3>
+            <img src="{{ graphs['electricity_kwh'] }}" alt="Electricity Usage Chart">
+            <!-- <ul>
+                {% for rec in g_recommendations['electricity_kwh'] %}
+                    <li>{{ rec }}</li>
+                {% endfor %}
+            </ul> -->
+        </div>
+
+        <!-- Energy Source Section -->
+        <div class="rec-section">
+            <h3>Energy Source</h3>
+            <img src="{{ graphs['energy_source'] }}" alt="Energy Source Chart">
+            <!-- <ul>
+                {% for rec in g_recommendations['energy_source'] %}
+                    <li>{{ rec }}</li>
+                {% endfor %}
+            </ul> -->
+        </div>
+
 
         <!-- Car Emissions Section -->
         <div class="rec-section">
             <h3>Car Emissions</h3>
             <img src="{{ graphs['car_miles'] }}" alt="Car Emissions Chart">
             <ul>
-                {% for rec in graph_recommendations['car_miles'] %}
+                <!-- {% for rec in g_recommendations['car_miles'] %}
                     <li>{{ rec }}</li>
                 {% endfor %}
-            </ul>
+            </ul> -->
         </div>
 
         <!-- Short Flights Section -->
         <div class="rec-section">
-            <h3>Flights</h3>
+            <h3>Short Flights</h3>
             <img src="{{ graphs['short_flights'] }}" alt="Short Flights Chart">
-            <ul>
-                {% for rec in graph_recommendations['short_flights'] %}
+            <!-- <ul>
+                {% for rec in g_recommendations['short_flights'] %}
                     <li>{{ rec }}</li>
                 {% endfor %}
+            </ul> -->
+        </div>
+
+        <!-- Long Flights Section -->
+        <div class="rec-section">
+            <h3>Long Flights</h3>
+            <img src="{{ graphs['long_flights'] }}" alt="Long Flights Chart">
+            <ul>
+                <!-- {% for rec in g_recommendations['long_flights'] %}
+                    <li>{{ rec }}</li>
+                {% endfor %} -->
             </ul>
         </div>
 
-        <!-- Energy Source Section -->
+        <!-- Diet Emissions Section -->
         <div class="rec-section">
             <h3>Diet Emissions</h3>
             <img src="{{ graphs['diet'] }}" alt="Diet Emissions Chart">
-            <ul>
-                {% for rec in graph_recommendations['diet'] %}
+            <!-- <ul>
+                {% for rec in g_recommendations['diet'] %}
                     <li>{{ rec }}</li>
                 {% endfor %}
-            </ul>
+            </ul> -->
         </div>
 
+        <!-- Waste Emissions Section -->
         <div class="rec-section">
             <h3>Waste Emissions</h3>
             <img src="{{ graphs['recycles'] }}" alt="Waste Emissions Chart">
-            <ul>
-                {% for rec in graph_recommendations['recycles'] %}
+            <!-- <ul>
+                {% for rec in g_recommendations['recycles'] %}
                     <li>{{ rec }}</li>
                 {% endfor %}
-            </ul>
+            </ul> -->
         </div>
 
         <div class="home-content">

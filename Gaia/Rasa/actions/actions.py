@@ -213,18 +213,17 @@ class ActionLifestyleSurvey(Action):
 
         # Store validated slot values in responses dictionary
         responses = {
-            "electricity_kwh": float(electricity_kwh) * 4,  # Convert weekly to monthly
+            "electricity_kwh": float(electricity_kwh),
             "energy_source": energy_source,
             "car_fuel_type": car_fuel_type,
             "car_fuel_unit": car_fuel_unit,
-            "car_fuel_usage": float(fuel_consumption) * 4,  # Convert weekly to monthly
-            "car_miles": float(car_miles) * 4,  # Convert weekly to monthly
+            "car_fuel_usage": float(fuel_consumption),
+            "car_miles": float(car_miles),
             "short_flights": int(short_flights),
             "long_flights": int(long_flights),
             "diet": diet,
             "recycles": recycles
         }
-        print("Responses Dictionary:", responses)
 
         # Convert liters to gallons if necessary for consistent emissions calculation
         if car_fuel_unit == "liters":

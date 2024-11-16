@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, session, jsonify
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from flask_session import Session
 from user import User
 from recommendations import Recommendations
 from forms import loginForm, registerForm
@@ -8,6 +9,10 @@ from database import get_user_by_email, insert_user, get_user_by_id  # Ensure th
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'changeforprod'
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_FILE_DIR'] = './flask_session/'
+Session(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -130,6 +135,7 @@ def submit_survey():
     try:
         # Get survey data from the form or request body
         survey_data = request.get_json()
+        print("Survey Data Received (app.route('/submit_survey))", survey_data)
     
         # Example data structure (replace with dynamic inputs):
     # {
@@ -141,24 +147,39 @@ def submit_survey():
 
     # Create recommendations and generate graphs
         recommender = Recommendations(survey_data)
-        graph_recommendations = recommender.generate_recommendations()
+        generated_recommendations = recommender.generate_recommendations()
+        print("Generated Recommendations:(app.route('/submit_survey)", generated_recommendations)
+        
+        # Debugging session before retrieving data
+        print("Session ID:", session.sid if hasattr(session, 'sid') else "No SID")
+        print("Session Keys:", session.keys())
+        print("Session Data:", dict(session))
+
 
         graphs = {
             "electricity_kwh": "/static/electricity_usage.png",
+            "energy_source": "/static/energy_source.png",
             "car_miles": "/static/car_emissions.png",
             "short_flights": "/static/short_flights.png",
+            "long_flights": "/static/long_flights.png",
             "diet": "/static/diet_emissions.png",
             "recycles": "/static/waste_emissions.png"
         }
-        session['graph_recommendations'] = graph_recommendations
+        print("Storing in session:", generated_recommendations) # DEBUGGING
+        session['g_recommendations'] = generated_recommendations
+        session.modified = True # FORCE SESSION SAVE
+        print("Storing in session:", session.get('g_recommendations')) # DEBUGGING
         session['graphs'] = graphs
-        # Pass data to the recommendations template
-        return render_template(
-            'recommendations.html',
-            graph_recommendations=graph_recommendations,
-            graphs=graphs
-            # chart_url="/static/electricity_usage.png"  # Example chart; adapt for other graphs
-        )
+        
+        print("Storing in session:", dict(session)) # DEBUGGING
+        return "Survey submitted successfully", 200
+        # # Pass data to the recommendations template
+        # return render_template(
+        #    'recommendations.html',
+        #   g_recommendations=generated_recommendations,
+        #     graphs=graphs
+        #     # chart_url="/static/electricity_usage.png"  # Example chart; adapt for other graphs
+        #)
     except Exception as e:
         print("Error handling survey:", str(e))
         return "An error occurred while processing the survey.", 500
@@ -167,24 +188,36 @@ def submit_survey():
 
 @app.route('/recommendations', methods=['GET'])
 def recommendations():
-    graph_recommendations = session.get('graph_recommendations', {
-        "electricity_kwh": ["Your electricity usage exceeds the average of 900 kWh per month. Consider reducing usage or switching to renewable energy if available."],
-        "car_miles": ["You drive more than the average American, about 217 miles per week. Consider carpooling or using public transit."],
-        "short_flights": ["Try to limit flights and consider alternative transportation like trains or buses."],
-        "diet": ["Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint. Beef production emits 20 times more greenhouse gases than chicken per gram of protein. Consider diversifying your diet or opting for more chicken and plant-based proteins. Consider diversifying your diet or opting for more chicken and plant-based proteins."],
-        "recycles": ["Recycling helps reduce waste and prevent plastic pollution. Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans. Consider improving your recycling habits to help reduce plastic waste."]
-    })
+    print("Session Data on /recommendations:", dict(session)) # DEBUGGING
+    # Debugging session before retrieving data
+    print("Session ID:", session.sid if hasattr(session, 'sid') else "No SID")
+    print("Session Keys:", session.keys())
+    print("Session Data:", dict(session))
+
+
+    g_recommendations = session.get('g_recommendations',[])
+    print("Retrieved from session:", g_recommendations)
+    #     "electricity_kwh": ["Your electricity usage exceeds the average of 900 kWh per month. Consider reducing usage or switching to renewable energy if available."],
+    #     "car_miles": ["You drive more than the average American, about 217 miles per week. Consider carpooling or using public transit."],
+    #     "short_flights": ["Try to limit flights and consider alternative transportation like trains or buses."],
+    #     "diet": ["Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint. Beef production emits 20 times more greenhouse gases than chicken per gram of protein. Consider diversifying your diet or opting for more chicken and plant-based proteins. Consider diversifying your diet or opting for more chicken and plant-based proteins."],
+    #     "recycles": ["Recycling helps reduce waste and prevent plastic pollution. Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans. Consider improving your recycling habits to help reduce plastic waste."]
+    # 
     # chart_url = session.get('chart_url', url_for('static', filename='electricity_usage.png'))
     graphs = session.get('graphs', {
         "electricity_kwh": "/static/electricity_usage.png",
+        "energy_source": "/static/energy_source.png",
         "car_miles": "/static/car_emissions.png",
         "short_flights": "/static/short_flights.png",
+        "long_flights": "/static/long_flights.png",
         "diet": "/static/diet_emissions.png",
         "recycles": "/static/waste_emissions.png"
     })
+
+    print("g_recommendations:app.route('/recommendations')",g_recommendations)
     return render_template(
         'recommendations.html',
-        graph_recommendations=graph_recommendations,
+        g_recommendations=g_recommendations,
         graphs=graphs
         # chart_url=chart_url
     )

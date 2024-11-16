@@ -169,45 +169,71 @@ class Recommendations:
         # self.survey_data = survey_data
         self.responses = responses
 
-
-    # {'electricity_emissions': 20.0, 'car_emissions': 0.0,
-    # 'flight_emissions': 30.0, 'diet_emissions': 1.0,
-    # 'waste_emissions': 0.16, 'total_emissions': 51.16}
-
-
     def generate_recommendations(self):
+        # recommendations = {
+        #     "electricity_kwh": [],
+        #     "car_miles": [],
+        #     "short_flights": [],
+        #     "diet": [],
+        #     "recycles": []
+        # }
         recommendations = []
         # Electricity usage recommendation
         if self.responses["electricity_kwh"] > 900:
-        # if self.survey_data["electricity_emissions"] > 900:
             recommendations.append("Your electricity usage exceeds the average of 900 kWh per month. "
                                    "Consider reducing usage or switching to renewable energy if available.")
             recommendations.append("Visit the [EPA Green Power Locator](https://www.epa.gov/greenpower/green-power-locator) "
                                    "to see if your utility company offers a renewable energy opt-in program."
                                    "Consider investing into a clean electricity program. [Here is a resource to get started!](https://www.energy.gov/energysaver/buying-clean-electricity).")
+        else:
+            recommendations.append("Your electricity usage is within the recommended range. Keep up the good work!")
+
+        # Energy source recommendation
+        energy = self.responses.get("energy_source","").lower()
+        if energy not in ["hydropower", "renewable", "nuclear"]:
+            recommendations.append("Consider switching to a renewable energy source to reduce your carbon footprint." 
+                                   "Check this out [resource on buying clean electricity](https://www.energy.gov/energysaver/buying-clean-electricity).")
+        else:
+            recommendations.append("Your energy source is clean. Keep supporting renewable energy!")
 
         # Car emissions recommendation
         if self.responses["car_miles"] > 217:
             recommendations.append("You drive more than the average American, about 217 miles per week. Consider carpooling or using public transit.")
+        else:
+            recommendations.append("Your car emissions are within the recommended range. Well done!")        
 
         # Short flights recommendation
         if self.responses.get("short_flights", 0) > 1:
             recommendations.append("Try to limit flights and consider alternative transportation like trains or buses.")
+        else:
+            recommendations.append("You are taking few or no short flights, which is excellent for reducing emissions!")
+
+        # Long flights recommendation
+        if self.responses.get("long_flights", 0) > 1:
+                recommendations.append("Long-haul flights emit significant CO₂. For example, a flight of 4,000 km (about 2,485 miles) can produce between 600 to 1,000 kg of CO₂ per passenger. "
+                                       "Consider alternatives or offsetting your carbon footprint when flying.")
+        else:
+            recommendations.append("You are taking few or no long flights, excellent job in reducing emissions!")
 
         diet = self.responses.get("diet","").lower()
         if diet in ["meat diet", "average omnivore"]:
             recommendations.append("Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint." 
                                    "Beef production emits 20 times more greenhouse gases than chicken per gram of protein. "
                                    "Consider diversifying your diet or opting for more chicken and plant-based proteins.")
+        else:
+            recommendations.append("Your diet emissions are within the recommended range. Well done!")
+
         if self.responses.get("recycles","").lower() == "no":
             recommendations.append("Recycling helps reduce waste and prevent plastic pollution."
                                    "Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans."
                                    "Consider improving your recycling habits to help reduce plastic waste.")
+        else:
+            recommendations.append("Your waste emissions are within the recommended range. Great job!")
 
-        # # Print recommendations for debugging
-        # print("\nGenerated Recommendations:")
-        # for rec in recommendations:
-        #     print(f"- {rec}")
+        # Print recommendations for debugging
+        print("\nGenerated Recommendations:")
+        for rec in recommendations:
+            print(f"- {rec}")
 
         # Generate visualizations
         self.generate_visualizations()
@@ -218,49 +244,69 @@ class Recommendations:
         # Plot 1: Electricity Usage
         plt.figure(figsize=(14, 10))
         categories = ["Your Usage", "Recommended Maximum"]
-        values = [self.responses["electricity_kwh"], 900]
+        values = [self.responses.get("electricity_kwh",0), 900]
         plt.bar(categories, values, color=["blue", "green"])
         plt.title("Electricity Usage Comparison (kWh/month)", fontsize=18)
         plt.ylabel("kWh", fontsize=14)
         plt.savefig("static/electricity_usage.png")
         plt.close()
 
-        # Plot 2: Car Emissions
+        # Plot 2: Energy Source (Binary Comparison)
+        energy_sources = ["Your Energy Source", "Ideal Energy Source"]
+        values = [1 if self.responses.get("energy_source", "").lower() not in ["hydropower", "renewable", "nuclear"] else 0.66, 1]
+        plt.figure(figsize=(14, 10))
+        plt.bar(energy_sources, values, color=["red", "green"])
+        plt.title("Energy Source Comparison", fontsize=18)
+        plt.ylabel("Compliance Score", fontsize=14)
+        plt.savefig("static/energy_source.png")
+        plt.close()
+
+        # Plot 3: Car Emissions
         plt.figure(figsize=(14, 10))
         categories = ["Your Weekly Driving", "Recommended Maximum"]
-        values = [self.responses["car_miles"], 217]
+        values = [self.responses.get("car_miles",0), 217]
         plt.bar(categories, values, color=["blue", "green"])
         plt.title("Weekly Car Emissions (Miles)", fontsize=18)
         plt.ylabel("Miles", fontsize=14)
         plt.savefig("static/car_emissions.png")
         plt.close()
 
-        # Plot 3: Flights
+        # Plot 4: Short Flights
         plt.figure(figsize=(14, 10))
-        categories = ["Your Flights", "Recommended Maximum"]
+        categories = ["Your Short Flights", "Recommended Maximum"]
         values = [self.responses.get("short_flights", 0), 1]
         plt.bar(categories, values, color=["blue", "green"])
-        plt.title("Flights Taken", fontsize=18)
+        plt.title("Short Flights Taken", fontsize=18)
         plt.ylabel("Count", fontsize=14)
         plt.savefig("static/short_flights.png")
         plt.close()
 
-        # Plot 4: Diet Emissions (Binary Comparison)
-        energy_sources = ["Your Diet", "Average Diet"]
+        # Plot 5: Long Flights
+        plt.figure(figsize=(14, 10))
+        categories = ["Your Long Flights", "Recommended Maximum"]
+        values = [self.responses.get("long_flights", 0), 1]
+        plt.bar(categories, values, color=["blue", "green"])
+        plt.title("Long Flights Taken", fontsize=18)
+        plt.ylabel("Count", fontsize=14)
+        plt.savefig("static/long_flights.png")
+        plt.close()
+
+        # Plot 6: Diet Emissions (Binary Comparison)
+        energy_sources = ["Your Diet", "Ideal Diet"]
         values = [1 if self.responses.get("diet", "").lower() in ["meat diet", "average omnivore"] else 0.66, 1]
         plt.figure(figsize=(14, 10))
-        plt.bar(energy_sources, values, color=["green", "red"])
+        plt.bar(energy_sources, values, color=["red", "green"])
         plt.title("Diet Emissions Comparison", fontsize=18)
-        plt.ylabel("Diet Emissions Compliance", fontsize=14)
+        plt.ylabel("Compliance Score", fontsize=14)
         plt.savefig("static/diet_emissions.png")
         plt.close()
 
-        # Plot 5: Waste Emissions (Binary Comparison)
-        energy_sources = ["Your Waste", "Average Waste"]
-        values = [0.2 if self.responses.get("recycles", "").lower == "no" else 0.16, 0.2]
+        # Plot 7: Waste Emissions (Binary Comparison)
+        energy_sources = ["Your Waste", "Ideal Waste"]
+        values = [0.2 if self.responses.get("recycles", "").lower() == "no" else 0.16, 0.2]
         plt.figure(figsize=(14, 10))
-        plt.bar(energy_sources, values, color=["green", "red"])
+        plt.bar(energy_sources, values, color=["red", "green"])
         plt.title("Waste Emissions Comparison", fontsize=18)
-        plt.ylabel("Waste Emissions Compliance", fontsize=14)
+        plt.ylabel("Compliance Score", fontsize=14)
         plt.savefig("static/waste_emissions.png")
         plt.close()

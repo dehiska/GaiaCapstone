@@ -884,5 +884,7 @@ body {
 .rec-section ul {
   margin-top: 20px;
   list-style: disc;
-  padding-left: 40 px;
+  padding-left: 20 px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
 }
