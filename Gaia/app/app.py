@@ -3,9 +3,12 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
 from user import User
+import json
+
 from recommendations import Recommendations
 from forms import loginForm, registerForm
-from database import get_user_by_email, insert_user, get_user_by_id  # Ensure these functions exist
+from database import get_user_by_email, insert_user, get_user_by_id, get_user_recommendations, update_user_recommendations
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'changeforprod'
@@ -131,79 +134,68 @@ def logout():
 #     return render_template('homepage.html')
 
 @app.route('/submit_survey', methods=['POST'])
+#@login_required
 def submit_survey():
-    try:
-        # Get survey data from the form or request body
-        survey_data = request.get_json()
-        print("Survey Data Received (app.route('/submit_survey))", survey_data)
-    
-        # Example data structure (replace with dynamic inputs):
-    # {
-    #     "electricity_emissions": 1050,
-    #     "energy_source": "coal",
-    #     "car_emissions": 250,
-    #     "short_flights": 2
-    # }
+    print("Current User ID.get_id:", current_user.get_id())
+    print("session User ID:", session['user_id'])
 
-    # Create recommendations and generate graphs
+    try:
+        # Ensure user is logged in
+        user_id = current_user.get_id()  
+        if not user_id:
+            print("Unauthorized: User not logged in.")
+            return "User not logged in", 401
+
+        # Get survey data
+        survey_data = request.get_json()
+        if not survey_data:
+            print("No survey data received.")
+            return "Invalid survey data", 400
+
+        print("Survey Data Received:", survey_data)
+
+        # Generate recommendations and visualizations
         recommender = Recommendations(survey_data)
         generated_recommendations = recommender.generate_recommendations()
-        print("Generated Recommendations:(app.route('/submit_survey)", generated_recommendations)
-        
-        # Debugging session before retrieving data
-        print("Session ID:", session.sid if hasattr(session, 'sid') else "No SID")
-        print("Session Keys:", session.keys())
-        print("Session Data:", dict(session))
+        recommender.generate_visualizations()
 
+        # Store recommendations in the database
+        recommendations_str = json.dumps(generated_recommendations)  # Convert to JSON
+        print(f"Storing recommendations for user ID {user_id}: {recommendations_str}")
+        update_user_recommendations(user_id, recommendations_str)  # Update user table
 
-        graphs = {
-            "electricity_kwh": "/static/electricity_usage.png",
-            "energy_source": "/static/energy_source.png",
-            "car_miles": "/static/car_emissions.png",
-            "short_flights": "/static/short_flights.png",
-            "long_flights": "/static/long_flights.png",
-            "diet": "/static/diet_emissions.png",
-            "recycles": "/static/waste_emissions.png"
-        }
-        print("Storing in session:", generated_recommendations) # DEBUGGING
-        session['g_recommendations'] = generated_recommendations
-        session.modified = True # FORCE SESSION SAVE
-        print("Storing in session:", session.get('g_recommendations')) # DEBUGGING
-        session['graphs'] = graphs
-        
-        print("Storing in session:", dict(session)) # DEBUGGING
-        return "Survey submitted successfully", 200
-        # # Pass data to the recommendations template
-        # return render_template(
-        #    'recommendations.html',
-        #   g_recommendations=generated_recommendations,
-        #     graphs=graphs
-        #     # chart_url="/static/electricity_usage.png"  # Example chart; adapt for other graphs
-        #)
+        return jsonify({"message": "Survey submitted successfully!"}), 200
     except Exception as e:
-        print("Error handling survey:", str(e))
+        print(f"Error handling survey: {str(e)}")
         return "An error occurred while processing the survey.", 500
 
 #########################################################
-
 @app.route('/recommendations', methods=['GET'])
 def recommendations():
-    print("Session Data on /recommendations:", dict(session)) # DEBUGGING
-    # Debugging session before retrieving data
+    # Debugging session information
+    print("Session Data on /recommendations:", dict(session))  # DEBUGGING
     print("Session ID:", session.sid if hasattr(session, 'sid') else "No SID")
     print("Session Keys:", session.keys())
-    print("Session Data:", dict(session))
 
+    # Check if the user is logged in and retrieve their ID
+    user_id = current_user.get_id()
+    if not user_id:
+        print("User not logged in.")
+        return "Unauthorized access. Please log in to view your recommendations.", 403
 
-    g_recommendations = session.get('g_recommendations',[])
-    print("Retrieved from session:", g_recommendations)
-    #     "electricity_kwh": ["Your electricity usage exceeds the average of 900 kWh per month. Consider reducing usage or switching to renewable energy if available."],
-    #     "car_miles": ["You drive more than the average American, about 217 miles per week. Consider carpooling or using public transit."],
-    #     "short_flights": ["Try to limit flights and consider alternative transportation like trains or buses."],
-    #     "diet": ["Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint. Beef production emits 20 times more greenhouse gases than chicken per gram of protein. Consider diversifying your diet or opting for more chicken and plant-based proteins. Consider diversifying your diet or opting for more chicken and plant-based proteins."],
-    #     "recycles": ["Recycling helps reduce waste and prevent plastic pollution. Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans. Consider improving your recycling habits to help reduce plastic waste."]
-    # 
-    # chart_url = session.get('chart_url', url_for('static', filename='electricity_usage.png'))
+    # Retrieve recommendations from the database
+    g_recommendations = get_user_recommendations(user_id)
+    if g_recommendations:
+        try:
+            # Parse recommendations string from the database into a Python list
+            g_recommendations = json.loads(g_recommendations)
+        except json.JSONDecodeError:
+            print("Failed to decode recommendations from the database.")
+            g_recommendations = []
+
+    print("Retrieved recommendations from database:", g_recommendations)
+
+    # Default graphs or retrieve from session if available
     graphs = session.get('graphs', {
         "electricity_kwh": "/static/electricity_usage.png",
         "energy_source": "/static/energy_source.png",
@@ -214,12 +206,12 @@ def recommendations():
         "recycles": "/static/waste_emissions.png"
     })
 
-    print("g_recommendations:app.route('/recommendations')",g_recommendations)
+    print("Graph paths:", graphs)
+
     return render_template(
         'recommendations.html',
-        g_recommendations=g_recommendations,
+        g_recommendations=g_recommendations or [],
         graphs=graphs
-        # chart_url=chart_url
     )
 
 if __name__ == '__main__':

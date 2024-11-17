@@ -280,11 +280,13 @@ class ActionLifestyleSurvey(Action):
 
         # Send the survey data to the Flask endpoint
         try:
+            print('Trying to send the response')
             response = requests.post("http://localhost:5000/submit_survey", json=responses)
+            print("After sending response in actions")
             if response.status_code == 200:
                 print("Survey data submitted successfully.")
             else:
-                print("There was an error submitting your survey data.")
+                print("There was an error submitting your survey data.", )
         except requests.exceptions.RequestException as e:
             print("Failed to connect to the server. Error: {e}")
 
