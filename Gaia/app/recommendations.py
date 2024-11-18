@@ -178,7 +178,7 @@ class Recommendations:
 
     def generate_visualizations(self):
         # Plot 1: Electricity Usage
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         categories = ["Your Usage", "Recommended Maximum"]
         values = [self.responses.get("electricity_kwh",0), 900]
         plt.bar(categories, values, color=["blue", "green"])
@@ -190,7 +190,7 @@ class Recommendations:
         # Plot 2: Energy Source (Binary Comparison)
         energy_sources = ["Your Energy Source", "Ideal Energy Source"]
         values = [1 if self.responses.get("energy_source", "").lower() not in ["hydropower", "renewable", "nuclear"] else 0.66, 1]
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         plt.bar(energy_sources, values, color=["red", "green"])
         plt.title("Energy Source Comparison", fontsize=18)
         plt.ylabel("Compliance Score", fontsize=14)
@@ -198,7 +198,7 @@ class Recommendations:
         plt.close()
 
         # Plot 3: Car Emissions
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         categories = ["Your Weekly Driving", "Recommended Maximum"]
         values = [self.responses.get("car_miles",0), 217]
         plt.bar(categories, values, color=["blue", "green"])
@@ -208,7 +208,7 @@ class Recommendations:
         plt.close()
 
         # Plot 4: Short Flights
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         categories = ["Your Short Flights", "Recommended Maximum"]
         values = [self.responses.get("short_flights", 0), 1]
         plt.bar(categories, values, color=["blue", "green"])
@@ -218,7 +218,7 @@ class Recommendations:
         plt.close()
 
         # Plot 5: Long Flights
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         categories = ["Your Long Flights", "Recommended Maximum"]
         values = [self.responses.get("long_flights", 0), 1]
         plt.bar(categories, values, color=["blue", "green"])
@@ -230,7 +230,7 @@ class Recommendations:
         # Plot 6: Diet Emissions (Binary Comparison)
         energy_sources = ["Your Diet", "Ideal Diet"]
         values = [1 if self.responses.get("diet", "").lower() in ["meat diet", "average omnivore"] else 0.66, 1]
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         plt.bar(energy_sources, values, color=["red", "green"])
         plt.title("Diet Emissions Comparison", fontsize=18)
         plt.ylabel("Compliance Score", fontsize=14)
@@ -240,7 +240,7 @@ class Recommendations:
         # Plot 7: Waste Emissions (Binary Comparison)
         energy_sources = ["Your Waste", "Ideal Waste"]
         values = [0.2 if self.responses.get("recycles", "").lower() == "no" else 0.16, 0.2]
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(8, 6))
         plt.bar(energy_sources, values, color=["red", "green"])
         plt.title("Waste Emissions Comparison", fontsize=18)
         plt.ylabel("Compliance Score", fontsize=14)

@@ -173,19 +173,47 @@ def recommendations():
         if os.path.exists(file_path):
             with open(file_path, 'r') as f:
                 survey_data = json.load(f)
-        else:
+################################################## NEW 11-18-24
+            recommender = Recommendations(survey_data)
+
+################################################## NEW 11-18-24
+        else: #(REVERT TO THIS IF 11-18-24 DOESN'T WORK) 11-17-24
             survey_data = ["No recommendations found."]
             recommender = Recommendations(survey_data)
-            generated_recommendations = recommender.generate_recommendations()
+        generated_recommendations = recommender.generate_recommendations()
+
+################################################## NEW 11-18-24
+
+        # recommender = Recommendations(survey_data)
+        # generated_recommendations = recommender.generate_recommendations()
+
+        graphs = {
+            "electricity_kwh": "/static/electricity_usage.png",
+            "energy_source": "/static/energy_source.png",
+            "car_miles": "/static/car_emissions.png",
+            "short_flights": "/static/short_flights.png",
+            "long_flights": "/static/long_flights.png",
+            "diet": "/static/diet_emissions.png",
+            "recycles": "/static/waste_emissions.png"
+        }
+
+################################################## NEW 11-18-24
 
         # Generate visualizations
         recommender.generate_visualizations()
-        # Render recommendations.html
-        return render_template(
+
+        return render_template( 
             'recommendations.html',
             generated_recommendations=generated_recommendations,
-            graphs={}  # Adjust as needed for graphs
+            graphs=graphs
         )
+
+        # Render recommendations.html
+        # return render_template( (REVERT TO THIS IF 11-18-24 DOESN'T WORK) 11-17-24
+        #     'recommendations.html',
+        #     generated_recommendations=generated_recommendations,
+        #     graphs={}  # Adjust as needed for graphs
+        # )
     except Exception as e:
         print(f"Error in recommendations route: {str(e)}")
         return "An error occurred while retrieving recommendations.", 500
