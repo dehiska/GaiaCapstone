@@ -134,14 +134,17 @@ def logout():
 #     return render_template('homepage.html')
 
 @app.route('/submit_survey', methods=['POST'])
-#@login_required
+@login_required
+
 def submit_survey():
     print("Current User ID.get_id:", current_user.get_id())
     print("session User ID:", session['user_id'])
 
     try:
         # Ensure user is logged in
-        user_id = current_user.get_id()  
+        print("session User ID:", session.get('_user_id'))  # Use '_user_id' instead of 'user_id'
+        user_id = session.get('_user_id')
+  
         if not user_id:
             print("Unauthorized: User not logged in.")
             return "User not logged in", 401
