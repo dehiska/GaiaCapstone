@@ -1,6 +1,7 @@
 from flask import request, url_for
 import matplotlib.pyplot as plt
 import os
+import json
 import matplotlib
 matplotlib.use('Agg')  # Non-GUI backend for plotting
 
@@ -166,79 +167,14 @@ matplotlib.use('Agg')  # Non-GUI backend for plotting
 #######################################################
 class Recommendations:
     def __init__(self, responses):
-        # self.survey_data = survey_data
         self.responses = responses
 
     def generate_recommendations(self):
-        # recommendations = {
-        #     "electricity_kwh": [],
-        #     "car_miles": [],
-        #     "short_flights": [],
-        #     "diet": [],
-        #     "recycles": []
-        # }
         recommendations = []
-        # Electricity usage recommendation
-        if self.responses["electricity_kwh"] > 900:
-            recommendations.append("Your electricity usage exceeds the average of 900 kWh per month. "
-                                   "Consider reducing usage or switching to renewable energy if available.")
-            recommendations.append("Visit the [EPA Green Power Locator](https://www.epa.gov/greenpower/green-power-locator) "
-                                   "to see if your utility company offers a renewable energy opt-in program."
-                                   "Consider investing into a clean electricity program. [Here is a resource to get started!](https://www.energy.gov/energysaver/buying-clean-electricity).")
-        else:
-            recommendations.append("Your electricity usage is within the recommended range. Keep up the good work!")
-
-        # Energy source recommendation
-        energy = self.responses.get("energy_source","").lower()
-        if energy not in ["hydropower", "renewable", "nuclear"]:
-            recommendations.append("Consider switching to a renewable energy source to reduce your carbon footprint." 
-                                   "Check this out [resource on buying clean electricity](https://www.energy.gov/energysaver/buying-clean-electricity).")
-        else:
-            recommendations.append("Your energy source is clean. Keep supporting renewable energy!")
-
-        # Car emissions recommendation
-        if self.responses["car_miles"] > 217:
-            recommendations.append("You drive more than the average American, about 217 miles per week. Consider carpooling or using public transit.")
-        else:
-            recommendations.append("Your car emissions are within the recommended range. Well done!")        
-
-        # Short flights recommendation
-        if self.responses.get("short_flights", 0) > 1:
-            recommendations.append("Try to limit flights and consider alternative transportation like trains or buses.")
-        else:
-            recommendations.append("You are taking few or no short flights, which is excellent for reducing emissions!")
-
-        # Long flights recommendation
-        if self.responses.get("long_flights", 0) > 1:
-                recommendations.append("Long-haul flights emit significant CO₂. For example, a flight of 4,000 km (about 2,485 miles) can produce between 600 to 1,000 kg of CO₂ per passenger. "
-                                       "Consider alternatives or offsetting your carbon footprint when flying.")
-        else:
-            recommendations.append("You are taking few or no long flights, excellent job in reducing emissions!")
-
-        diet = self.responses.get("diet","").lower()
-        if diet in ["meat diet", "average omnivore"]:
-            recommendations.append("Switching from a meat-heavy diet to a more plant-based one can reduce your carbon footprint." 
-                                   "Beef production emits 20 times more greenhouse gases than chicken per gram of protein. "
-                                   "Consider diversifying your diet or opting for more chicken and plant-based proteins.")
-        else:
-            recommendations.append("Your diet emissions are within the recommended range. Well done!")
-
-        if self.responses.get("recycles","").lower() == "no":
-            recommendations.append("Recycling helps reduce waste and prevent plastic pollution."
-                                   "Globally, only about 9% of plastic waste is recycled, leaving millions of tons to pollute our land and oceans."
-                                   "Consider improving your recycling habits to help reduce plastic waste.")
-        else:
-            recommendations.append("Your waste emissions are within the recommended range. Great job!")
-
-        # Print recommendations for debugging
-        print("\nGenerated Recommendations:")
-        for rec in recommendations:
-            print(f"- {rec}")
-
-        # Generate visualizations
         self.generate_visualizations()
 
         return recommendations
+
 
     def generate_visualizations(self):
         # Plot 1: Electricity Usage

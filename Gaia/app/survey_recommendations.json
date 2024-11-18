@@ -1,0 +1,12 @@
+{
+    "electricity_kwh": 1000.0,
+    "energy_source": "coal",
+    "car_fuel_type": "gas",
+    "car_fuel_unit": "gallons",
+    "car_fuel_usage": 23.0,
+    "car_miles": 2343.0,
+    "short_flights": 1,
+    "long_flights": 1,
+    "diet": "vegan",
+    "recycles": "Yes"
+}

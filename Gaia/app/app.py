@@ -3,6 +3,7 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_session import Session
 from user import User
+import os
 import json
 
 from recommendations import Recommendations
@@ -132,90 +133,64 @@ def logout():
 # @app.route('/')
 # def homepage():
 #     return render_template('homepage.html')
-
 @app.route('/submit_survey', methods=['POST'])
-@login_required
-
 def submit_survey():
-    print("Current User ID.get_id:", current_user.get_id())
-    print("session User ID:", session['user_id'])
-
     try:
-        # Ensure user is logged in
-        print("session User ID:", session.get('_user_id'))  # Use '_user_id' instead of 'user_id'
-        user_id = session.get('_user_id')
-  
-        if not user_id:
-            print("Unauthorized: User not logged in.")
-            return "User not logged in", 401
-
-        # Get survey data
+        # Get survey data from the request
         survey_data = request.get_json()
         if not survey_data:
-            print("No survey data received.")
-            return "Invalid survey data", 400
-
+            return jsonify({"error": "Invalid survey data"}), 400
+        
         print("Survey Data Received:", survey_data)
 
-        # Generate recommendations and visualizations
+        # Generate recommendations
         recommender = Recommendations(survey_data)
         generated_recommendations = recommender.generate_recommendations()
-        recommender.generate_visualizations()
 
-        # Store recommendations in the database
-        recommendations_str = json.dumps(generated_recommendations)  # Convert to JSON
-        print(f"Storing recommendations for user ID {user_id}: {recommendations_str}")
-        update_user_recommendations(user_id, recommendations_str)  # Update user table
+        # Save recommendations to a JSON file
+        recommendations_file = os.path.join(app.config['SESSION_FILE_DIR'], 'recommendations.json')
+        with open(recommendations_file, 'w') as f:
+            json.dump(generated_recommendations, f)
+        print(f"/submit_survey says: Recommendations saved to {recommendations_file} /submit_survey route here")
+
+        # Generate visualizations
+        recommender.generate_visualizations()
 
         return jsonify({"message": "Survey submitted successfully!"}), 200
     except Exception as e:
-        print(f"Error handling survey: {str(e)}")
-        return "An error occurred while processing the survey.", 500
+        print(f"Error in submit_survey: {str(e)}")
+        return jsonify({"error": "An error occurred while processing the survey"}), 500
 
-#########################################################
+
 @app.route('/recommendations', methods=['GET'])
 def recommendations():
-    # Debugging session information
-    print("Session Data on /recommendations:", dict(session))  # DEBUGGING
-    print("Session ID:", session.sid if hasattr(session, 'sid') else "No SID")
-    print("Session Keys:", session.keys())
+    try:
+        
+        # Hardcoded path to the JSON file
+        file_path = r"C:\Users\NOSfe\Desktop\Capstone\GaiaCapstone\Gaia\app\survey_recommendations.json"
 
-    # Check if the user is logged in and retrieve their ID
-    user_id = current_user.get_id()
-    if not user_id:
-        print("User not logged in.")
-        return "Unauthorized access. Please log in to view your recommendations.", 403
+        # Read recommendations from the file
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                survey_data = json.load(f)
+        else:
+            survey_data = ["No recommendations found."]
+            recommender = Recommendations(survey_data)
+            generated_recommendations = recommender.generate_recommendations()
 
-    # Retrieve recommendations from the database
-    g_recommendations = get_user_recommendations(user_id)
-    if g_recommendations:
-        try:
-            # Parse recommendations string from the database into a Python list
-            g_recommendations = json.loads(g_recommendations)
-        except json.JSONDecodeError:
-            print("Failed to decode recommendations from the database.")
-            g_recommendations = []
+        # Generate visualizations
+        recommender.generate_visualizations()
+        # Render recommendations.html
+        return render_template(
+            'recommendations.html',
+            generated_recommendations=generated_recommendations,
+            graphs={}  # Adjust as needed for graphs
+        )
+    except Exception as e:
+        print(f"Error in recommendations route: {str(e)}")
+        return "An error occurred while retrieving recommendations.", 500
 
-    print("Retrieved recommendations from database:", g_recommendations)
 
-    # Default graphs or retrieve from session if available
-    graphs = session.get('graphs', {
-        "electricity_kwh": "/static/electricity_usage.png",
-        "energy_source": "/static/energy_source.png",
-        "car_miles": "/static/car_emissions.png",
-        "short_flights": "/static/short_flights.png",
-        "long_flights": "/static/long_flights.png",
-        "diet": "/static/diet_emissions.png",
-        "recycles": "/static/waste_emissions.png"
-    })
-
-    print("Graph paths:", graphs)
-
-    return render_template(
-        'recommendations.html',
-        g_recommendations=g_recommendations or [],
-        graphs=graphs
-    )
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,6 +3,8 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
 from snippets import endpoints, estimate_emissions
+import os 
+import json
 from rasa_sdk.events import FollowupAction
 import requests
 
@@ -277,18 +279,20 @@ class ActionLifestyleSurvey(Action):
         "waste_emissions": waste_emissions,
         "total_emissions": total_emissions
         }
-
-        # Send the survey data to the Flask endpoint
+            
         try:
-            print('Trying to send the response')
-            response = requests.post("http://localhost:5000/submit_survey", json=responses)
-            print("After sending response in actions")
-            if response.status_code == 200:
-                print("Survey data submitted successfully.")
-            else:
-                print("There was an error submitting your survey data.", )
-        except requests.exceptions.RequestException as e:
-            print("Failed to connect to the server. Error: {e}")
+            # Hardcoded path to save the JSON file
+            file_path = r"C:\Users\NOSfe\Desktop\Capstone\GaiaCapstone\Gaia\app\survey_recommendations.json"
+
+            # Ensure the directory exists
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+            # Write recommendations to the file
+            with open(file_path, 'w') as f:
+                json.dump(responses, f, indent=4)  # Use `indent=4` for readable formatting
+            print(f"Actions.py says: Recommendations saved to {file_path}")
+        except Exception as e:
+            print(f"Error writing recommendations to file: {str(e)}")
 
         return total_emissions
 
