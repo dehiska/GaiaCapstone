@@ -1,0 +1,54 @@
+version: "3.0"
+stories:
+
+  # Story 1: User starts the lifestyle survey
+  - story: User starts the lifestyle survey and provides details
+    steps:
+      - intent: ask_lifestyle_survey
+      - action: action_start_lifestyle_survey
+      - intent: provide_diet
+        entities:
+          - diet: "vegan"
+      - action: action_provide_diet
+      - intent: provide_car_fuel_type
+        entities:
+          - car_fuel_type: "gasoline"
+      - action: action_provide_car_fuel_type
+      - intent: provide_car_miles
+        entities:
+          - car_miles: "1000"
+      - action: action_provide_car_miles
+      - intent: provide_car_fuel_usage
+        entities:
+          - car_fuel_usage: "40"
+      - action: action_provide_car_fuel_usage
+      - intent: provide_flights_short
+        entities:
+          - short_flights: "5"
+      - action: action_provide_flights_short
+      - intent: calculate_emissions
+        entities:
+          - activity: "Passenger car"
+          - distance: "120"
+          - distance_unit: "km"
+      - action: action_calculate_emissions
+
+  # Story 2: User directly asks to calculate emissions for a specific activity
+  - story: User calculates emissions for a Bus trip
+    steps:
+      - intent: calculate_emissions
+        entities:
+          - activity: "Bus"
+          - distance: "50"
+          - distance_unit: "km"
+      - action: action_calculate_emissions
+
+  # Story 3: User wants to calculate emissions for a Motorcycle trip
+  - story: User calculates emissions for a Motorcycle trip
+    steps:
+      - intent: calculate_emissions
+        entities:
+          - activity: "Motorcycle"
+          - distance: "100"
+          - distance_unit: "miles"
+      - action: action_calculate_emissions
