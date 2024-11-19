@@ -300,14 +300,16 @@ class Recommendations:
         plt.close()
 
         # Plot 2: Energy Source (Binary Comparison)
-        values = [1 if self.responses.get("energy_source", "").lower() not in ["hydropower", "renewable", "nuclear"] else 0.66, 1]
-        energy_sources = ["Your Energy Source ", "Ideal Energy Source"]
+        user_source = self.responses.get("energy_source", "").capitalize()
+        values = [1, 1]
+        # values = [1 if self.responses.get("energy_source", "").lower() not in ["hydropower", "renewable", "nuclear"] else 0.66, 1]
+        energy_sources = [f"Your energy ({user_source})", "Ideal Energy (Renewable)"]
         plt.figure(figsize=(7, 5))
         plt.bar(energy_sources, values, color=["red", "green"])
         plt.xticks(fontsize=12)
         plt.title("Energy Source Comparison", fontsize=16)
-        plt.ylabel("Compliance Score", fontsize=12)
-        plt.gca().set_xlim(-0.5, len(energy_sources) - 0.5)
+        plt.ylabel("Energy Sources", fontsize=12)
+        plt.gca().axes.get_yaxis().set_visible(False)
         plt.savefig("static/energy_source.png")
         plt.close()
 
@@ -331,7 +333,7 @@ class Recommendations:
         categories = [f"Your Short Flights ({short})", "Average American (1)"]
         plt.bar(categories, values, color=["blue", "green"])
         plt.xticks(fontsize=12)
-        plt.title("Annual Short Flights Comparison", fontsize=16)
+        plt.title("Number of Flights Under 3 Hours (Yearly)", fontsize=16)
         plt.ylabel("Number of Short Flights", fontsize=12)
         plt.gca().set_xlim(-0.5, len(categories) - 0.5)
         plt.savefig("static/short_flights.png")
@@ -344,21 +346,25 @@ class Recommendations:
         categories = [f"Your Long Flights ({long})", "Average American (1)"]
         plt.bar(categories, values, color=["blue", "green"])
         plt.xticks(fontsize=12)
-        plt.title("Annual Long Flights Comparison", fontsize=16)
+        plt.title("Number of Flights Over 3 Hours (Yearly)", fontsize=16)
         plt.ylabel("Number of Long Flights", fontsize=12)
         plt.gca().set_xlim(-0.5, len(categories) - 0.5)
         plt.savefig("static/long_flights.png")
         plt.close()
 
         # Plot 6: Diet Emissions (Binary Comparison)
-        energy_sources = ["Your Diet", "Ideal Diet"]
-        values = [1 if self.responses.get("diet", "").lower() in ["meat diet", "average omnivore"] else 0.66, 1]
+
+        yourDiet = self.responses.get("diet", "").capitalize()
+        energy_sources = [f"Your Diet ({yourDiet})", "Avg. American is an Omnivore"]
+        values = [1, 1]
+        # values = [self.responses.get("diet", "")]
+        # values = [1 if self.responses.get("diet", "").lower() in ["meat diet", "average omnivore"] else 0.66, 1]
         plt.figure(figsize=(7, 5))
         plt.bar(energy_sources, values, color=["red", "green"])
         plt.xticks(fontsize=12)
         plt.title("Diet Emissions Comparison", fontsize=16)
-        plt.ylabel("Compliance Score", fontsize=12)
-        plt.gca().set_xlim(-0.5, len(energy_sources) - 0.5)
+        plt.ylabel("Diet", fontsize=12)
+        plt.gca().axes.get_yaxis().set_visible(False)
         plt.savefig("static/diet_emissions.png")
         plt.close()
 
