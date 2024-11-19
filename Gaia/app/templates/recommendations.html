@@ -6,7 +6,7 @@
     <title>Gaia's Recommendations For You</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="rec-body">
+<body class="rec-bodyY">
 
 <a href="/homepage" class="rec-back-button">Backpage</a>
 
@@ -18,7 +18,7 @@
             <h3>Generated Recommendations</h3>
             <ul>
                 {% for rec in generated_recommendations %}
-                    <li>{{ rec }}</li>
+                    <li>{{ rec|safe }}</li>
                 {% endfor %}
             </ul>
         </div>

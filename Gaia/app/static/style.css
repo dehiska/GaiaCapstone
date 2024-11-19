@@ -778,7 +778,7 @@ body {
 
 /* RECOMENDATIONS PAGE STYLE */
 
-.rec-body {
+.rec-bodyY {
   font-family: Arial, sans-serif;
   background-color: #e0efff;
   margin: 0;
@@ -789,7 +789,7 @@ body {
   margin: auto;
   padding: 20px;
   background-color: #d0e8ff;
-  border: 1px solid #a0c8ff;
+  border: 1px solid #08a54c;
 }
 .rec-header {
   text-align: center;
@@ -841,9 +841,11 @@ body {
   width: 100%;
 }
 
-.rec-content {
+/* .rec-content {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   background-color: #e0f5ff;
 }
@@ -852,25 +854,33 @@ body {
   padding: 10px;
   text-align: center;
   background-color: #c0e0ff;
+  margin: auto;
 }
 .rec-left-panel h3 {
   background-color: #08a54c;
   padding: 5px;
+  text-align: center;
 }
 .rec-right-panel {
   width: 60%;
   padding: 10px;
+  text-align: center;
+  margin: auto;
 }
 .rec-right-panel p {
   margin: 10px 0;
+  text-align: center;
 }
 .rec-right-panel a {
   color: #0073e6;
   text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
 .rec-section {
   margin-bottom: 40px;
+  text-align: center;
 }
 
 .rec-section img {
@@ -885,6 +895,62 @@ body {
   margin-top: 20px;
   list-style: disc;
   padding-left: 20 px;
+  text-align: center;
   font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+} */
+
+.rec-body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 0;
+}
+.rec-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+.rec-header {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+.rec-section {
+  margin-bottom: 40px;
+}
+.rec-section h3 {
+  font-size: 1.5rem;
+  color: #08a54c;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.rec-section img {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #08a54c;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.rec-section ul {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 10px 20px;
+}
+.rec-section ul li {
+  margin: 10px 0;
+  padding: 8px;
+  background: #f4f4f4;
+  border-left: 4px solid #08a54c;
+  border-radius: 4px;
   font-size: 1rem;
 }
