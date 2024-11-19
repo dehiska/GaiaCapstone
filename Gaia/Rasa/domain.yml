@@ -30,6 +30,13 @@ intents:
 
 
 responses:
+  utter_explain_capabilities:
+    - text: |
+        I can help you:
+        - Calculate the emissions of specific products, services, or activities.
+        - Fill out a lifestyle survey to assess your environmental impact.
+        How can I assist you today?
+
   utter_greet:
     - text: "Hello! How can I assist you today?"
 ################################################## TESTING
@@ -224,6 +231,7 @@ slots:
 
 actions:
   - action_calculate_emissions
+  - utter_explain_capabilities
   - action_lifestyle_survey
   - action_list_activities
   - action_handle_missing_values
