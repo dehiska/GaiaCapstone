@@ -243,9 +243,22 @@ nlu:
   - intent: provide_diet
     examples: |
       - [meat diet](diet)
-      - I follow a [vegan](diet) diet
-      - My diet is [average omnivore](diet)
+      - I follow a [meat diet](diet) diet
+      - My diet is [meat diet](diet)
       - I eat a [meat diet](diet)
+      - [average omnivore](diet)
+      - I follow a [average omnivore](diet) diet
+      - My diet is average omnivore](diet)
+      - I eat a [average omnivore](diet)
+      - [vegetarian](diet)
+      - I follow a [vegetarian](diet) diet
+      - My diet is [vegetarian](diet)
+      - I eat a [vegetarian](diet)
+      - [vegan](diet)
+      - I follow a [vegan](diet) diet
+      - My diet is [vegan](diet)
+      - I eat a [vegan](diet)
+
 
   - intent: provide_recycling
     examples: |

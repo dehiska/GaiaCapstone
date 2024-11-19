@@ -168,13 +168,13 @@ class ActionLifestyleSurvey(Action):
         # Step 3: Check for car fuel type
         car_fuel_type = tracker.get_slot("car_fuel_type")
         if not car_fuel_type:
-            dispatcher.utter_message(text="What fuel does your car use (gasoline, gas, or diesel)?")
+            dispatcher.utter_message(text="What fuel does your car use (gasoline (gas), or diesel)?")
             return []
 
         # Step 4: Check for fuel unit (gallons or liters)
         car_fuel_unit = tracker.get_slot("car_fuel_unit")
         if car_fuel_unit not in ["gallons", "liters"]:
-            dispatcher.utter_message(text="Do you measure your fuel in 'gallons' or 'liters'? Please specify either 'gallons' or 'liters'.")
+            dispatcher.utter_message(text="Do you measure your fuel in gallons or liters?")
             return []
 
         # Step 5: Get the actual fuel consumption amount
