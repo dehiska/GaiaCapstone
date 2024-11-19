@@ -140,11 +140,31 @@ nlu:
   - intent: provide_energy_source
     examples: |
       - My main energy source is [coal](energy_source)
-      - I use [natural gas](energy_source)
-      - [natural gas](energy_source)
-      - [Petroleum](energy_source)
-      - mostly [natural gas](energy_source) 
+      - I use [coal](energy_source)
+      - [coal](energy_source)
+      - mostly [coal](energy_source) 
+      - My electricity comes from [coal](energy_source)
+      - My main energy source is [petroleum](energy_source)
+      - I use [petroleum](energy_source)
+      - [petroleum](energy_source)
+      - mostly [petroleum](energy_source) 
+      - My electricity comes from [petroleum](energy_source)
+      - My main energy source is [natural_gas](energy_source)
+      - I use [natural_gas](energy_source)
+      - [natural_gas](energy_source)
+      - mostly [natural_gas](energy_source) 
+      - My electricity comes from [natural_gas](energy_source)
+      - My main energy source is [hydropower](energy_source)
+      - I use [hydropower](energy_source)
+      - [hydropower](energy_source)
+      - mostly [hydropower](energy_source) 
       - My electricity comes from [hydropower](energy_source)
+      - My main energy source is [nuclear](energy_source)
+      - I use [nuclear](energy_source)
+      - [nuclear](energy_source)
+      - mostly [nuclear](energy_source) 
+      - My electricity comes from [nuclear](energy_source)
+
 
   - intent: provide_car_fuel_type
     examples: |
