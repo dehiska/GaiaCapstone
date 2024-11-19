@@ -20,14 +20,43 @@ intents:
   - provide_flights_long
   - provide_diet
   - provide_recycling 
+  - product_list
+  - buynow
+  - complete_survey
+  - view_recommendations
+  - recommendations
 #  - ask_openai
 #  - query_openai
 
 
 responses:
+  utter_explain_capabilities:
+    - text: |
+        I can help you:
+        - Calculate the emissions of specific products, services, or activities.
+        - Fill out a lifestyle survey to assess your environmental impact.
+        How can I assist you today?
+
   utter_greet:
     - text: "Hello! How can I assist you today?"
+################################################## TESTING
+  utter_buynow:
+    - text: "To order, please visit our website: https://nike.com"
+  
+  utter_redirect:
+    - text: "Redirecting you..."
+      custom:
+        redirect: "/recommendations"
 
+  utter_redirect_to_recommendations:
+    - text: "Redirecting you to your recommendations..."
+
+  utter_survey_complete:
+    - text: "Thank you for completing the survey! Click below to view your recommendations."
+      buttons:
+        - title: "View recommendations."
+          payload: "/view_recommendations"
+################################################## TESTING
   utter_goodbye:
     - text: "Bye! Have a great day."
 
@@ -36,6 +65,19 @@ responses:
 
   utter_emission_result:
     - text: "Your emissions are calculated as [100](result) tons of CO2."
+      buttons:
+        - title: "View recommendations."
+          payload: "/view_recommendations"
+
+  utter_emission_results:
+    - text: |
+        Here are your emission results:
+        - Electricity: {electricity_emissions} tons
+        - Car: {car_emissions} tons
+        - Flight: {flight_emissions} tons
+        - Diet: {diet_emissions} tons
+        - Waste: {waste_emissions} tons
+        - Total: {total_emissions} tons
 
 slots:
   activity:
@@ -143,13 +185,65 @@ slots:
     mappings:
       - type: from_entity
         entity: recycles
+  
+  diet_emissions:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: diet_emissions
+
+  recycles_emissions:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: recycles_emissions
+
+  electricity_emissions:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: electricity_emissions
+
+  car_emissions:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: car_emissions
+
+  flight_emissions:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: flight_emissions
+
+  waste_emissions:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: waste_emissions
+
+  total_emissions:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: total_emissions
+
 
 actions:
   - action_calculate_emissions
+  - utter_explain_capabilities
   - action_lifestyle_survey
   - action_list_activities
   - action_handle_missing_values
   - utter_emission_result
+######################################### TESTING
+  - actions_list # actions.py
+  - utter_buynow
+  - utter_greet
+  - action_redirect_to_recommendations
+  - action_view_recommendations
+  - action_recommendations_carousel
+######################################### TESTING
 #  - action_query_openai
 #  - action_openai_call
 
@@ -170,6 +264,13 @@ entities:
   - long_flights
   - diet
   - recycles
+  - diet_emissions
+  - recycles_emissions
+  - electricity_emissions
+  - car_emissions
+  - flight_emissions
+  - waste_emissions
+  - total_emissions
 
 session_config:
   session_expiration_time: 60

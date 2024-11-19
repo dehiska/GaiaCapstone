@@ -125,4 +125,9 @@ nlu:
     - What are the emissions for this?
     - I'd like to know the emissions
  
+- intent: submit_survey
+  examples: |
+    - My diet is [average omnivore] (diet) and I [do not recycle](recycles).
+    - I recycle [yes](recycles) and produce [0.5](waste_emissions) tons of waste annually.
+    - I emit [1.0](diet_emissions) for my diet and travel by car emitting [0.3](car_emissions)
  

@@ -1,9 +1,9 @@
-version: "3.0"
+version: "3.1"
 nlu:
   - regex: short_flights
     examples: |
-      - [0-9]+
-
+      - [0-9]+ 
+    
   - intent: ask_lifestyle_survey
     examples: |
       - I want to take the lifestyle survey
@@ -13,11 +13,32 @@ nlu:
       - Begin lifestyle survey
       - lifestyle survey
 
-  #- intent: ask_openai
-  #  examples: |
-  #    - Can you tell me about AI?
-  #    - What do you know about natural language processing?
-  #    - How does machine learning work?
+    #- intent: ask_openai
+    #  examples: |
+    #    - Can you tell me about AI?
+    #    - What do you know about natural language processing?
+    #    - How does machine learning work?
+
+#######################################################TESTING
+  - intent: complete_survey
+    examples: |
+      - I have finished the survey
+      - The survey is done
+      - I completed the survey
+
+  - intent: recommendations
+    examples: |
+      - I want to see my recommendations
+      - Show me my results
+      - See my results
+      - View recommendations
+  
+  - intent: view_recommendations
+    examples: |
+      - I want to see my recommendations
+      - Show me my recommendations
+      - What should I do next?
+#############################################TESTING
 
   - intent: greet
     examples: |
@@ -43,7 +64,6 @@ nlu:
       - done
       - finished
       - I’m done here
-
   - intent: affirm
     examples: |
       - yes
@@ -120,11 +140,31 @@ nlu:
   - intent: provide_energy_source
     examples: |
       - My main energy source is [coal](energy_source)
-      - I use [natural gas](energy_source)
-      - [natural gas](energy_source)
-      - [Petroleum](energy_source)
-      - mostly [natural gas](energy_source) 
+      - I use [coal](energy_source)
+      - [coal](energy_source)
+      - mostly [coal](energy_source) 
+      - My electricity comes from [coal](energy_source)
+      - My main energy source is [petroleum](energy_source)
+      - I use [petroleum](energy_source)
+      - [petroleum](energy_source)
+      - mostly [petroleum](energy_source) 
+      - My electricity comes from [petroleum](energy_source)
+      - My main energy source is [natural_gas](energy_source)
+      - I use [natural_gas](energy_source)
+      - [natural_gas](energy_source)
+      - mostly [natural_gas](energy_source) 
+      - My electricity comes from [natural_gas](energy_source)
+      - My main energy source is [hydropower](energy_source)
+      - I use [hydropower](energy_source)
+      - [hydropower](energy_source)
+      - mostly [hydropower](energy_source) 
       - My electricity comes from [hydropower](energy_source)
+      - My main energy source is [nuclear](energy_source)
+      - I use [nuclear](energy_source)
+      - [nuclear](energy_source)
+      - mostly [nuclear](energy_source) 
+      - My electricity comes from [nuclear](energy_source)
+
 
   - intent: provide_car_fuel_type
     examples: |
@@ -203,9 +243,22 @@ nlu:
   - intent: provide_diet
     examples: |
       - [meat diet](diet)
-      - I follow a [vegan](diet) diet
-      - My diet is [average omnivore](diet)
+      - I follow a [meat diet](diet) diet
+      - My diet is [meat diet](diet)
       - I eat a [meat diet](diet)
+      - [average omnivore](diet)
+      - I follow a [average omnivore](diet) diet
+      - My diet is average omnivore](diet)
+      - I eat a [average omnivore](diet)
+      - [vegetarian](diet)
+      - I follow a [vegetarian](diet) diet
+      - My diet is [vegetarian](diet)
+      - I eat a [vegetarian](diet)
+      - [vegan](diet)
+      - I follow a [vegan](diet) diet
+      - My diet is [vegan](diet)
+      - I eat a [vegan](diet)
+
 
   - intent: provide_recycling
     examples: |

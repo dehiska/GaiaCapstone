@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
+    <script src="{{ url_for('static', filename='js/ActionSurveyListener.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -23,12 +24,45 @@
               initPayload: '/greet',
               customData: { language: "en" },
               socketUrl: "http://localhost:5005",
+              socketPath: "/socket.io/", // defaul Rasa socket path
               title: "GAIA", 
               subtitle: "How can I help you save our planet?",
-              // add other props here
+              params: {
+                storage: "local",
+              },
             },
             null
           );
+
+
+          const socket = window.WebChat.defaultSocket;
+          if (socket) {
+            console.log("WebSocket connection established:", socket);
+            socket.on("connect", () => {
+              console.log("Connected to WebSocket.");
+            });
+            socket.on("disconnect", () => {
+              console.warn("Disconnected from WebSocket.");
+            });
+            socket.on("bot_uttered", (message) => {
+              console.log("Bot response:", message);
+              if (message.custom && message.custom.redirect) {
+                console.log("Redirecting to:", message.custom.redirect);
+                window.location.href = message.custom.redirect;
+              }
+            });
+          } else {
+            console.error("WebSocket is not defined. Check your WebChat configuration.");
+          }
+
+
+
+          // const socket = window.WebChat.defaultSocket;
+          // socket.on("bot_uttered",(message) => {
+          //   if (message.custom && message.custom.redirect) {
+          //     window.location.href = message.custom.redirect;
+          //   }
+          // });
         }),
         t.insertBefore(e, t.firstChild);
     })();

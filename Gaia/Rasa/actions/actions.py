@@ -1,8 +1,10 @@
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, FollowupAction, AllSlotsReset
 from snippets import endpoints, estimate_emissions
+import os 
+import json
 from rasa_sdk.events import FollowupAction
 import requests
 
@@ -59,7 +61,6 @@ EMISSION_FACTORS = {
     "vegetarian": 0.66,
     "vegan": 0.56,
 }
-
 class ActionCalculateEmissions(Action):
 
     def name(self) -> str:
@@ -167,13 +168,13 @@ class ActionLifestyleSurvey(Action):
         # Step 3: Check for car fuel type
         car_fuel_type = tracker.get_slot("car_fuel_type")
         if not car_fuel_type:
-            dispatcher.utter_message(text="What fuel does your car use (gasoline, gas, or diesel)?")
+            dispatcher.utter_message(text="What fuel does your car use (gasoline (gas), or diesel)?")
             return []
 
         # Step 4: Check for fuel unit (gallons or liters)
         car_fuel_unit = tracker.get_slot("car_fuel_unit")
         if car_fuel_unit not in ["gallons", "liters"]:
-            dispatcher.utter_message(text="Do you measure your fuel in 'gallons' or 'liters'? Please specify either 'gallons' or 'liters'.")
+            dispatcher.utter_message(text="Do you measure your fuel in gallons or liters?")
             return []
 
         # Step 5: Get the actual fuel consumption amount
@@ -214,12 +215,12 @@ class ActionLifestyleSurvey(Action):
 
         # Store validated slot values in responses dictionary
         responses = {
-            "electricity_kwh": float(electricity_kwh) * 4,  # Convert weekly to monthly
+            "electricity_kwh": float(electricity_kwh),
             "energy_source": energy_source,
             "car_fuel_type": car_fuel_type,
             "car_fuel_unit": car_fuel_unit,
-            "car_fuel_usage": float(fuel_consumption) * 4,  # Convert weekly to monthly
-            "car_miles": float(car_miles) * 4,  # Convert weekly to monthly
+            "car_fuel_usage": float(fuel_consumption),
+            "car_miles": float(car_miles),
             "short_flights": int(short_flights),
             "long_flights": int(long_flights),
             "diet": diet,
@@ -230,9 +231,29 @@ class ActionLifestyleSurvey(Action):
         if car_fuel_unit == "liters":
             responses["car_fuel_usage"] *= 0.264172  # Liters to gallons conversion factor
 
+        view_recommendations = {
+            "type": "template", 
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                    {
+                        "title": "View Recommendations",
+                        "image_url": "https://st2.depositphotos.com/1038076/6244/i/450/depositphotos_62448977-stock-photo-recommended.jpg",
+                        "buttons": [
+                            {
+                                "title": "Details", 
+                                "url": "/recommendations",
+                                "type": "web_url"
+                            },
+                        ]
+                    },
+                ]
+            }
+        }
+
         # Calculate emissions
         total_emissions = self.calculate_carbon_footprint(responses)
-        dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.")
+        dispatcher.utter_message(text=f"Your estimated carbon footprint is {total_emissions:.2f} metric tons of CO2 per year.", attachment=view_recommendations)
 
         
         return []
@@ -251,22 +272,27 @@ class ActionLifestyleSurvey(Action):
 
         survey_data = {
         "electricity_emissions": electricity_emissions,
+        # "energy_source": responses['energy_source'],
         "car_emissions": car_emissions,
         "flight_emissions": flight_emissions,
         "diet_emissions": diet_emissions,
         "waste_emissions": waste_emissions,
         "total_emissions": total_emissions
         }
-
-        # Send the survey data to the Flask endpoint
+            
         try:
-            response = requests.post("http://localhost:5000/submit_survey", json=survey_data)
-            if response.status_code == 200:
-                print("Survey data submitted successfully.")
-            else:
-                print("There was an error submitting your survey data.")
-        except requests.exceptions.RequestException as e:
-            print("Failed to connect to the server. Error: {e}")
+            # Hardcoded path to save the JSON file
+            file_path = r"C:\Users\NOSfe\Desktop\Capstone\GaiaCapstone\Gaia\app\survey_recommendations.json"
+
+            # Ensure the directory exists
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+            # Write recommendations to the file
+            with open(file_path, 'w') as f:
+                json.dump(responses, f, indent=4)  # Use `indent=4` for readable formatting
+            print(f"Actions.py says: Recommendations saved to {file_path}")
+        except Exception as e:
+            print(f"Error writing recommendations to file: {str(e)}")
 
         return total_emissions
 
@@ -281,11 +307,3 @@ class ActionLifestyleSurveyCompletion(Action):
         
         # Trigger the frontend to redirect to recommendations
         return [FollowupAction("action_redirect_to_recommendations")]
-
-class ActionRedirectToRecommendations(Action):
-    def name(self) -> str:
-        return "action_redirect_to_recommendations"
-
-    def run(self, dispatcher, tracker, domain):
-        dispatcher.utter_message(json_message={"redirect": True})  # Send custom message to frontend
-        return []

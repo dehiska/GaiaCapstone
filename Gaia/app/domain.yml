@@ -26,6 +26,17 @@ responses:
 
   #utter_happy:
   #  - text: "Yay!"
+  utter_recommendations:
+    - text: |
+        Here are your recommendations:
+        {% for rec in recommendations %}
+        - {{ rec }}
+        {% endfor %}
+  
+  utter_redirect:
+    - text: "Redirecting you..."
+      custom:
+        redirect: "/recommendations"
 
 slots:
   activity:
