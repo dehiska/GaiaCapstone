@@ -305,7 +305,7 @@ class Recommendations:
         # values = [1 if self.responses.get("energy_source", "").lower() not in ["hydropower", "renewable", "nuclear"] else 0.66, 1]
         energy_sources = [f"Your energy ({user_source})", "Ideal Energy (Renewable)"]
         plt.figure(figsize=(7, 5))
-        plt.bar(energy_sources, values, color=["red", "green"])
+        plt.bar(energy_sources, values, color=["blue", "green"])
         plt.xticks(fontsize=12)
         plt.title("Energy Source Comparison", fontsize=16)
         plt.ylabel("Energy Sources", fontsize=12)
@@ -360,7 +360,7 @@ class Recommendations:
         # values = [self.responses.get("diet", "")]
         # values = [1 if self.responses.get("diet", "").lower() in ["meat diet", "average omnivore"] else 0.66, 1]
         plt.figure(figsize=(7, 5))
-        plt.bar(energy_sources, values, color=["red", "green"])
+        plt.bar(energy_sources, values, color=["blue", "green"])
         plt.xticks(fontsize=12)
         plt.title("Diet Emissions Comparison", fontsize=16)
         plt.ylabel("Diet", fontsize=12)
