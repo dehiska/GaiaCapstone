@@ -67,13 +67,13 @@ class ActionCalculateEmissions(Action):
         return "action_calculate_emissions"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[str, Any]) -> List[Dict[str, Any]]:
-
+        
         # Get the activity slot
         activity = tracker.get_slot("activity")
         available_activities = "\n".join([f"{i+1}. {act}" for i, act in enumerate(endpoints.keys())])
 
         if activity is None:
-            dispatcher.utter_message(text="I didn't catch that. Could you specify an activity from our list?")
+            dispatcher.utter_message(text="Could you specify which activity you'd like to calculate emissions for? For example, you can choose one from the list below:")
             dispatcher.utter_message(
                 text=f"Here are the available activities:\n{available_activities}"
             )
