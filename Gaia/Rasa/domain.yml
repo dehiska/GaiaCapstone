@@ -63,11 +63,11 @@ responses:
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
 
-  utter_emission_result:
-    - text: "Your emissions are calculated as [100](result) tons of CO2."
-      buttons:
-        - title: "View recommendations."
-          payload: "/view_recommendations"
+  # utter_emission_result:
+  #   - text: "Your emissions are calculated as [100](result) tons of CO2."
+  #     buttons:
+  #       - title: "View recommendations."
+  #         payload: "/view_recommendations"
 
   utter_emission_results:
     - text: |
