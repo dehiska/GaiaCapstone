@@ -11,15 +11,15 @@ stories:
 
 ################################################################################# TESTING
 # BUYER STORIES
-- story: redirect after survey
-  steps:
-    - intent: complete_survey
-    - action: action_redirect_to_recommendations
+# - story: redirect after survey
+#   steps:
+#     - intent: complete_survey
+#     - action: action_redirect_to_recommendations
 
-- story: Redirect to recommendations
-  steps:
-    - intent: recommendations
-    - action: utter_redirect_to_recommendations
+# - story: Redirect to recommendations
+#   steps:
+#     - intent: recommendations
+#     - action: utter_redirect_to_recommendations
 
 - story: user starts a lifestyle survey # complete lifestyle survey and view recommendations
   steps:
@@ -47,9 +47,9 @@ stories:
   - action: action_lifestyle_survey  # Finish the survey and calculate results
   # - action: action_start_survey
   # - action: utter_survey_complete
-  - intent: view_recommendations
-  - action: action_view_recommendations
-  - action: action_recommendations_carousel
+  # - intent: view_recommendations
+  # - action: action_view_recommendations
+  # - action: action_recommendations_carousel
 ################################################################################## TESTING
 
 # - story: sad path 1
